@@ -7,6 +7,10 @@
 
   const script = document.currentScript;
   const file = (script && script.dataset.file) || 'datos.js';
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  let leaving = false;
+  window.addEventListener('beforeunload', () => { leaving = true; });
 
   const showError = (message) => {
     const box = document.createElement('div');
@@ -25,21 +29,24 @@
       .createSignedUrl(file, 3600);
     if (!error) return data.signedUrl;
     if (attempt < 3) {
-      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+      await sleep(400 * attempt);
       return signedUrlFor(attempt + 1);
     }
     throw new Error('No se ha podido firmar la descarga de ' + file + ': ' + error.message);
   };
 
   const download = async (attempt = 1) => {
-    const url = await signedUrlFor();
-    const response = await fetch(url, { cache: 'no-store' });
-    if (response.ok) return response.text();
-    if (attempt < 3) {
-      await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
-      return download(attempt + 1);
+    try {
+      const response = await fetch(await signedUrlFor(), { cache: 'no-store' });
+      if (!response.ok) throw new Error('La descarga de ' + file + ' ha fallado (' + response.status + ').');
+      return await response.text();
+    } catch (error) {
+      if (attempt < 4) {
+        await sleep(400 * attempt);
+        return download(attempt + 1);
+      }
+      throw error;
     }
-    throw new Error('La descarga de ' + file + ' ha fallado (' + response.status + ').');
   };
 
   window.DATA_READY = (async () => {
@@ -61,6 +68,7 @@
     }
     return true;
   })().catch((error) => {
+    if (leaving) return false;
     console.error('[datos]', error);
     if (document.body) showError('Comprueba la conexión e inténtalo de nuevo.');
     throw error;
