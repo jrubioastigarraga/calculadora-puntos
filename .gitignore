@@ -1,0 +1,9 @@
+# Datos personales: no se versionan (viven en Supabase Storage, bucket privado)
+datos.js
+datos-curso.js
+*.pdf
+
+# Entorno
+.env
+.env.*
+node_modules/

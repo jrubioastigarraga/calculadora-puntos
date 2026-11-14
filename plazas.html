@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Plazas adjudicadas por año en el concurso de traslados de enseñanzas medias de Euskadi.">
+<title>Plazas por año · Concurso de traslados Euskadi</title>
+<meta name="theme-color" content="#4d0d22">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237a1738'/%3E%3Cpath d='M18 33l9 9 19-20' stroke='%23fff' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="vendor/select2.min.css">
+<style>
+:root{
+  --bg:#f7eff1; --surface:#fff; --surface-2:#fdf7f9; --ink:#241419; --muted:#7d6b70;
+  --line:#e7d8dd; --line-soft:#f1e6e9; --accent:#7a1738; --accent-dark:#4a0c20;
+  --accent-soft:#f6e7ec; --accent-ink:#5f1230; --gold:#c9a227; --radius:16px;
+  --shadow:0 1px 2px rgba(45,20,25,.05),0 12px 28px -18px rgba(45,20,25,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+  radial-gradient(1100px 520px at 100% -8%,#f0dfe4 0%,transparent 55%),
+  radial-gradient(900px 520px at -10% 4%,#f4e7ea 0%,transparent 52%),var(--bg);
+  background-attachment:fixed;color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul{margin:0} ul{padding:0}
+a{color:var(--accent-dark)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* estructura */
+.shell{display:flex;min-height:100vh}
+.side{position:sticky;top:0;align-self:flex-start;width:216px;flex:0 0 216px;height:100vh;display:flex;flex-direction:column;gap:18px;padding:22px 14px 18px;background:
+  radial-gradient(420px 220px at 100% 0%,rgba(201,162,39,.18),transparent 60%),
+  linear-gradient(168deg,#2e0713 0%,#4d0d22 48%,#6b1230 100%);color:#fbeef2;overflow-y:auto;z-index:40;box-shadow:8px 0 28px -22px rgba(45,7,19,.95)}
+.side::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.13) 1px,transparent 1px);background-size:22px 22px;opacity:.35;pointer-events:none}
+.side>*{position:relative;z-index:1}
+.side-brand{display:flex;align-items:center;gap:10px;padding:2px 4px;color:#fbeef2;text-decoration:none}
+.side-brand-text strong{display:block;font-size:.92rem;letter-spacing:.01em}
+.side-brand-text small{display:block;margin-top:1px;font-size:.67rem;color:#dcb9c5}
+.side-nav{display:grid;gap:4px}
+.side-link{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:9px;color:#e9c9d3;text-decoration:none;font-size:.85rem;font-weight:600;line-height:1.2;transition:background .15s,color .15s}
+.side-link svg{width:16px;height:16px;flex:0 0 auto;opacity:.85}
+.side-link:hover{background:rgba(255,255,255,.09);color:#fff}
+.side-link.active{background:rgba(255,255,255,.15);color:#fff;box-shadow:inset 3px 0 0 var(--gold)}
+.side-tools{margin-top:2px;border-top:1px solid rgba(255,255,255,.14);padding-top:12px}
+.side-tools summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:2px 4px;font-size:.67rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:#d8b3c0}
+.side-tools summary::-webkit-details-marker{display:none}
+.side-tools summary::after{content:"+";font-size:.95rem;color:#e9c9d3}
+.side-tools[open] summary::after{content:"–"}
+.side-tools-body{display:grid;gap:5px;margin-top:8px}
+.tool-btn{font:inherit;font-size:.79rem;text-align:left;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#f6e3e9;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s}
+.tool-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.28)}
+.tool-btn:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.side-foot{margin-top:auto;padding:0 4px;font-size:.66rem;line-height:1.5;color:#c99fb0}
+
+.app-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.app-main footer{margin-top:auto}
+.page{width:min(1180px,calc(100% - 40px));margin-inline:auto;padding:26px 0 30px;display:grid;gap:12px}
+.page-head{padding:0 2px 2px}
+.eyebrow{font-size:.69rem;text-transform:uppercase;letter-spacing:.09em;font-weight:700;color:#8d7a80}
+.page-head h1{margin-top:3px;font-size:1.65rem;letter-spacing:-.02em;line-height:1.15}
+.lede{margin-top:4px;font-size:.85rem;color:var(--muted)}
+
+/* panel y filtros */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:14px 16px}
+.filters{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+select{font:inherit;font-size:.85rem;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--ink);max-width:100%}
+select:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(122,23,56,.13)}
+#year{flex:0 0 92px;font-weight:700;color:var(--accent-ink)}
+#esp{flex:1 1 260px;min-width:0;max-width:340px}
+.search{position:relative;flex:1 1 220px;min-width:0;max-width:300px;display:flex;align-items:center}
+.search svg{position:absolute;left:10px;width:16px;height:16px;color:#a08e94;pointer-events:none}
+.search input{font:inherit;font-size:.87rem;width:100%;padding:9px 10px 9px 33px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--ink)}
+.search input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(122,23,56,.13)}
+.btn{font:inherit;font-size:.8rem;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border:1px solid #e3c3ce;border-radius:9px;padding:8px 12px;cursor:pointer}
+.btn:hover{background:#f0d9e1}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:13px;padding-top:12px;border-top:1px solid var(--line-soft)}
+.stat{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff,#fcf6f8);border:1px solid var(--line);border-radius:12px;padding:9px 12px 10px}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,#7a1738)}
+.stat:nth-child(1){--c:#7a1738}.stat:nth-child(2){--c:#1d4ed8}.stat:nth-child(3){--c:#b45309}.stat:nth-child(4){--c:#6d28d9}
+.stat span{font-size:.64rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:650}
+.stat b{display:block;font-size:1.18rem;line-height:1.2;font-variant-numeric:tabular-nums}
+
+/* provincias */
+.prov-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line-soft)}
+.prov-head span{font-size:.64rem;text-transform:uppercase;letter-spacing:.06em;font-weight:650;color:var(--muted)}
+.clear-link{font:inherit;font-size:.72rem;font-weight:600;color:var(--accent-ink);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.clear-link:hover{color:var(--accent)}
+.clear-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.provs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:7px}
+.prov{display:grid;grid-template-columns:auto minmax(26px,1fr) auto;gap:8px;align-items:center;font:inherit;font-size:.76rem;padding:7px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;cursor:pointer;text-align:left;transition:border-color .15s,background .15s,box-shadow .15s}
+.prov:hover{border-color:#d8b3c1;background:#fdf7f9}
+.prov .pn{font-weight:650;color:var(--ink);white-space:nowrap}
+.prov .pbar{height:7px;border-radius:99px;background:#f4e9ec;overflow:hidden}
+.prov .pbar i{display:block;height:100%;border-radius:99px;transition:width .35s ease}
+.prov b{font-variant-numeric:tabular-nums;color:var(--accent-ink);font-weight:700}
+.prov.sel{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}
+.prov:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* gráficas */
+.charts{display:grid;grid-template-columns:1.55fr 1fr;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.card-head{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--line-soft);background:linear-gradient(180deg,#fff,#fdf9fa)}
+.card-head h2{font-size:.92rem;font-weight:650}
+.card-head span{font-size:.72rem;color:var(--muted)}
+.chart{padding:14px 12px 8px;overflow-x:auto}
+.years{display:flex;align-items:flex-end;gap:4px;min-width:560px;height:180px}
+.ycol{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;padding:0;cursor:pointer;font:inherit;color:var(--muted)}
+.ycol:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.yval{font-size:.64rem;font-variant-numeric:tabular-nums;color:#9b8a90;height:14px}
+.yplot{width:100%;height:120px;display:flex;align-items:flex-end;justify-content:center}
+.ystack{display:flex;flex-direction:column-reverse;width:70%;border-radius:5px 5px 2px 2px;overflow:hidden;transition:height .35s ease}
+.yseg{flex-basis:0;min-height:1px;transition:flex-grow .35s ease}
+.ycol:hover .ystack{filter:brightness(1.04)}
+.ycol.sel .ystack{outline:2px solid rgba(122,23,56,.45);outline-offset:1px}
+.ylegend{display:flex;flex-wrap:wrap;gap:10px;margin-top:7px;padding:0 4px 2px;font-size:.66rem;color:var(--muted)}
+.ylegend[hidden]{display:none}
+.ylegend span{display:inline-flex;align-items:center;gap:4px}
+.ylegend i{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
+.ylegend .scale{margin-left:auto;font-style:italic;color:#a08e94;cursor:help}
+.ycol.sel .yval{color:var(--accent-ink);font-weight:700}
+.ylab{font-size:.66rem;font-variant-numeric:tabular-nums}
+.ycol.sel .ylab{color:var(--accent-ink);font-weight:700}
+
+.hbars{padding:12px 16px 16px;display:grid;gap:9px}
+.hbar{display:grid;grid-template-columns:minmax(90px,42%) 1fr 42px;gap:9px;align-items:center;font-size:.76rem}
+.hbar .hl{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.htrack{height:9px;border-radius:99px;background:#f3e7eb;overflow:hidden}
+.htrack i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#96254f,#7a1738);transition:width .4s ease}
+.hbar b{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:650}
+.hbar.sel .hl{color:var(--accent-ink);font-weight:700}
+.hbar.sel .htrack{background:#ead3da}
+.hbars .empty{font-size:.78rem;color:var(--muted);padding:8px 0}
+
+/* tabla */
+.table-card{display:flex;flex-direction:column;min-height:300px;min-width:0}
+.table-head{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--line-soft)}
+.table-head h2{font-size:.92rem}
+.table-head h2 b{color:var(--accent-ink)}
+.table-head span{font-size:.75rem;color:var(--muted)}
+.table-scroll{overflow:auto;max-height:calc(100vh - 240px);min-height:260px}
+table{width:100%;border-collapse:collapse;font-size:.82rem;min-width:760px}
+thead th{position:sticky;top:0;z-index:3;background:linear-gradient(180deg,#fcf8f9,#f6ecef);border-bottom:1px solid var(--line);text-align:left;font-size:.66rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding:9px 10px;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--line-soft)}
+tbody tr:hover{background:#fdf7f9}
+td{padding:8px 10px;vertical-align:middle}
+td.centro{font-weight:600}
+td.centro small{display:block;font-weight:400;font-size:.68rem;color:#a08e94;margin-top:1px}
+td.muni{color:var(--muted);font-size:.78rem}
+.ptag{display:inline-block;font-size:.58rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;color:#8d7a80;background:#f6ecef;border-radius:20px;padding:1px 6px;margin-left:5px;white-space:nowrap;vertical-align:1px}
+td.esp{color:var(--muted);font-size:.78rem;max-width:260px}
+td.persona{color:var(--muted);font-size:.78rem}
+td.pts{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent-ink);white-space:nowrap}
+td.mod{text-align:center}
+td.mod b{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:6px;background:#f6e7ec;color:#7a1738;font-size:.72rem;font-weight:700}
+tbody .empty-row td{text-align:center;color:var(--muted);padding:30px}
+.table-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:9px 14px;border-top:1px solid var(--line-soft);background:#fdfafb;font-size:.78rem;color:var(--muted)}
+
+footer{border-top:1px solid var(--line);background:#f3e8eb;padding:18px 0 26px;color:var(--muted);font-size:.75rem;line-height:1.5}
+footer .wrap{display:grid;gap:5px;width:min(1180px,calc(100% - 40px));margin-inline:auto}
+footer .legal{color:#8d7a80;max-width:88ch}
+
+@media (max-width:1179px){
+  .shell{display:block}
+  .side{position:sticky;top:0;width:auto;height:auto;flex:none;flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:9px 12px;overflow:visible;box-shadow:0 10px 26px -20px rgba(45,7,19,.9)}
+  .side::before{background-size:18px 18px;opacity:.25}
+  .side-brand{padding:0;flex:1 1 auto}
+  .side-brand-text small{display:none}
+  .side-brand-text strong{font-size:.85rem}
+  .side-tools{margin:0 0 0 auto;border:0;padding:0;flex:0 0 auto}
+  .side-tools summary{padding:7px 9px;font-size:.68rem}
+  .side-tools-body{position:absolute;right:8px;top:calc(100% + 6px);width:208px;padding:8px;border-radius:12px;background:#3a0a19;border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 40px -18px rgba(0,0,0,.7);z-index:80}
+  .side-nav{order:3;width:100%;display:flex;gap:4px}
+  .side-link{flex:1;justify-content:center;padding:7px 8px;font-size:.76rem}
+  .side-link svg{display:none}
+  .side-foot{display:none}
+  .page{width:calc(100% - 24px);padding:18px 0 26px}
+  .charts{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .provs{grid-template-columns:1fr 1fr}
+  .page-head h1{font-size:1.42rem}
+}
+@media print{
+  .side,.filters,.table-foot{display:none!important}
+  body{background:#fff}
+  .table-scroll{max-height:none;overflow:visible}
+  .card,.panel{box-shadow:none;border-color:#bbb}
+  .page{width:auto;padding:0}
+}
+
+/* Select2 */
+.select2-container{font-family:inherit}
+.select2-container--default .select2-selection--single{height:38px;background:var(--surface-2);border:1px solid var(--line);border-radius:9px}
+.select2-container--default .select2-selection--single .select2-selection__rendered{line-height:36px;padding-left:10px;padding-right:26px;font-size:.84rem;color:var(--ink)}
+.select2-container--default .select2-selection--single .select2-selection__arrow{height:36px;right:6px}
+.select2-container--default .select2-selection--single .select2-selection__placeholder{color:var(--muted)}
+.select2-container--default.select2-container--open .select2-selection--single,
+.select2-container--default.select2-container--focus .select2-selection--single{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(122,23,56,.13)}
+.select2-dropdown{border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 18px 40px -22px rgba(45,7,19,.55);overflow:hidden}
+.select2-container--default .select2-results__option{font-size:.83rem;padding:7px 10px}
+.select2-container--default .select2-results__option--highlighted[aria-selected]{background:var(--accent);color:#fff}
+.select2-container--default .select2-results__option[aria-selected="true"]{background:var(--accent-soft);color:var(--accent-ink)}
+.select2-search--dropdown{padding:7px}
+.select2-search--dropdown .select2-search__field{padding:6px 8px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:.83rem}
+.select2-results__group{padding:7px 10px 3px;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+
+#year + .select2-container{flex:0 0 92px;max-width:92px}
+#esp + .select2-container{flex:1 1 260px;max-width:340px;min-width:0}
+
+@media (max-width:760px){
+  #year + .select2-container{flex:0 0 92px;max-width:92px}
+  #esp + .select2-container{flex:1 1 calc(100% - 100px);max-width:none;min-width:0}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side" aria-label="Menú principal">
+    <a class="side-brand" href="index.html">
+      <span class="side-brand-text">
+        <strong>Hezkuntzako datuak</strong>
+        <small>Euskadi</small>
+      </span>
+    </a>
+
+    <nav class="side-nav" aria-label="Pantallas">
+      <a class="side-link" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5"></rect><path d="M8 7h8M8 11h3M13 11h3M8 15h3M13 15h3M8 19h8"></path></svg>
+        Calculadora
+      </a>
+      <a class="side-link" href="clasificacion.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h11M4 18h8"></path></svg>
+        Clasificación
+      </a>
+      <a class="side-link active" href="plazas.html" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+        Plazas
+      </a>
+          <a class="side-link" href="ikha.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 4h16v16H4z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg>
+        IKHA
+      </a>
+
+    </nav>
+
+    <details class="side-tools">
+      <summary>Herramientas</summary>
+      <div class="side-tools-body">
+        <button type="button" class="tool-btn" id="csv">Descargar CSV</button>
+      </div>
+    </details>
+
+    <p class="side-foot">Listados de resolución<br>2010–2025</p>
+  </aside>
+
+  <div class="app-main">
+    <main class="page">
+      <header class="page-head">
+        <p class="eyebrow">Concurso de traslados · Enseñanzas medias</p>
+        <h1>Plazas adjudicadas</h1>
+        <p class="lede" id="lede">Destinos por año</p>
+      </header>
+
+      <section class="panel" aria-label="Filtros y resumen">
+        <div class="filters">
+          <select id="year" aria-label="Año"></select>
+          <select id="esp" aria-label="Especialidad"><option value="">Todas las especialidades</option></select>
+          <label class="search">
+            <span class="sr-only">Buscar centro o persona</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+            <input type="search" id="q" placeholder="Buscar centro o persona" autocomplete="off">
+          </label>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>Plazas</span><b id="k-plazas">—</b></div>
+          <div class="stat"><span>Centros</span><b id="k-centros">—</b></div>
+          <div class="stat"><span>Especialidades</span><b id="k-esp">—</b></div>
+          <div class="stat"><span>Cuerpos</span><b id="k-cuerpos">—</b></div>
+        </div>
+
+        <div class="prov-head">
+          <span>Provincia</span>
+          <button type="button" class="clear-link" id="prov-clear">Todas</button>
+        </div>
+        <div class="provs" id="prov-chart" aria-label="Plazas por provincia"></div>
+      </section>
+
+      <div class="charts">
+        <section class="card" aria-label="Plazas por año">
+          <div class="card-head"><h2>Evolución por año</h2><span id="year-caption">Plazas adjudicadas</span></div>
+          <div class="chart">
+            <div class="years" id="year-chart"></div>
+            <div class="ylegend" id="year-legend"></div>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Plazas por especialidad">
+          <div class="card-head"><h2>Por especialidad</h2><span id="esp-year"></span></div>
+          <div class="hbars" id="esp-chart"></div>
+        </section>
+      </div>
+
+      <section class="card table-card" aria-label="Destinos">
+        <div class="table-head">
+          <h2>Destinos de <b id="table-year">—</b></h2>
+          <span id="table-count"></span>
+        </div>
+        <div class="table-scroll" id="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Centro</th>
+                <th>Municipio</th>
+                <th>Especialidad</th>
+                <th>Persona</th>
+                <th class="pts">Puntos</th>
+                <th class="mod">Mod.</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div class="table-foot">
+          <span id="showing">—</span>
+          <button type="button" class="btn" id="more" hidden>Mostrar más</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p><strong>Fuente:</strong> listados de resolución con puntuación de los concursos de traslados de enseñanzas medias (2010–2025).</p>
+        <p class="legal">Datos de listados públicos. Herramienta de consulta sin carácter oficial: prevalece la resolución administrativa. El año 2018 corresponde al cuerpo de Maestros y no se incluye.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="auth.js"></script>
+<script src="datos-loader.js" data-file="datos.js"></script>
+<script src="vendor/jquery.min.js"></script>
+<script src="vendor/select2.min.js"></script>
+<script>
+window.DATA_READY.then(() => {
+(() => {
+  'use strict';
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const el = (id) => document.getElementById(id);
+  const fmtInt = (v) => String(Math.round(Number(v) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const plazaTxt = (n) => fmtInt(n) + (Math.round(Number(n) || 0) === 1 ? ' plaza' : ' plazas');
+  const nf = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+  const fmt = (v) => nf.format(Math.round((Number(v) || 0) * 10000) / 10000);
+  const normalize = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+
+  if (!window.DATOS) {
+    document.body.innerHTML = '<p style="padding:40px;font-family:system-ui">No se ha podido cargar <code>datos.js</code>. Mantén los archivos en la misma carpeta.</p>';
+    return;
+  }
+
+  const RAW = window.DATOS;
+  const YEARS = RAW.years.slice().sort((a, b) => b - a);
+  const SPECIALTIES = {};
+  Object.keys(RAW.specialties).forEach((key) => {
+    const name = RAW.specialties[key];
+    if (name && name !== '/' && name !== '-') SPECIALTIES[key] = name;
+  });
+  const BODIES = RAW.bodies;
+  const PROV_BY_PREFIX = { '01': 'Araba', '20': 'Gipuzkoa', '48': 'Bizkaia' };
+  const PROVS = [['Araba', '#b45309'], ['Bizkaia', '#7a1738'], ['Gipuzkoa', '#1d4ed8'], ['Otras', '#8d7a80']];
+
+  const PLAZAS = RAW.plazas.map((a) => ({
+    y: a[0], c: a[1], esp: a[2], n: a[3], t: a[4], m: a[5],
+    centro: a[6] || '', muni: a[7] || '', loc: a[8] || '', en: a[9] || '', code: a[10] || '',
+    prov: PROV_BY_PREFIX[(a[10] || '').slice(0, 2)] || 'Otras'
+  }));
+
+  const espLabel = (c, e) => SPECIALTIES[c + '|' + e] || ('Especialidad ' + e);
+  const centroLabel = (p) => p.centro || ('Centro ' + (p.code || '—'));
+
+  const byYear = new Map();
+  PLAZAS.forEach((p) => {
+    if (!byYear.has(p.y)) byYear.set(p.y, []);
+    byYear.get(p.y).push(p);
+  });
+
+  const state = { year: YEARS[0], esp: '', prov: '', q: '' };
+  let filtered = [];
+  let visible = 60;
+  const STEP = 120;
+
+  function espBase(year) {
+    const rows = byYear.get(year) || [];
+    return state.esp ? rows.filter((p) => p.c + '|' + p.esp === state.esp) : rows;
+  }
+
+  function rowsForYear(year) {
+    const rows = espBase(year);
+    return state.prov ? rows.filter((p) => p.prov === state.prov) : rows;
+  }
+
+  /* ---------- gráfica de años ---------- */
+
+  function yearData(year) {
+    if (state.prov) {
+      return { total: rowsForYear(year).length, segs: null };
+    }
+    const rows = espBase(year);
+    const counts = {};
+    PROVS.forEach(([name]) => { counts[name] = 0; });
+    rows.forEach((p) => { counts[p.prov] = (counts[p.prov] || 0) + 1; });
+    return {
+      total: rows.length,
+      segs: PROVS.map(([name, color]) => ({ name, color, count: counts[name] || 0 }))
+    };
+  }
+
+  function renderYearChart() {
+    const years = RAW.years.slice().sort((a, b) => a - b);
+    const data = years.map(yearData);
+    const max = Math.max.apply(null, data.map((d) => d.total).concat([1]));
+
+    const caption = el('year-caption');
+    if (caption) {
+      const parts = [];
+      if (state.esp) parts.push(espLabel(state.esp.split('|')[0], state.esp.split('|')[1]));
+      if (state.prov) parts.push(state.prov);
+      caption.textContent = parts.length ? parts.join(' · ') + ' · por año' : 'Plazas por año · por provincia';
+    }
+
+    el('year-chart').innerHTML = years.map((y, i) => {
+      const d = data[i];
+      const h = d.total > 0 ? Math.max(4, Math.round(Math.sqrt(d.total / max) * 120)) : 0;
+      let stack;
+
+      if (d.segs) {
+        const segs = d.segs.filter((s) => s.count > 0).map((s) =>
+          '<span class="yseg" style="flex-grow:' + s.count + ';background:' + s.color + '" title="' + y + ' · ' + s.name + ': ' + s.count + '"></span>'
+        ).join('');
+        stack = '<span class="ystack" style="height:' + h + 'px">' + segs + '</span>';
+      } else {
+        const color = (PROVS.find((p) => p[0] === state.prov) || ['', '#7a1738'])[1];
+        stack = '<span class="ystack" style="height:' + h + 'px"><span class="yseg" style="flex-grow:1;background:' + color + '"></span></span>';
+      }
+
+      const detail = d.segs
+        ? ' (' + d.segs.filter((s) => s.count > 0).map((s) => s.name + ' ' + s.count).join(', ') + ')'
+        : '';
+
+      return '<button type="button" class="ycol' + (y === state.year ? ' sel' : '') + '" data-year="' + y + '" ' +
+        'aria-label="' + y + ': ' + d.total + ' plazas' + detail + '" aria-pressed="' + (y === state.year) + '">' +
+        '<span class="yval">' + d.total + '</span>' +
+        '<span class="yplot">' + stack + '</span>' +
+        '<span class="ylab">' + y + '</span></button>';
+    }).join('');
+
+    const legend = el('year-legend');
+    if (legend) {
+      legend.hidden = Boolean(state.prov);
+      legend.innerHTML = PROVS.map(([name, color]) =>
+        '<span><i style="background:' + color + '"></i>' + name + '</span>'
+      ).join('') +
+        '<span class="scale" title="La altura de las barras usa escala raíz cuadrada para que se aprecien todos los años">altura √</span>';
+    }
+  }
+
+  el('year-chart').addEventListener('click', (event) => {
+    const col = event.target.closest('[data-year]');
+    if (!col) return;
+    state.year = Number(col.dataset.year);
+    el('year').value = state.year;
+    refreshSelect(el('year'));
+    renderAll();
+  });
+
+  /* ---------- gráfica de especialidades ---------- */
+
+  function renderEspChart(rows) {
+    el('esp-year').textContent = state.year;
+    const counts = new Map();
+    rows.forEach((p) => {
+      const key = p.c + '|' + p.esp;
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    const top = Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 9);
+    if (!top.length) {
+      el('esp-chart').innerHTML = '<p class="empty">Sin datos para este año.</p>';
+      return;
+    }
+    const max = top[0][1];
+    el('esp-chart').innerHTML = top.map(([key, count]) => {
+      const [c, e] = key.split('|');
+      return '<div class="hbar' + (state.esp === key ? ' sel' : '') + '"><span class="hl" title="' + espLabel(c, e) + '">' + e + ' · ' + espLabel(c, e) + '</span>' +
+        '<span class="htrack"><i style="width:' + Math.round((count / max) * 100) + '%"></i></span>' +
+        '<b>' + count + '</b></div>';
+    }).join('');
+  }
+
+  /* ---------- tabla ---------- */
+
+  function renderTable() {
+    const part = filtered.slice(0, visible);
+    if (!part.length) {
+      el('tbody').innerHTML = '<tr class="empty-row"><td colspan="6">No hay plazas con estos filtros.</td></tr>';
+    } else {
+      el('tbody').innerHTML = part.map((p) => {
+        const place = p.muni || p.loc || '';
+        return '<tr>' +
+          '<td class="centro">' + centroLabel(p) + (p.code && p.centro ? '<small>' + p.code + '</small>' : '') + '</td>' +
+          '<td class="muni">' + (place ? place + ' ' : '') + '<span class="ptag">' + p.prov + '</span></td>' +
+          '<td class="esp">' + espLabel(p.c, p.esp) + '</td>' +
+          '<td class="persona">' + p.n + '</td>' +
+          '<td class="pts">' + fmt(p.t) + '</td>' +
+          '<td class="mod"><b>' + (p.m || '·') + '</b></td>' +
+        '</tr>';
+      }).join('');
+    }
+    el('showing').textContent = 'Mostrando ' + fmtInt(part.length) + ' de ' + plazaTxt(filtered.length);
+    el('more').hidden = visible >= filtered.length;
+  }
+
+  function applyFilters() {
+    const q = state.q;
+    filtered = PLAZAS.filter((p) => {
+      if (p.y !== state.year) return false;
+      if (state.esp && p.c + '|' + p.esp !== state.esp) return false;
+      if (state.prov && p.prov !== state.prov) return false;
+      if (q && normalize(centroLabel(p) + ' ' + p.n + ' ' + p.muni + ' ' + espLabel(p.c, p.esp)).indexOf(q) === -1) return false;
+      return true;
+    });
+    filtered.sort((a, b) => b.t - a.t || a.n.localeCompare(b.n, 'es'));
+    visible = 60;
+    el('table-count').textContent = plazaTxt(filtered.length);
+    renderTable();
+  }
+
+  /* ---------- KPIs ---------- */
+
+  function renderKpis() {
+    const rows = rowsForYear(state.year);
+    const centros = new Set(rows.map((p) => p.code || centroLabel(p)));
+    const esps = new Set(rows.map((p) => p.c + '|' + p.esp));
+    const cuerpos = new Set(rows.map((p) => p.c));
+    el('k-plazas').textContent = fmtInt(rows.length);
+    el('k-centros').textContent = fmtInt(centros.size);
+    el('k-esp').textContent = fmtInt(esps.size);
+    el('k-cuerpos').textContent = fmtInt(cuerpos.size);
+    el('table-year').textContent = state.year;
+    const parts = [];
+    if (state.esp) parts.push(espLabel(state.esp.split('|')[0], state.esp.split('|')[1]));
+    if (state.prov) parts.push(state.prov);
+    el('lede').textContent = (parts.length ? parts.join(' · ') + ' · ' : 'Destinos adjudicados en ') +
+      state.year + ' · ' + plazaTxt(rows.length);
+  }
+
+  /* ---------- provincias ---------- */
+
+  function renderProvChart() {
+    const rows = espBase(state.year);
+    const counts = {};
+    PROVS.forEach(([name]) => { counts[name] = 0; });
+    rows.forEach((p) => { counts[p.prov] = (counts[p.prov] || 0) + 1; });
+    const max = Math.max.apply(null, Object.values(counts).concat([1]));
+
+    el('prov-chart').innerHTML = PROVS.map(([name, color]) => {
+      const count = counts[name] || 0;
+      const selected = state.prov === name;
+      return '<button type="button" class="prov' + (selected ? ' sel' : '') + '" data-prov="' + name + '" aria-pressed="' + selected + '">' +
+        '<span class="pn">' + name + '</span>' +
+        '<span class="pbar"><i style="width:' + Math.round((count / max) * 100) + '%;background:' + color + '"></i></span>' +
+        '<b>' + count + '</b></button>';
+    }).join('');
+  }
+
+  el('prov-chart').addEventListener('click', (event) => {
+    const button = event.target.closest('[data-prov]');
+    if (!button) return;
+    const name = button.dataset.prov;
+    state.prov = state.prov === name ? '' : name;
+    refresh();
+  });
+
+  el('prov-clear').addEventListener('click', () => {
+    state.prov = '';
+    refresh();
+  });
+
+  /* ---------- selectores ---------- */
+
+  YEARS.forEach((y) => {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    el('year').appendChild(opt);
+  });
+  el('year').value = state.year;
+
+  function rebuildEspSelect() {
+    const rows = byYear.get(state.year) || [];
+    const map = new Map();
+    rows.forEach((p) => {
+      const key = p.c + '|' + p.esp;
+      if (!map.has(key)) map.set(key, p.c);
+    });
+    const select = el('esp');
+    select.innerHTML = '<option value="">Todas las especialidades</option>';
+    const byBody = new Map();
+    Array.from(map.keys()).sort().forEach((key) => {
+      const [c, e] = key.split('|');
+      if (!byBody.has(c)) byBody.set(c, []);
+      byBody.get(c).push(e);
+    });
+    Array.from(byBody.keys()).sort().forEach((c) => {
+      const group = document.createElement('optgroup');
+      group.label = c + ' · ' + (BODIES[c] || c);
+      byBody.get(c).sort().forEach((e) => {
+        const opt = document.createElement('option');
+        opt.value = c + '|' + e;
+        opt.textContent = e + ' · ' + espLabel(c, e);
+        group.appendChild(opt);
+      });
+      select.appendChild(group);
+    });
+
+    if (state.esp && select.querySelector('option[value="' + state.esp + '"]')) {
+      select.value = state.esp;
+    } else {
+      state.esp = '';
+      select.value = '';
+    }
+    refreshSelect(select);
+  }
+
+  el('year').addEventListener('change', () => {
+    state.year = Number(el('year').value);
+    state.q = '';
+    el('q').value = '';
+    renderAll();
+  });
+
+  el('esp').addEventListener('change', (event) => {
+    state.esp = event.target.value;
+    refresh();
+  });
+
+  el('q').addEventListener('input', (event) => {
+    state.q = normalize(event.target.value);
+    applyFilters();
+  });
+
+  el('more').addEventListener('click', () => {
+    visible += STEP;
+    renderTable();
+  });
+
+  /* ---------- CSV ---------- */
+
+  const cell = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+
+  el('csv').addEventListener('click', () => {
+    const header = ['Año', 'Centro', 'Código', 'Municipio', 'Localidad', 'Provincia', 'Especialidad', 'Persona', 'Puntos', 'Modalidad'];
+    const lines = [header.map(cell).join(';')];
+    filtered.forEach((p) => {
+      lines.push([p.y, centroLabel(p), p.code, p.muni, p.loc, p.prov, espLabel(p.c, p.esp), p.n, fmt(p.t), p.m].map(cell).join(';'));
+    });
+    const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'plazas-' + state.year + '.csv';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  /* ---------- inicio ---------- */
+
+  function renderAll() {
+    rebuildEspSelect();
+    refresh();
+  }
+
+  function refresh() {
+    renderKpis();
+    renderYearChart();
+    renderProvChart();
+    renderEspChart((byYear.get(state.year) || []).filter((p) => !state.prov || p.prov === state.prov));
+    applyFilters();
+  }
+
+  /* ---------- selects (Select2) ---------- */
+
+  function refreshSelect(select) {
+    if (window.jQuery && window.jQuery(select).data('select2')) {
+      window.jQuery(select).trigger('change.select2');
+    }
+  }
+
+  function initSelects() {
+    if (!window.jQuery || !window.jQuery.fn.select2) return;
+    const jq = window.jQuery;
+    const lang = {
+      noResults: function () { return 'Sin resultados'; },
+      searching: function () { return 'Buscando…'; }
+    };
+
+    jq('#year').select2({ minimumResultsForSearch: Infinity, width: '100%' });
+    jq('#esp').select2({ width: '100%', language: lang });
+
+    jq('#year, #esp').on('select2:select select2:unselect', function () {
+      this.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+
+  renderAll();
+  initSelects();
+})();
+});
+</script>
+</body>
+</html>
