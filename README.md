@@ -61,7 +61,8 @@ Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
 - **Plazas ofertadas**: vacantes del documento *Lekualdatze Lehiaketa Eragina 27-28* (versión provisional de 19/11/2026): 410 plazas en 51 especialidades. Se muestran por especialidad y se recalculan al filtrar.
 - Se marca como «con plaza» a las primeras N personas *elegibles* de cada especialidad, donde N es el número de plazas ofertadas (recálculo orientativo).
 - **Exclusión de adjudicatarios previos**: solo quienes tienen **destino adjudicado en el concurso anterior** (572 personas en 2025) se marcan como «Ya con plaza» y **no consumen plaza nueva**. La **asignación azul de principio de curso** (233 personas) no es una plaza de concurso: se muestra en azul junto al nombre, pero no excluye a la persona. Se puede desactivar con la casilla «Excluir plazas del concurso anterior».
-- Filtros por cuerpo, especialidad (Select2), modalidad, origen (clasificación / forzosos), búsqueda por nombre y «Solo con plaza». Indicadores y exportación a CSV.
+- **Separación por provincia elegida el curso anterior** (Araba / Bizkaia / Gipuzkoa): la provincia de la clasificación se obtiene del destino del concurso o de la asignación azul; la de los forzosos OPE, del destino de prácticas del curso 2026/27 (cruzando el DNI enmascarado con `datos-curso.js`). Las plazas ofertadas están desglosadas por provincia en `forzosak-data.js` (`plazasProv`) y se adjudican dentro de cada provincia. Quien no tenga provincia conocida figura como «Sin provincia» y no opta a plazas provinciales.
+- Filtros por cuerpo, especialidad (Select2), provincia, modalidad, origen (clasificación / forzosos), búsqueda por nombre y «Solo con plaza». Indicadores y exportación a CSV.
 - Los datos de la OPE y de las plazas ofertadas están en `forzosak-data.js` (archivo público, sin datos personales sensibles: DNI enmascarado).
 
 ## Origen de los datos
