@@ -8,6 +8,7 @@ Cuatro pantallas sobre los datos educativos de Euskadi, sin servidor:
 | `clasificacion.html` | **Clasificación**: participantes de 2010–2025, con desplegable de año, filtros y comparador. |
 | `plazas.html` | **Plazas adjudicadas**: destinos por año, con gráficas y tabla. |
 | `ikha.html` | **IKHA**: puestos, sustitutos, funcionarios de carrera y prácticas del curso 2026/2027. |
+| `forzosak.html` | **Forzosak 27-28 LAL**: clasificación del concurso + seleccionados de la OPE 2025, con plazas ofertadas y adjudicación orientativa. |
 | `datos.js` | Datos de todos los años de traslados (participantes y plazas). |
 | `datos-curso.js` | Datos del curso 2026/2027 de IKHA. |
 
@@ -53,6 +54,14 @@ Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
 - Indicadores, gráficas por provincia y especialidad, tabla y exportación a CSV.
 - Los **nombres de las prácticas** se han obtenido cruzando el DNI enmascarado con los listados de 2025/2026: **427 de 886** quedan identificados; el resto no aparece en esos listados. Hay una casilla «Solo con nombre».
 - Los nombres de sustitutos y carrera provienen de los listados de 2026/2027.
+
+## Forzosak 27-28 LAL
+
+- Clasificación combinada: participantes del concurso 2025 (con puntos, desempates y desglose) y, **a continuación en cada especialidad**, las 895 personas seleccionadas en la OPE 2025 (Anexos I, II y III de la Orden de 9/7/2026, BOPV n.º 138), en su orden de selección.
+- **Plazas ofertadas**: vacantes del documento *Lekualdatze Lehiaketa Eragina 27-28* (versión provisional de 19/11/2026): 410 plazas en 51 especialidades. Se muestran por especialidad y se recalculan al filtrar.
+- Se marca como «con plaza» a las primeras N personas de cada especialidad, donde N es el número de plazas ofertadas (recálculo orientativo).
+- Filtros por cuerpo, especialidad (Select2), modalidad, origen (clasificación / forzosos), búsqueda por nombre y «Solo con plaza». Indicadores y exportación a CSV.
+- Los datos de la OPE y de las plazas ofertadas están en `forzosak-data.js` (archivo público, sin datos personales sensibles: DNI enmascarado).
 
 ## Origen de los datos
 

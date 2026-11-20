@@ -1,0 +1,1272 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Forzosos 27-28: clasificación del concurso de traslados más las personas seleccionadas en la OPE 2025, con plazas ofertadas.">
+<title>Forzosak 27-28 LAL · Concurso de traslados docentes Euskadi</title>
+<meta name="theme-color" content="#4d0d22">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237a1738'/%3E%3Cpath d='M18 33l9 9 19-20' stroke='%23fff' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="vendor/select2.min.css">
+<style>
+:root{
+  --bg:#f7eff1; --surface:#fff; --surface-2:#fdf9fa; --ink:#241419; --muted:#7d6b70;
+  --line:#e7d8dd; --line-soft:#f1e6e9; --accent:#7a1738; --accent-dark:#4a0c20;
+  --accent-soft:#f6e7ec; --accent-ink:#5a0f28; --warn-bg:#fdf3e4; --warn-ink:#8a4b12;
+  --warn-line:#f0d5ac; --radius:16px;
+  --shadow:0 1px 2px rgba(45, 20, 25,.05),0 12px 28px -18px rgba(45, 20, 25,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul{margin:0} ul{padding:0}
+a{color:var(--accent-dark)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.wrap{width:min(1240px,calc(100% - 32px));margin-inline:auto}
+
+/* cabecera */
+.top{background:radial-gradient(900px 320px at 12% -30%,#7f1b3e 0%,transparent 62%),linear-gradient(118deg,#2e0713 0%,#4d0d22 55%,#6b1230 100%);color:#fbeef2;padding:20px 0 22px;border-bottom:3px solid #45091d}
+.top-inner{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.brand-mark{display:grid;place-items:center;width:44px;height:44px;flex:0 0 auto;border-radius:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#f3d3dd}
+.brand-mark svg{width:24px;height:24px}
+.brand h1{font-size:1.34rem;font-weight:650;letter-spacing:-.01em}
+.brand .sub{margin-top:2px;font-size:.82rem;color:#dcb9c5}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{font:inherit;font-size:.83rem;font-weight:600;color:#5a0f28;background:#fdf7f9;border:1px solid transparent;border-radius:9px;padding:8px 13px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:transform .12s,background .15s,border-color .15s}
+.btn:hover{background:#fff;transform:translateY(-1px)}
+.btn:focus-visible{outline:2px solid #f0c6d4;outline-offset:2px}
+.btn.ghost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.3);color:#fbeef2}
+.btn.ghost:hover{background:rgba(255,255,255,.16)}
+.btn.small{padding:6px 11px;font-size:.78rem}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* estructura */
+.page{padding:18px 0 26px;display:grid;gap:12px}
+.page > *{min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px}
+.filters{display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.search{position:relative;flex:1 1 200px;min-width:0;max-width:200px;display:flex;align-items:center}
+.search svg{position:absolute;left:10px;width:16px;height:16px;color:#a08e94;pointer-events:none}
+.search input{font:inherit;font-size:.87rem;width:100%;padding:9px 10px 9px 33px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--ink)}
+.search input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(122, 23, 56,.13)}
+select{font:inherit;font-size:.85rem;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);color:var(--ink);max-width:100%}
+select:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(122, 23, 56,.13)}
+#f-cuerpo{flex:0 1 210px;min-width:0;max-width:240px}
+#f-year{flex:0 0 92px;font-weight:700;color:var(--accent-ink)}
+#f-esp{flex:1 1 270px;min-width:0;max-width:330px}
+#clear{flex:0 0 auto;margin-left:auto}
+.segmented{display:inline-flex;padding:3px;gap:2px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px}
+.segmented button{font:inherit;font-size:.8rem;font-weight:650;color:var(--muted);background:transparent;border:0;border-radius:7px;padding:6px 9px;cursor:pointer;min-width:30px}
+.segmented button:hover{color:var(--ink);background:#f6ecef}
+.segmented button.active{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(122, 23, 56,.25)}
+.segmented button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+.stats{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:flex-end;margin-top:13px;padding-top:12px;border-top:1px solid var(--line-soft)}
+.stat{display:grid;gap:1px}
+.stat span{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:650}
+.stat b{font-size:1.02rem;font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat b small{font-size:.72rem;font-weight:500;color:var(--muted);margin-left:3px}
+.stats .note{margin-left:auto;font-size:.74rem;color:#8d7a80;max-width:46ch;line-height:1.35}
+
+/* comparador */
+.compare{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;background:linear-gradient(180deg,#fdf9fa,#fcf6f8);border:1px solid #e6cbd4;border-radius:13px;padding:11px 14px}
+.compare-txt{min-width:170px;flex:1 1 190px}
+.compare-txt strong{font-size:.86rem;color:var(--accent-ink)}
+.compare-txt p{font-size:.75rem;color:var(--muted)}
+.compare-input{display:flex;align-items:center;gap:6px}
+.compare-input input{font:inherit;font-size:.9rem;font-variant-numeric:tabular-nums;width:104px;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;text-align:right}
+.compare-input input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(122, 23, 56,.13)}
+.compare-input span{font-size:.78rem;color:var(--muted)}
+.compare-result{flex:1 1 260px;font-size:.8rem;color:var(--muted);min-height:1.2em}
+.compare-result b{color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.compare-result .hi{background:#f6e2e8;border-radius:5px;padding:1px 5px;color:var(--accent-ink);font-weight:700}
+
+/* tabla */
+.table-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;min-height:320px;min-width:0}
+.table-scroll{overflow:auto;max-height:calc(100vh - 300px);min-height:300px;min-width:0}
+table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:720px}
+thead th{position:sticky;top:0;z-index:3;background:#fbf5f7;border-bottom:1px solid var(--line);text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;padding:9px 10px;white-space:nowrap}
+thead th.col-pos{width:52px;text-align:right}
+thead th.col-moda,thead th.col-pl{width:56px;text-align:center}
+thead th.col-pts{width:110px;text-align:right}
+thead th.col-chev{width:34px}
+th.sortable button{font:inherit;text-transform:inherit;letter-spacing:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:3px}
+th.sortable button:hover{color:var(--accent-dark)}
+th.sortable .arrow{font-size:.7rem;opacity:.4}
+th.sortable.active .arrow{opacity:1;color:var(--accent)}
+tbody tr.main-row{border-bottom:1px solid var(--line-soft);cursor:pointer}
+tbody tr.main-row:hover{background:#fcf6f8}
+tbody tr.main-row.open{background:#fbf3f6}
+tbody td{padding:8px 10px;vertical-align:middle}
+td.pos{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:.8rem}
+td.pos.top{color:var(--accent-ink);font-weight:700}
+td.name{font-weight:600;color:var(--ink)}
+td.name .dest{display:block;font-weight:400;font-size:.72rem;color:#938187;margin-top:1px}
+td.name .asig{display:block;font-weight:600;font-size:.7rem;color:#1d4ed8;margin-top:2px}
+td.esp{color:var(--muted);font-size:.8rem;max-width:340px}
+td.moda,td.pl{text-align:center;color:var(--muted);font-size:.8rem}
+td.moda b{display:inline-grid;place-items:center;min-width:22px;height:22px;border-radius:6px;background:#f3e9ec;color:#6b4a52;font-size:.74rem;font-weight:700}
+td.pts{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent-ink);white-space:nowrap}
+td.chev{text-align:center}
+.chev-btn{width:26px;height:26px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;line-height:1;display:inline-grid;place-items:center;transition:transform .15s,background .15s}
+.chev-btn:hover{background:var(--accent-soft);color:var(--accent-ink)}
+.chev-btn[aria-expanded="true"]{transform:rotate(90deg);background:var(--accent-soft);color:var(--accent-ink)}
+.chev-btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+tr.detail-row td{background:#fdf9fa;border-bottom:1px solid var(--line);padding:12px 14px 14px}
+.detail{display:grid;gap:9px}
+.detail-top{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-size:.75rem;color:var(--muted)}
+.detail-top strong{color:var(--ink);font-size:.8rem}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.detail-note{font-size:.68rem;color:#a08e94;margin:0}
+.chip[title]{cursor:help}
+.chip{display:inline-flex;align-items:baseline;gap:5px;background:#fff;border:1px solid var(--line);border-radius:7px;padding:3px 7px;font-size:.74rem;font-variant-numeric:tabular-nums;color:var(--ink)}
+.chip i{font-style:normal;font-size:.64rem;color:#a08e94;font-weight:700}
+.chip b{font-weight:650}
+.subdetail{display:grid;gap:6px;padding-top:8px;border-top:1px dashed var(--line)}
+.subgroup{display:flex;gap:8px;align-items:flex-start}
+.sglabel{min-width:30px;padding-top:4px;font-size:.66rem;font-weight:700;color:#a08e94}
+.subchips{display:flex;flex-wrap:wrap;gap:4px}
+.chip.sub{font-size:.7rem;padding:2px 6px;cursor:help}
+.chip.sub i{font-size:.62rem}
+.destino{font-size:.78rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:5px;align-items:baseline}
+.destino b{color:var(--accent-ink)}
+.destino .tag{font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;background:#f4e3e8;color:#7a1738;border-radius:20px;padding:2px 7px;font-weight:700}
+.destino .tag.asig-tag{background:#e7edfc;color:#1d4ed8}
+.no-dest{font-size:.76rem;color:#a08e94;font-style:italic}
+
+.table-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:9px 14px;border-top:1px solid var(--line-soft);background:#fefbfc;font-size:.78rem;color:var(--muted)}
+.table-foot .btn{background:var(--accent-soft);color:var(--accent-ink)}
+.empty{padding:38px 20px;text-align:center;color:var(--muted);font-size:.88rem}
+.empty p:first-child{font-weight:650;color:var(--ink);margin-bottom:4px}
+
+footer{border-top:1px solid var(--line);background:#f3e8eb;padding:18px 0 26px;color:var(--muted);font-size:.75rem;line-height:1.5}
+footer .wrap{display:grid;gap:5px}
+footer .legal{color:#8d7a80;max-width:88ch}
+
+@media (max-width:760px){
+  .wrap{width:calc(100% - 20px)}
+  .top{padding:15px 0 17px}
+  .brand h1{font-size:1.1rem}
+  .brand .sub{font-size:.74rem}
+  .actions{width:100%;display:grid;grid-template-columns:1fr 1fr}
+  .btn{justify-content:center}
+  .page{padding-top:12px;gap:10px}
+  .panel{padding:12px}
+  .filters{gap:7px}
+  .search{flex:1 1 100%;max-width:none}
+  #f-cuerpo,#f-esp{flex:1 1 calc(50% - 4px);min-width:0;max-width:none}
+  .segmented{order:5;width:100%;justify-content:space-between}
+  .segmented button{flex:1}
+  #clear{order:6}
+  .stats{gap:8px 18px}
+  .stats .note{display:none}
+  .compare{padding:10px}
+  .compare-result{flex-basis:100%}
+  .table-scroll{max-height:none}
+  table{min-width:660px}
+  td.esp{max-width:220px}
+}
+@media print{
+  .top,.filters,.compare,.table-foot,.chev{display:none!important}
+  body{background:#fff}
+  .table-scroll{max-height:none;overflow:visible}
+  .table-card,.panel{box-shadow:none;border-color:#bbb}
+  tbody tr.main-row{cursor:default}
+}
+
+/* ==========================================================================
+   Tema visual v2 · profundidad, color y microinteracciones
+   ========================================================================== */
+
+body{
+  background:
+    radial-gradient(1100px 520px at 100% -8%, #f0dfe4 0%, transparent 55%),
+    radial-gradient(900px 520px at -10% 4%, #f4e7ea 0%, transparent 52%),
+    var(--bg);
+  background-attachment: fixed;
+}
+.top{position:relative;overflow:hidden;box-shadow:0 18px 40px -28px rgba(45, 7, 19,.95)}
+.top::before{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.16) 1px,transparent 1px);
+  background-size:24px 24px;opacity:.45;pointer-events:none;
+}
+.top::after{
+  content:"";position:absolute;right:-120px;top:-170px;width:430px;height:430px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201, 162, 39,.2),transparent 62%);pointer-events:none;
+}
+.top-inner{position:relative;z-index:1}
+.brand-mark{
+  background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.06));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 20px -10px rgba(0,0,0,.5);
+}
+
+.panel{border-radius:18px}
+.filters select, .search input{transition:border-color .15s,box-shadow .15s,background .15s}
+.filters select:hover, .search input:hover{border-color:#d9bdc6}
+.btn{box-shadow:0 1px 0 rgba(0,0,0,.04)}
+.btn:hover{box-shadow:0 8px 18px -10px rgba(45, 7, 19,.55)}
+.segmented button.active{
+  background:linear-gradient(135deg,#7a1738,#8a2148);
+  box-shadow:0 4px 12px -5px rgba(122, 23, 56,.65);
+}
+
+/* KPIs */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  align-items:stretch;
+}
+.stat{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#fff,#fcf6f8);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:9px 12px 10px;
+  box-shadow:0 1px 0 rgba(45, 20, 25,.03);
+}
+.stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,#7a1738)}
+.stat:nth-child(1){--c:#7a1738}
+.stat:nth-child(2){--c:#1d4ed8}
+.stat:nth-child(3){--c:#b45309}
+.stat:nth-child(4){--c:#be185d}
+.stat span{font-size:.64rem}
+.stat b{font-size:1.18rem;line-height:1.2}
+.stats .note{grid-column:1/-1;margin:2px 0 0;max-width:none;font-size:.73rem}
+.clear-link{
+  font:inherit;font-size:.73rem;font-weight:600;color:var(--accent-ink);
+  background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px;
+}
+.clear-link:hover{color:var(--accent)}
+.clear-link:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* tabla */
+.table-card{border-radius:18px}
+thead th{background:linear-gradient(180deg,#fdf9fa,#f6ecef)}
+tbody tr.main-row{transition:background .15s ease,box-shadow .15s ease}
+tbody tr.main-row:hover{background:#fcf5f7;box-shadow:inset 3px 0 0 var(--accent)}
+tbody tr.main-row.open{background:#fbf3f6;box-shadow:inset 3px 0 0 var(--accent)}
+td.pos{width:52px}
+.posnum{
+  display:inline-grid;place-items:center;
+  min-width:27px;height:27px;padding:0 4px;
+  border-radius:9px;background:#f8eff2;color:#7d6b70;
+  font-size:.76rem;font-weight:700;font-variant-numeric:tabular-nums;
+}
+.posnum.p1{background:linear-gradient(135deg,#fbe7a2,#e0b32a);color:#5a3d00;box-shadow:0 3px 8px -4px rgba(180,120,0,.6)}
+.posnum.p2{background:linear-gradient(135deg,#eef2f6,#b9c6d2);color:#334155}
+.posnum.p3{background:linear-gradient(135deg,#f3d3b8,#c77b45);color:#4a2410}
+
+td.moda b{transition:transform .15s ease}
+tr.main-row:hover td.moda b{transform:scale(1.08)}
+td.moda b.m-A{background:#f6e2e8;color:#7a1738}
+td.moda b.m-B{background:#e7edfc;color:#1d4ed8}
+td.moda b.m-E{background:#fcf0e0;color:#b45309}
+td.moda b.m-F{background:#f0eafc;color:#6d28d9}
+td.moda b.m-J{background:#eef2f6;color:#475569}
+
+tr.detail-row td{animation:detail .22s ease}
+@keyframes detail{from{opacity:0}to{opacity:1}}
+.chip{transition:background .15s,border-color .15s}
+.chip:hover{background:#fdf7f9;border-color:#e3c3ce}
+
+/* medidor del comparador */
+.gauge{flex-basis:100%;margin-top:2px}
+.gauge[hidden]{display:none}
+.gauge-track{
+  position:relative;height:8px;border-radius:99px;
+  background:linear-gradient(90deg,#f4e7ea,#e8d5db);
+  box-shadow:inset 0 1px 2px rgba(45, 20, 25,.07);
+}
+.gauge-fill{
+  position:absolute;left:0;top:0;bottom:0;border-radius:99px;
+  background:linear-gradient(90deg,#96254f,#7a1738);
+  width:0;transition:width .45s cubic-bezier(.2,.7,.3,1);
+}
+.gauge-mark{
+  position:absolute;top:50%;left:0;
+  width:15px;height:15px;border-radius:50%;
+  background:#fff;border:3px solid var(--accent);
+  transform:translate(-50%,-50%);
+  box-shadow:0 2px 8px rgba(122, 23, 56,.45);
+  transition:left .45s cubic-bezier(.2,.7,.3,1);
+}
+.gauge-labels{display:flex;justify-content:space-between;font-size:.67rem;color:#a08e94;margin-top:4px}
+
+.empty{padding:44px 20px}
+.empty::before{
+  content:"";display:block;width:52px;height:52px;margin:0 auto 12px;
+  border-radius:16px;background:var(--accent-soft);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237a1738' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;background-size:26px;
+}
+
+@media (max-width:760px){
+  .stats{grid-template-columns:1fr 1fr}
+  .stat b{font-size:1.06rem}
+  .stats .note{grid-column:1/-1}
+}
+@media (max-width:640px){
+  .compare{gap:8px}
+  .compare-txt{flex-basis:100%}
+}
+
+/* ==========================================================================
+   Estructura con menú lateral
+   ========================================================================== */
+
+.shell { display: flex; min-height: 100vh; }
+
+.side {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  width: 216px;
+  flex: 0 0 216px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 14px 18px;
+  background:
+    radial-gradient(420px 220px at 100% 0%, rgba(201, 162, 39, .18), transparent 60%),
+    linear-gradient(168deg, #2e0713 0%, #4d0d22 48%, #6b1230 100%);
+  color: #fbeef2;
+  overflow-y: auto;
+  z-index: 40;
+  box-shadow: 8px 0 28px -22px rgba(45, 7, 19, .95);
+}
+.side::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .13) 1px, transparent 1px);
+  background-size: 22px 22px;
+  opacity: .35;
+  pointer-events: none;
+}
+.side > * { position: relative; z-index: 1; }
+
+.side-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 4px;
+  color: #fbeef2;
+  text-decoration: none;
+}
+.side-brand .brand-mark {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  color: #f3d3dd;
+  background: linear-gradient(145deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .05));
+  border: 1px solid rgba(255, 255, 255, .22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
+}
+.side-brand .brand-mark svg { width: 22px; height: 22px; }
+.side-brand-text strong { display: block; font-size: .92rem; letter-spacing: .01em; }
+.side-brand-text small { display: block; margin-top: 1px; font-size: .67rem; color: #dcb9c5; }
+
+.side-nav { display: grid; gap: 4px; }
+.side-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 11px;
+  border-radius: 9px;
+  color: #e9c9d3;
+  text-decoration: none;
+  font-size: .85rem;
+  font-weight: 600;
+  line-height: 1.2;
+  transition: background .15s ease, color .15s ease;
+}
+.side-link svg { width: 16px; height: 16px; flex: 0 0 auto; opacity: .85; }
+.side-link:hover { background: rgba(255, 255, 255, .09); color: #fff; }
+.side-link.active {
+  background: rgba(255, 255, 255, .15);
+  color: #fff;
+  box-shadow: inset 3px 0 0 #c9a227;
+}
+.side-link:focus-visible { outline: 2px solid #c9a227; outline-offset: 1px; }
+
+.side-tools { margin-top: 2px; border-top: 1px solid rgba(255, 255, 255, .14); padding-top: 12px; }
+.side-tools summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 4px;
+  font-size: .67rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 700;
+  color: #d8b3c0;
+}
+.side-tools summary::-webkit-details-marker { display: none; }
+.side-tools summary::after { content: "+"; font-size: .95rem; color: #e9c9d3; }
+.side-tools[open] summary::after { content: "–"; }
+.side-tools summary:focus-visible { outline: 2px solid #c9a227; outline-offset: 2px; border-radius: 4px; }
+
+.side-tools-body { display: grid; gap: 5px; margin-top: 8px; }
+.tool-btn {
+  font: inherit;
+  font-size: .79rem;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  background: rgba(255, 255, 255, .05);
+  color: #f6e3e9;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s ease, border-color .15s ease;
+}
+.tool-btn:hover { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .28); }
+.tool-btn:focus-visible { outline: 2px solid #c9a227; outline-offset: 1px; }
+
+.side-foot {
+  margin-top: auto;
+  padding: 0 4px;
+  font-size: .66rem;
+  line-height: 1.5;
+  color: #c99fb0;
+}
+
+.app-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.app-main footer { margin-top: auto; }
+
+.page {
+  width: min(1180px, calc(100% - 40px));
+  margin-inline: auto;
+  padding: 26px 0 30px;
+  display: grid;
+  gap: 12px;
+}
+
+.page-head { padding: 0 2px 2px; }
+.page-head .eyebrow {
+  font-size: .69rem;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-weight: 700;
+  color: #8d7a80;
+}
+.page-head h1 {
+  margin-top: 3px;
+  font-size: 1.65rem;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: #241419;
+}
+.page-head .lede { margin-top: 4px; font-size: .85rem; color: #7d6b70; }
+
+@media (max-width: 1179px) {
+  .shell { display: block; }
+  .side {
+    position: sticky;
+    top: 0;
+    width: auto;
+    height: auto;
+    flex: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    padding: 9px 12px;
+    overflow: visible;
+    box-shadow: 0 10px 26px -20px rgba(45, 7, 19, .9);
+  }
+  .side::before { background-size: 18px 18px; opacity: .25; }
+  .side-brand { padding: 0; flex: 1 1 auto; }
+  .side-brand .brand-mark { width: 32px; height: 32px; border-radius: 9px; }
+  .side-brand .brand-mark svg { width: 18px; height: 18px; }
+  .side-brand-text small { display: none; }
+  .side-brand-text strong { font-size: .85rem; }
+  .side-tools { margin: 0 0 0 auto; border: 0; padding: 0; flex: 0 0 auto; }
+  .side-tools summary { padding: 7px 9px; font-size: .68rem; }
+  .side-tools summary::after { margin-left: 6px; }
+  .side-tools-body {
+    position: absolute;
+    right: 8px;
+    top: calc(100% + 6px);
+    width: 208px;
+    padding: 8px;
+    border-radius: 12px;
+    background: #3a0a19;
+    border: 1px solid rgba(255, 255, 255, .14);
+    box-shadow: 0 20px 40px -18px rgba(0, 0, 0, .7);
+    z-index: 80;
+  }
+  .side-nav { order: 3; width: 100%; display: flex; gap: 4px; }
+  .side-link { flex: 1; justify-content: center; padding: 7px 8px; font-size: .78rem; }
+  .side-link svg { display: none; }
+  .side-foot { display: none; }
+  .page { width: calc(100% - 24px); padding: 18px 0 26px; }
+  .page-head h1 { font-size: 1.42rem; }
+}
+
+@media print {
+  .side, .page-head { display: none !important; }
+  .shell { display: block; }
+  .page { width: auto; padding: 0; display: block; }
+}
+
+/* ==========================================================================
+   Select2
+   ========================================================================== */
+
+.select2-container { font-family: inherit; }
+.select2-container--default .select2-selection--single {
+  height: 38px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 36px;
+  padding-left: 10px;
+  padding-right: 26px;
+  font-size: .84rem;
+  color: var(--ink);
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow { height: 36px; right: 6px; }
+.select2-container--default .select2-selection--single .select2-selection__placeholder { color: var(--muted); }
+.select2-container--default.select2-container--open .select2-selection--single,
+.select2-container--default.select2-container--focus .select2-selection--single {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(122, 23, 56, .13);
+}
+
+.select2-container--default .select2-selection--multiple {
+  min-height: 38px;
+  padding: 3px 6px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__rendered {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 0;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 2px 6px;
+  border: 1px solid #e3c3ce;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: .72rem;
+  font-weight: 600;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  order: 2;
+  margin: 0;
+  color: var(--accent);
+  font-size: .9rem;
+  line-height: 1;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover { background: transparent; color: #a32a2d; }
+.select2-container--default .select2-selection--multiple .select2-search--inline .select2-search__field {
+  height: 26px;
+  margin: 0;
+  font: inherit;
+  font-size: .8rem;
+  min-width: 40px;
+}
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(122, 23, 56, .13);
+}
+
+.select2-dropdown {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 18px 40px -22px rgba(45, 7, 19, .55);
+  overflow: hidden;
+}
+.select2-container--default .select2-results__option { font-size: .83rem; padding: 7px 10px; }
+.select2-container--default .select2-results__option--highlighted[aria-selected] { background: var(--accent); color: #fff; }
+.select2-container--default .select2-results__option[aria-selected="true"] { background: var(--accent-soft); color: var(--accent-ink); }
+.select2-search--dropdown { padding: 7px; }
+.select2-search--dropdown .select2-search__field {
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font: inherit;
+  font-size: .83rem;
+}
+.select2-results__group {
+  padding: 7px 10px 3px;
+  font-size: .66rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+}
+
+#f-year + .select2-container { flex: 0 0 92px; max-width: 92px; }
+#f-cuerpo + .select2-container { flex: 0 1 170px; max-width: 190px; min-width: 0; }
+#f-esp + .select2-container { flex: 1 1 240px; max-width: 270px; min-width: 0; }
+#moda + .select2-container { flex: 0 1 180px; max-width: 220px; min-width: 150px; }
+
+@media (max-width: 760px) {
+  #f-year + .select2-container { flex: 0 0 92px; max-width: 92px; }
+  #f-cuerpo + .select2-container,
+  #f-esp + .select2-container { flex: 1 1 calc(50% - 4px); max-width: calc(50% - 4px); min-width: 0; }
+  #moda + .select2-container { flex: 1 1 100%; max-width: none; min-width: 0; }
+}
+
+
+/* ==========================================================================
+   Forzosak 27-28 LAL
+   ========================================================================== */
+.check{display:inline-flex;align-items:center;gap:6px;font-size:.8rem;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap}
+.check input{accent-color:var(--accent);width:15px;height:15px;cursor:pointer}
+#f-tipo{flex:0 1 175px;max-width:195px}
+.col-plaza{width:104px;text-align:center}
+td.plaza{text-align:center}
+.badge{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border-radius:20px;padding:3px 8px;white-space:nowrap}
+.badge.si{background:#dcfce7;color:#15803d}
+.badge.no{background:#f1f0f1;color:#9b8a90}
+td.origen{font-size:.74rem;white-space:nowrap}
+.origen-chip{display:inline-block;border-radius:6px;padding:2px 6px;font-weight:700;font-size:.66rem}
+.origen-chip.c{background:#e7edfc;color:#1d4ed8}
+.origen-chip.f{background:#f6e2e8;color:#7a1738}
+td.sel{text-align:right;font-variant-numeric:tabular-nums;color:var(--accent-ink);font-weight:700;white-space:nowrap;font-size:.8rem}
+.posnum.forz{background:linear-gradient(135deg,#e7edfc,#b9c6d2);color:#1d4ed8}
+tr.main-row.forzoso{box-shadow:inset 3px 0 0 #1d4ed8}
+tr.main-row.forzoso:hover{box-shadow:inset 3px 0 0 #1d4ed8}
+thead th.col-orig{width:118px}
+.plazas-banner{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;background:linear-gradient(180deg,#fdf9fa,#fcf6f8);border:1px solid #e6cbd4;border-radius:13px;padding:10px 14px;font-size:.8rem;color:var(--muted)}
+.plazas-banner strong{color:var(--accent-ink)}
+.plazas-banner b{font-variant-numeric:tabular-nums;color:var(--accent-ink)}
+@media (max-width:760px){#f-tipo{flex:1 1 100%;max-width:none}}
+@media print{.plazas-banner{display:none}}
+
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="side" aria-label="Menú principal">
+    <a class="side-brand" href="index.html">
+      <span class="side-brand-text">
+        <strong>Hezkuntzako datuak</strong>
+        <small>Euskadi</small>
+      </span>
+    </a>
+
+    <nav class="side-nav" aria-label="Pantallas">
+      <a class="side-link" href="index.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5"></rect><path d="M8 7h8M8 11h3M13 11h3M8 15h3M13 15h3M8 19h8"></path></svg>
+        Calculadora
+      </a>
+      <a class="side-link" href="clasificacion.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h11M4 18h8"></path></svg>
+        Clasificación
+      </a>
+      <a class="side-link" href="plazas.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+        Plazas
+      </a>
+      <a class="side-link" href="ikha.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 4h16v16H4z"></path><path d="M8 8h8M8 12h8M8 16h5"></path></svg>
+        IKHA
+      </a>
+            <a class="side-link" href="forzosak.html" aria-current="page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+        Forzosak 27-28 LAL
+      </a>
+
+    </nav>
+
+    <details class="side-tools">
+      <summary>Herramientas</summary>
+      <div class="side-tools-body">
+        <button type="button" class="tool-btn" id="csv">Descargar CSV</button>
+      </div>
+    </details>
+
+    <p class="side-foot">Forzosos OPE 2025 · BOPV 138/2026<br>Plazas: Eragina 27-28 (provisional)</p>
+  </aside>
+
+  <div class="app-main">
+    <main class="page">
+      <header class="page-head">
+        <p class="eyebrow">Concurso de traslados · Proceso 27/28</p>
+        <h1>Forzosak 27-28 LAL</h1>
+        <p class="lede" id="subtitle">Clasificación del concurso + personas seleccionadas en la OPE 2025</p>
+      </header>
+
+      <section class="panel" aria-label="Filtros y resumen">
+        <div class="filters">
+          <select id="f-cuerpo" aria-label="Filtrar por cuerpo">
+            <option value="">Todos los cuerpos</option>
+          </select>
+
+          <select id="f-esp" aria-label="Filtrar por especialidad">
+            <option value="">Todas las especialidades</option>
+          </select>
+
+          <label class="search">
+            <span class="sr-only">Buscar por nombre</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+            <input type="search" id="q" placeholder="Buscar por nombre" autocomplete="off">
+          </label>
+
+          <select id="moda" multiple aria-label="Filtrar por modalidad">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="J">J</option>
+          </select>
+
+          <select id="f-tipo" aria-label="Filtrar por origen">
+            <option value="">Todos los participantes</option>
+            <option value="concurso">Solo clasificación</option>
+            <option value="forzoso">Solo forzosos OPE</option>
+          </select>
+
+          <label class="check" title="Muestra solo quienes entrarían en el número de plazas ofertadas">
+            <input type="checkbox" id="solo-plaza"> Solo con plaza
+          </label>
+
+          <button type="button" class="btn small" id="clear">Limpiar filtros</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span>Resultados</span><b id="st-count">—</b></div>
+          <div class="stat"><span>Plazas ofertadas</span><b id="st-plazas">—</b></div>
+          <div class="stat"><span>Con plaza</span><b id="st-adj">—</b></div>
+          <div class="stat"><span>Forzosos con plaza</span><b id="st-forz">—</b></div>
+          <p class="note">Orden de adjudicación: primero quienes figuran en la clasificación del concurso (puntos y desempates) y, a continuación en cada especialidad, las personas seleccionadas en la OPE 2025 por su orden de selección. Se marcan como «con plaza» las primeras N de cada especialidad, donde N son las plazas ofertadas. Todo se recalcula al cambiar los filtros. <button type="button" class="clear-link" id="clear2">Limpiar filtros</button></p>
+        </div>
+      </section>
+
+      <section class="plazas-banner" aria-live="polite">
+        <span>Plazas ofertadas en la selección actual:</span>
+        <strong id="banner-esp">Todas las especialidades</strong>
+        <span>·</span>
+        <b id="banner-plazas">—</b>
+        <span id="banner-detalle"></span>
+      </section>
+
+      <section class="table-card" aria-label="Clasificación combinada">
+        <div class="table-scroll" id="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th class="col-pos">#</th>
+                <th>Nombre</th>
+                <th class="col-orig">Origen</th>
+                <th class="sortable" id="th-esp"><button type="button" data-sort="esp">Especialidad <span class="arrow">▲</span></button></th>
+                <th class="col-moda">Mod.</th>
+                <th class="col-pts sortable" id="th-pts"><button type="button" data-sort="puntos">Puntos / Sel. <span class="arrow">↕</span></button></th>
+                <th class="col-plaza">Plaza</th>
+                <th class="col-chev"><span class="sr-only">Detalle</span></th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+          <div class="empty" id="empty" hidden>
+            <p>No hay resultados con estos filtros.</p>
+            <p>Prueba con otra especialidad, origen o nombre.</p>
+          </div>
+        </div>
+        <div class="table-foot">
+          <span id="showing">—</span>
+          <button type="button" class="btn small" id="more" hidden>Mostrar más</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p><strong>Fuentes:</strong> clasificación definitiva del concurso de traslados 2025 (listados CK3024 y CK3090) · Anexos I, II y III de la Orden de 9/7/2026 (BOPV n.º 138, 22/7/2026), personas seleccionadas en la OPE convocada el 24/2/2025 · vacantes del documento <em>Lekualdatze Lehiaketa Eragina 27-28</em> (versión provisional de 19/11/2026).</p>
+        <p class="legal">Datos personales procedentes de listados públicos, con el DNI enmascarado en el documento original. Herramienta de ayuda sin carácter oficial: prevalece la resolución administrativa. El cálculo de «con plaza» es orientativo y depende de las plazas ofertadas recogidas en el documento provisional.</p>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="vendor/supabase.js"></script>
+<script src="auth.js"></script>
+<script src="datos-loader.js" data-file="datos.js"></script>
+<script src="vendor/jquery.min.js"></script>
+<script src="vendor/select2.min.js"></script>
+<script src="forzosak-data.js"></script>
+<script>
+window.DATA_READY.then(() => {
+(() => {
+  'use strict';
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const el = (id) => document.getElementById(id);
+
+  const nf = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+  const fmt = (v) => nf.format(Math.round((Number(v) || 0) * 10000) / 10000);
+  const fmtInt = (v) => String(Math.round(Number(v) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const normalize = (text) => String(text || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();
+
+  if (!window.DATOS || !window.FORZOSAK_DATA) {
+    document.body.innerHTML = '<p style="padding:40px;font-family:system-ui">No se han podido cargar los datos. Mantén todos los archivos en la misma carpeta.</p>';
+    return;
+  }
+
+  const RAW = window.DATOS;
+  const FORZ = window.FORZOSAK_DATA;
+  const BODIES = RAW.bodies || {};
+  const SPECIALTIES = {};
+  Object.keys(RAW.specialties || {}).forEach((k) => {
+    const name = RAW.specialties[k];
+    if (name && name !== '/' && name !== '-') SPECIALTIES[k] = name;
+  });
+
+  const espLabel = (cuerpo, esp) => SPECIALTIES[cuerpo + '|' + esp] || ('Especialidad ' + esp);
+  const cuerpoLabel = (cuerpo) => BODIES[cuerpo] || ('Cuerpo ' + cuerpo);
+
+  /* plazas ofertadas: [codigo, plazas, nombre, centros] */
+  const PLAZAS = new Map(FORZ.plazas.map((p) => [p[0], { n: p[1], name: p[2], centros: p[3] }]));
+
+  /* índice de especialidades -> cuerpos a partir de los datos cargados */
+  const espToCuerpos = new Map();
+  Object.keys(SPECIALTIES).forEach((k) => {
+    const sep = k.lastIndexOf('|');
+    const c = k.slice(0, sep), e = k.slice(sep + 1);
+    if (!espToCuerpos.has(e)) espToCuerpos.set(e, []);
+    espToCuerpos.get(e).push(c);
+  });
+
+  /* cuerpo de Profesorado de Enseñanza Secundaria (los seleccionados en la OPE son todos de ese cuerpo) */
+  let PES_BODY = '';
+  Object.keys(BODIES).forEach((c) => {
+    const label = normalize(BODIES[c]);
+    if (label.indexOf('PROFESOR') !== -1 && label.indexOf('SECUNDARIA') !== -1) PES_BODY = c;
+  });
+  if (!PES_BODY) {
+    /* fallback: cuerpo con más personas en 2025 que tenga la especialidad 0237 */
+    const cs = espToCuerpos.get('0237') || [];
+    if (cs.length) PES_BODY = cs[0];
+  }
+
+  function cuerpoPara(code) {
+    const cs = espToCuerpos.get(code) || [];
+    if (PES_BODY && cs.indexOf(PES_BODY) !== -1) return PES_BODY;
+    return cs.length ? cs[0] : (PES_BODY || null);
+  }
+
+  /* ---------- construcción de la lista combinada ---------- */
+
+  const ALL = [];
+
+  (RAW.people || []).filter((p) => p[0] === 2025).forEach((person) => {
+    (person[5] || []).forEach((esp) => {
+      ALL.push({
+        key: 'C|' + person[1] + '|' + person[2] + '|' + esp,
+        tipo: 'concurso',
+        cuerpo: person[2],
+        esp: esp,
+        name: person[1],
+        moda: person[3],
+        pl: person[4],
+        total: person[6],
+        s: person[7] || [],
+        det: person[10] || null,
+        pos: 0,
+        conPlaza: false,
+        nPlazas: 0
+      });
+    });
+  });
+
+  FORZ.ope.forEach((o) => {
+    const code = o[0];
+    const cuerpo = cuerpoPara(code);
+    if (!cuerpo) return;
+    ALL.push({
+      key: 'F|' + o[4] + '|' + cuerpo + '|' + code + '|' + o[6],
+      tipo: 'forzoso',
+      cuerpo: cuerpo,
+      esp: code,
+      name: o[1],
+      turno: o[2],
+      anexo: o[3],
+      codigo: o[4],
+      dni: o[5],
+      orden: o[6],
+      moda: null,
+      pl: null,
+      total: null,
+      s: [],
+      det: null,
+      pos: 0,
+      conPlaza: false,
+      nPlazas: 0
+    });
+  });
+
+  const CONCURSO_COUNT = ALL.filter((r) => r.tipo === 'concurso').length;
+  const FORZOSO_COUNT = ALL.filter((r) => r.tipo === 'forzoso').length;
+  el('subtitle').textContent = fmtInt(CONCURSO_COUNT) + ' de la clasificación 2025 + ' +
+    fmtInt(FORZOSO_COUNT) + ' seleccionados en la OPE 2025';
+
+  function compareConcurso(a, b) {
+    if (b.total !== a.total) return b.total - a.total;
+    for (let i = 0; i < 7; i += 1) {
+      const av = a.s[i] || 0, bv = b.s[i] || 0;
+      if (bv !== av) return bv - av;
+    }
+    return a.name.localeCompare(b.name, 'es');
+  }
+
+  /* reordena y recalcula puestos / plazas para el conjunto indicado */
+  function rankPool(pool) {
+    const groups = new Map();
+    pool.forEach((r) => {
+      const k = r.cuerpo + '|' + r.esp;
+      if (!groups.has(k)) groups.set(k, []);
+      groups.get(k).push(r);
+    });
+
+    const plazasPorGrupo = new Map();
+    groups.forEach((list, k) => {
+      list.sort((a, b) => {
+        if (a.tipo !== b.tipo) return a.tipo === 'concurso' ? -1 : 1;
+        if (a.tipo === 'forzoso') return a.orden - b.orden;
+        return compareConcurso(a, b);
+      });
+      const n = (PLAZAS.get(k.split('|')[1]) || {}).n || 0;
+      list.forEach((r, i) => {
+        r.pos = i + 1;
+        r.nPlazas = n;
+        r.conPlaza = n > 0 && r.pos <= n;
+      });
+      plazasPorGrupo.set(k, n);
+    });
+    return plazasPorGrupo;
+  }
+
+  const state = { q: '', cuerpo: '', esp: '', moda: [], tipo: '', soloPlaza: false, sort: 'esp' };
+  let filtered = [];
+  let visible = 80;
+  const STEP = 120;
+
+  function applyFilters() {
+    /* el pool (sin búsqueda por nombre ni filtro de origen) determina quién entra en las plazas */
+    const pool = ALL.filter((r) => {
+      if (state.cuerpo && r.cuerpo !== state.cuerpo) return false;
+      if (state.esp && r.cuerpo + '|' + r.esp !== state.esp) return false;
+      if (state.moda.length && r.tipo === 'concurso' && state.moda.indexOf(r.moda) === -1) return false;
+      return true;
+    });
+
+    const plazasPorGrupo = rankPool(pool);
+
+    filtered = pool.filter((r) => {
+      if (state.q && normalize(r.name).indexOf(state.q) === -1) return false;
+      if (state.tipo && r.tipo !== state.tipo) return false;
+      if (state.soloPlaza && !r.conPlaza) return false;
+      return true;
+    });
+
+    filtered.sort((a, b) => {
+      if (state.sort === 'puntos') {
+        const aa = a.total == null ? -Infinity : a.total;
+        const bb = b.total == null ? -Infinity : b.total;
+        if (bb !== aa) return bb - aa;
+      } else {
+        const ka = a.cuerpo + a.esp, kb = b.cuerpo + b.esp;
+        if (ka !== kb) return ka < kb ? -1 : 1;
+      }
+      if (a.tipo !== b.tipo && a.total == null !== (b.total == null)) {
+        return a.total == null ? 1 : -1;
+      }
+      return a.pos - b.pos;
+    });
+
+    visible = 80;
+    renderAll(plazasPorGrupo, pool);
+  }
+
+  /* ---------- pintado ---------- */
+
+  function rowHtml(row) {
+    const medal = row.conPlaza ? ' p1' : (row.pos <= 3 ? ' p' + row.pos : '');
+    const tipoChip = row.tipo === 'forzoso'
+      ? '<span class="origen-chip f">OPE</span>'
+      : '<span class="origen-chip c">Concurso</span>';
+    const pts = row.tipo === 'forzoso'
+      ? '<td class="sel">Selecc. ' + row.orden + '</td>'
+      : '<td class="pts">' + fmt(row.total) + '</td>';
+    const badge = row.conPlaza
+      ? '<span class="badge si">Con plaza</span>'
+      : '<span class="badge no">Sin plaza</span>';
+    return '<tr class="main-row' + (row.tipo === 'forzoso' ? ' forzoso' : '') + '" data-key="' + row.key + '" aria-expanded="false">' +
+      '<td class="pos"><span class="posnum' + medal + (row.tipo === 'forzoso' ? ' forz' : '') + '">' + row.pos + '</span></td>' +
+      '<td class="name">' + row.name + '</td>' +
+      '<td class="origen">' + tipoChip + '</td>' +
+      '<td class="esp">' + espLabel(row.cuerpo, row.esp) + '</td>' +
+      '<td class="moda"><b class="m-' + (row.moda || 'x') + '">' + (row.moda || '·') + '</b></td>' +
+      pts +
+      '<td class="plaza">' + badge + '</td>' +
+      '<td class="chev"><button type="button" class="chev-btn" aria-expanded="false" aria-label="Ver detalle de ' + row.name + '">›</button></td>' +
+      '</tr>';
+  }
+
+  function detailHtml(row) {
+    let info;
+    if (row.tipo === 'forzoso') {
+      info = '<div class="detail-top"><strong>' + row.name + '</strong>' +
+        '<span>Seleccionado/a en la OPE 2025 · Anexo ' + row.anexo + ' · Turno ' + (row.turno || '—') + '</span>' +
+        '<span>Orden de selección: ' + row.orden + ' · Código ' + (row.codigo || '—') + ' · DNI ' + (row.dni || '—') + '</span>' +
+        '<span>Puesto ' + row.pos + ' en la clasificación combinada de ' + espLabel(row.cuerpo, row.esp) + '</span></div>';
+    } else {
+      const labels = ['1.1', '1.2', '2', '3', '4', '5', '6'];
+      const desc = {
+        '1.1': 'Antigüedad en el centro', '1.2': 'Antigüedad en el cuerpo',
+        '2': 'Pertenencia a Catedráticos/as', '3': 'Méritos académicos',
+        '4': 'Cargos y funciones', '5': 'Formación', '6': 'Otros méritos'
+      };
+      const chips = labels.map((l, i) =>
+        '<span class="chip" title="' + desc[l] + '"><i>' + l + '</i><b>' + fmt(row.s[i] || 0) + '</b></span>'
+      ).join('');
+      info = '<div class="detail-top"><strong>' + row.name + '</strong>' +
+        '<span>' + cuerpoLabel(row.cuerpo) + ' · ' + row.esp + ' ' + espLabel(row.cuerpo, row.esp) + '</span>' +
+        '<span>Modalidad ' + (row.moda || '—') + ' · Perfil ' + (row.pl || '—') + '</span>' +
+        '<span>Puesto ' + row.pos + ' en la clasificación combinada</span></div>' +
+        '<p class="detail-note">Desglose por apartados de la clasificación del concurso</p>' +
+        '<div class="chips">' + chips + '</div>';
+    }
+    const plazasInfo = '<p class="destino"><span class="tag">Plazas</span> <b>' + row.nPlazas + '</b> en ' +
+      espLabel(row.cuerpo, row.esp) + ' · ' + (row.conPlaza ? 'le correspondería plaza (puesto ' + row.pos + ')' : 'sin plaza (puesto ' + row.pos + ')') + '</p>';
+    return '<tr class="detail-row"><td colspan="8"><div class="detail">' + info + plazasInfo + '</div></td></tr>';
+  }
+
+  function renderRows() {
+    const part = filtered.slice(0, visible);
+    el('tbody').innerHTML = part.map(rowHtml).join('');
+    el('empty').hidden = filtered.length !== 0;
+    el('showing').textContent = filtered.length
+      ? 'Mostrando ' + fmtInt(part.length) + ' de ' + fmtInt(filtered.length) + ' resultados'
+      : 'Sin resultados';
+    el('more').hidden = visible >= filtered.length;
+  }
+
+  function renderStats(plazasPorGrupo, pool) {
+    const totalPlazas = Array.from(plazasPorGrupo.values()).reduce((a, b) => a + b, 0);
+    const conPlaza = pool.filter((r) => r.conPlaza).length;
+    const forzConPlaza = pool.filter((r) => r.tipo === 'forzoso' && r.conPlaza).length;
+    el('st-count').textContent = fmtInt(filtered.length);
+    el('st-plazas').textContent = fmtInt(totalPlazas);
+    el('st-adj').textContent = fmtInt(conPlaza);
+    el('st-forz').textContent = fmtInt(forzConPlaza);
+
+    if (state.esp) {
+      const c = state.esp.split('|')[0], e = state.esp.split('|')[1];
+      const p = PLAZAS.get(e);
+      el('banner-esp').textContent = e + ' · ' + espLabel(c, e);
+      el('banner-plazas').textContent = fmtInt(totalPlazas) + (totalPlazas === 1 ? ' plaza' : ' plazas');
+      el('banner-detalle').textContent = p ? '(' + fmtInt(p.centros) + ' centros con vacantes en el documento provisional)' : '(sin vacantes en el documento provisional)';
+    } else {
+      el('banner-esp').textContent = 'Todas las especialidades';
+      el('banner-plazas').textContent = fmtInt(totalPlazas) + ' plazas ofertadas';
+      el('banner-detalle').textContent = '(' + fmtInt(plazasPorGrupo.size) + ' especialidades con vacantes)';
+    }
+  }
+
+  function renderAll(plazasPorGrupo, pool) {
+    renderStats(plazasPorGrupo, pool);
+    renderRows();
+  }
+
+  /* ---------- desglose ---------- */
+
+  el('tbody').addEventListener('click', (event) => {
+    const rowEl = event.target.closest('tr.main-row');
+    if (!rowEl) return;
+    const open = rowEl.classList.contains('open');
+    $$('tr.main-row.open').forEach((tr) => {
+      tr.classList.remove('open');
+      tr.setAttribute('aria-expanded', 'false');
+      const b = $('.chev-btn', tr);
+      if (b) b.setAttribute('aria-expanded', 'false');
+      const next = tr.nextElementSibling;
+      if (next && next.classList.contains('detail-row')) next.remove();
+    });
+    if (open) return;
+    const row = ALL.find((r) => r.key === rowEl.dataset.key);
+    if (!row) return;
+    rowEl.classList.add('open');
+    rowEl.setAttribute('aria-expanded', 'true');
+    $('.chev-btn', rowEl).setAttribute('aria-expanded', 'true');
+    rowEl.insertAdjacentHTML('afterend', detailHtml(row));
+  });
+
+  /* ---------- selectores ---------- */
+
+  const bodySelect = el('f-cuerpo');
+  Object.keys(BODIES).forEach((code) => {
+    if (!ALL.some((r) => r.cuerpo === code)) return;
+    const option = document.createElement('option');
+    option.value = code;
+    option.textContent = code + ' · ' + BODIES[code];
+    bodySelect.appendChild(option);
+  });
+
+  function rebuildEspSelect() {
+    const select = el('f-esp');
+    const current = state.esp;
+    select.innerHTML = '<option value="">Todas las especialidades</option>';
+    const byBody = new Map();
+    ALL.forEach((r) => {
+      if (state.cuerpo && r.cuerpo !== state.cuerpo) return;
+      if (!byBody.has(r.cuerpo)) byBody.set(r.cuerpo, new Set());
+      byBody.get(r.cuerpo).add(r.esp);
+    });
+    Array.from(byBody.keys()).sort().forEach((cuerpo) => {
+      const group = document.createElement('optgroup');
+      group.label = cuerpo + ' · ' + cuerpoLabel(cuerpo);
+      Array.from(byBody.get(cuerpo)).sort().forEach((esp) => {
+        const option = document.createElement('option');
+        option.value = cuerpo + '|' + esp;
+        option.textContent = esp + ' · ' + espLabel(cuerpo, esp);
+        group.appendChild(option);
+      });
+      select.appendChild(group);
+    });
+    if (current && select.querySelector('option[value="' + current + '"]')) select.value = current;
+    else { state.esp = ''; select.value = ''; }
+    refreshSelect(select);
+  }
+
+  function refreshSelect(select) {
+    if (window.jQuery && window.jQuery(select).data('select2')) {
+      window.jQuery(select).trigger('change.select2');
+    }
+  }
+
+  bodySelect.addEventListener('change', () => {
+    state.cuerpo = bodySelect.value;
+    rebuildEspSelect();
+    applyFilters();
+  });
+
+  el('f-esp').addEventListener('change', (event) => {
+    state.esp = event.target.value;
+    applyFilters();
+  });
+
+  el('q').addEventListener('input', (event) => {
+    state.q = normalize(event.target.value);
+    applyFilters();
+  });
+
+  el('moda').addEventListener('change', () => {
+    state.moda = Array.from(el('moda').selectedOptions).map((o) => o.value);
+    applyFilters();
+  });
+
+  el('f-tipo').addEventListener('change', (event) => {
+    state.tipo = event.target.value;
+    applyFilters();
+  });
+
+  el('solo-plaza').addEventListener('change', (event) => {
+    state.soloPlaza = event.target.checked;
+    applyFilters();
+  });
+
+  function clearFilters() {
+    state.q = ''; state.cuerpo = ''; state.esp = ''; state.moda = [];
+    state.tipo = ''; state.soloPlaza = false;
+    el('q').value = '';
+    bodySelect.value = '';
+    el('f-tipo').value = '';
+    el('solo-plaza').checked = false;
+    if (window.jQuery && window.jQuery(el('moda')).data('select2')) {
+      window.jQuery(el('moda')).val(null).trigger('change.select2');
+    }
+    rebuildEspSelect();
+    applyFilters();
+  }
+  el('clear').addEventListener('click', clearFilters);
+  el('clear2').addEventListener('click', clearFilters);
+
+  function setSort(mode) {
+    state.sort = mode;
+    el('th-esp').classList.toggle('active', mode === 'esp');
+    el('th-pts').classList.toggle('active', mode === 'puntos');
+    $('.arrow', el('th-esp')).textContent = mode === 'esp' ? '▲' : '↕';
+    $('.arrow', el('th-pts')).textContent = mode === 'puntos' ? '▼' : '↕';
+    applyFilters();
+  }
+  $$('th.sortable button').forEach((b) => b.addEventListener('click', () => setSort(b.dataset.sort)));
+
+  el('more').addEventListener('click', () => { visible += STEP; renderRows(); });
+
+  /* ---------- CSV ---------- */
+
+  const cell = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  el('csv').addEventListener('click', () => {
+    const header = ['Puesto', 'Nombre', 'Origen', 'Cuerpo', 'Especialidad', 'Modalidad', 'Perfil', 'Puntos', 'Orden selección OPE', 'Anexo', 'Turno', 'Plazas ofertadas', 'Con plaza'];
+    const lines = [header.map(cell).join(';')];
+    filtered.forEach((r) => {
+      lines.push([
+        r.pos, r.name, r.tipo === 'forzoso' ? 'Forzoso OPE' : 'Clasificación',
+        r.cuerpo, espLabel(r.cuerpo, r.esp), r.moda || '', r.pl || '',
+        r.total == null ? '' : fmt(r.total),
+        r.tipo === 'forzoso' ? r.orden : '', r.anexo || '', r.turno || '',
+        r.nPlazas, r.conPlaza ? 'SI' : 'NO'
+      ].map(cell).join(';'));
+    });
+    const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'forzosak-27-28-lal.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  /* ---------- inicio ---------- */
+
+  function initSelects() {
+    if (!window.jQuery || !window.jQuery.fn.select2) return;
+    const jq = window.jQuery;
+    const lang = { noResults: () => 'Sin resultados', searching: () => 'Buscando…' };
+    jq('#f-cuerpo').select2({ minimumResultsForSearch: Infinity, width: '100%' });
+    jq('#f-esp').select2({ width: '100%', language: lang });
+    jq('#moda').select2({ width: '100%', placeholder: 'Modalidad', allowClear: true, closeOnSelect: false, language: lang });
+    jq('#f-tipo').select2({ minimumResultsForSearch: Infinity, width: '100%' });
+    jq('#f-cuerpo, #f-esp, #moda, #f-tipo').on('select2:select select2:unselect', function () {
+      this.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  }
+
+  rebuildEspSelect();
+  setSort('esp');
+  initSelects();
+})();
+});
+</script>
+</body>
+</html>
