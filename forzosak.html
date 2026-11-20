@@ -644,6 +644,7 @@ td.plaza{text-align:center}
 .badge{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border-radius:20px;padding:3px 8px;white-space:nowrap}
 .badge.si{background:#dcfce7;color:#15803d}
 .badge.no{background:#f1f0f1;color:#9b8a90}
+.badge.ya{background:#fef3c7;color:#92400e}
 td.origen{font-size:.74rem;white-space:nowrap}
 .origen-chip{display:inline-block;border-radius:6px;padding:2px 6px;font-weight:700;font-size:.66rem}
 .origen-chip.c{background:#e7edfc;color:#1d4ed8}
@@ -744,6 +745,10 @@ thead th.col-orig{width:118px}
             <option value="forzoso">Solo forzosos OPE</option>
           </select>
 
+          <label class="check" title="Quienes ya tienen destino o asignación no consumen una plaza nueva">
+            <input type="checkbox" id="excluir-ya" checked> Excluir quienes ya tienen plaza
+          </label>
+
           <label class="check" title="Muestra solo quienes entrarían en el número de plazas ofertadas">
             <input type="checkbox" id="solo-plaza"> Solo con plaza
           </label>
@@ -756,7 +761,7 @@ thead th.col-orig{width:118px}
           <div class="stat"><span>Plazas ofertadas</span><b id="st-plazas">—</b></div>
           <div class="stat"><span>Con plaza</span><b id="st-adj">—</b></div>
           <div class="stat"><span>Forzosos con plaza</span><b id="st-forz">—</b></div>
-          <p class="note">Orden de adjudicación: primero quienes figuran en la clasificación del concurso (puntos y desempates) y, a continuación en cada especialidad, las personas seleccionadas en la OPE 2025 por su orden de selección. Se marcan como «con plaza» las primeras N de cada especialidad, donde N son las plazas ofertadas. Todo se recalcula al cambiar los filtros. <button type="button" class="clear-link" id="clear2">Limpiar filtros</button></p>
+          <p class="note">Orden de adjudicación: primero quienes figuran en la clasificación del concurso (puntos y desempates) y, a continuación en cada especialidad, las personas seleccionadas en la OPE 2025 por su orden de selección. Se marcan como «con plaza» las primeras N de cada especialidad, donde N son las plazas ofertadas; quienes ya tenían destino o asignación en el concurso anterior se excluyen del reparto (no consumen plaza). Todo se recalcula al cambiar los filtros. <button type="button" class="clear-link" id="clear2">Limpiar filtros</button></p>
         </div>
       </section>
 
@@ -766,6 +771,8 @@ thead th.col-orig{width:118px}
         <span>·</span>
         <b id="banner-plazas">—</b>
         <span id="banner-detalle"></span>
+        <span id="banner-excluidos"></span>
+        <span id="banner-ope"></span>
       </section>
 
       <section class="table-card" aria-label="Clasificación combinada">
@@ -917,6 +924,8 @@ window.DATA_READY.then(() => {
         pl: person[4],
         total: person[6],
         s: person[7] || [],
+        dest: person[8] || null,
+        asig: person[9] || null,
         det: person[10] || null,
         pos: 0,
         conPlaza: false,
@@ -983,17 +992,32 @@ window.DATA_READY.then(() => {
       });
       const p = plazasPara(list[0].esp, espLabel(list[0].cuerpo, list[0].esp));
       const n = p ? p.n : 0;
+      let adjudicadas = 0;
       list.forEach((r, i) => {
         r.pos = i + 1;
         r.nPlazas = n;
-        r.conPlaza = n > 0 && r.pos <= n;
+        /* quien ya tiene destino o asignación en el concurso anterior no consume plaza nueva */
+        r.yaTiene = r.tipo === 'concurso' && (tieneDestino(r) || !!r.asig);
+        if (state.excluirYa && r.yaTiene) {
+          r.conPlaza = false;
+        } else if (adjudicadas < n) {
+          r.conPlaza = true;
+          adjudicadas += 1;
+        } else {
+          r.conPlaza = false;
+        }
       });
       plazasPorGrupo.set(k, n);
     });
     return plazasPorGrupo;
   }
 
-  const state = { q: '', cuerpo: '', esp: '', moda: [], tipo: '', soloPlaza: false, sort: 'esp' };
+  const state = { q: '', cuerpo: '', esp: '', moda: [], tipo: '', soloPlaza: false, excluirYa: true, sort: 'esp' };
+
+  function tieneDestino(r) {
+    if (!r.dest) return false;
+    return Object.keys(r.dest).some((k) => !!(r.dest[k] && r.dest[k].length));
+  }
   let filtered = [];
   let visible = 80;
   const STEP = 120;
@@ -1047,7 +1071,9 @@ window.DATA_READY.then(() => {
       : '<td class="pts">' + fmt(row.total) + '</td>';
     const badge = row.conPlaza
       ? '<span class="badge si">Con plaza</span>'
-      : '<span class="badge no">Sin plaza</span>';
+      : (row.yaTiene && state.excluirYa
+        ? '<span class="badge ya">Ya con plaza</span>'
+        : '<span class="badge no">Sin plaza</span>');
     return '<tr class="main-row' + (row.tipo === 'forzoso' ? ' forzoso' : '') + '" data-key="' + row.key + '" aria-expanded="false">' +
       '<td class="pos"><span class="posnum' + medal + (row.tipo === 'forzoso' ? ' forz' : '') + '">' + row.pos + '</span></td>' +
       '<td class="name">' + row.name + '</td>' +
@@ -1058,6 +1084,15 @@ window.DATA_READY.then(() => {
       '<td class="plaza">' + badge + '</td>' +
       '<td class="chev"><button type="button" class="chev-btn" aria-expanded="false" aria-label="Ver detalle de ' + row.name + '">›</button></td>' +
       '</tr>';
+  }
+
+  function destinoTexto(row) {
+    if (row.dest) {
+      const d = row.dest[row.esp] || Object.values(row.dest)[0];
+      if (d && d.length) return d[0] + (d[1] ? ' · ' + d[1] : '');
+    }
+    if (row.asig && row.asig.length) return row.asig[0] + ' (2026/27)';
+    return '';
   }
 
   function detailHtml(row) {
@@ -1082,7 +1117,8 @@ window.DATA_READY.then(() => {
         '<span>Modalidad ' + (row.moda || '—') + ' · Perfil ' + (row.pl || '—') + '</span>' +
         '<span>Puesto ' + row.pos + ' en la clasificación combinada</span></div>' +
         '<p class="detail-note">Desglose por apartados de la clasificación del concurso</p>' +
-        '<div class="chips">' + chips + '</div>';
+        '<div class="chips">' + chips + '</div>' +
+        (row.yaTiene ? '<p class="destino"><span class="tag">Plaza anterior</span> <b>' + destinoTexto(row) + '</b> · no consume una plaza nueva</p>' : '');
     }
     const plazasInfo = '<p class="destino"><span class="tag">Plazas</span> <b>' + row.nPlazas + '</b> en ' +
       espLabel(row.cuerpo, row.esp) + ' · ' + (row.conPlaza ? 'le correspondería plaza (puesto ' + row.pos + ')' : 'sin plaza (puesto ' + row.pos + ')') + '</p>';
@@ -1119,6 +1155,11 @@ window.DATA_READY.then(() => {
       el('banner-plazas').textContent = fmtInt(totalPlazas) + ' plazas ofertadas';
       el('banner-detalle').textContent = '(' + fmtInt(plazasPorGrupo.size) + ' especialidades con vacantes)';
     }
+    const excluidos = pool.filter((r) => r.yaTiene).length;
+    el('banner-excluidos').textContent = state.excluirYa && excluidos
+      ? '· ' + fmtInt(excluidos) + ' ya tenían plaza (excluidos del reparto)'
+      : '';
+    el('banner-ope').textContent = '· ' + fmtInt(pool.filter((r) => r.tipo === 'forzoso').length) + ' forzosos OPE en la lista';
   }
 
   function renderAll(plazasPorGrupo, pool) {
@@ -1223,13 +1264,19 @@ window.DATA_READY.then(() => {
     applyFilters();
   });
 
+  el('excluir-ya').addEventListener('change', (event) => {
+    state.excluirYa = event.target.checked;
+    applyFilters();
+  });
+
   function clearFilters() {
     state.q = ''; state.cuerpo = ''; state.esp = ''; state.moda = [];
-    state.tipo = ''; state.soloPlaza = false;
+    state.tipo = ''; state.soloPlaza = false; state.excluirYa = true;
     el('q').value = '';
     bodySelect.value = '';
     el('f-tipo').value = '';
     el('solo-plaza').checked = false;
+    el('excluir-ya').checked = true;
     if (window.jQuery && window.jQuery(el('moda')).data('select2')) {
       window.jQuery(el('moda')).val(null).trigger('change.select2');
     }
@@ -1255,7 +1302,7 @@ window.DATA_READY.then(() => {
 
   const cell = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
   el('csv').addEventListener('click', () => {
-    const header = ['Puesto', 'Nombre', 'Origen', 'Cuerpo', 'Especialidad', 'Modalidad', 'Perfil', 'Puntos', 'Orden selección OPE', 'Anexo', 'Turno', 'Plazas ofertadas', 'Con plaza'];
+    const header = ['Puesto', 'Nombre', 'Origen', 'Cuerpo', 'Especialidad', 'Modalidad', 'Perfil', 'Puntos', 'Orden selección OPE', 'Anexo', 'Turno', 'Plazas ofertadas', 'Con plaza', 'Ya tenía plaza'];
     const lines = [header.map(cell).join(';')];
     filtered.forEach((r) => {
       lines.push([
@@ -1263,7 +1310,7 @@ window.DATA_READY.then(() => {
         r.cuerpo, espLabel(r.cuerpo, r.esp), r.moda || '', r.pl || '',
         r.total == null ? '' : fmt(r.total),
         r.tipo === 'forzoso' ? r.orden : '', r.anexo || '', r.turno || '',
-        r.nPlazas, r.conPlaza ? 'SI' : 'NO'
+        r.nPlazas, r.conPlaza ? 'SI' : 'NO', r.yaTiene ? 'SI' : 'NO'
       ].map(cell).join(';'));
     });
     const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
