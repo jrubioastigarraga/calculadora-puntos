@@ -848,14 +848,38 @@ window.DATA_READY.then(() => {
   /* plazas ofertadas: [codigo, plazas, nombre, centros] */
   const PLAZAS = new Map(FORZ.plazas.map((p) => [p[0], { n: p[1], name: p[2], centros: p[3] }]));
 
-  /* índice de especialidades -> cuerpos a partir de los datos cargados */
-  const espToCuerpos = new Map();
+  const normKey = (s) => normalize(s).replace(/[^A-Z0-9]/g, '');
+
+  /* Emparejamiento robusto: el PDF usa códigos "0237" pero los listados pueden
+     usar "237", el nombre de la especialidad u otro formato. */
+  const ESP_BY_CODE = new Map();   // variantes de código -> {cuerpo, esp, name}
+  const ESP_BY_NAME = new Map();   // nombre normalizado -> {cuerpo, esp, name}
   Object.keys(SPECIALTIES).forEach((k) => {
     const sep = k.lastIndexOf('|');
-    const c = k.slice(0, sep), e = k.slice(sep + 1);
-    if (!espToCuerpos.has(e)) espToCuerpos.set(e, []);
-    espToCuerpos.get(e).push(c);
+    const rec = { cuerpo: k.slice(0, sep), esp: k.slice(sep + 1), name: SPECIALTIES[k] };
+    [rec.esp, String(rec.esp).padStart(4, '0'), String(parseInt(rec.esp, 10) || '')].forEach((v) => {
+      if (v && !ESP_BY_CODE.has(v)) ESP_BY_CODE.set(v, rec);
+    });
+    const nk = normKey(rec.name);
+    if (nk && !ESP_BY_NAME.has(nk)) ESP_BY_NAME.set(nk, rec);
   });
+
+  /* nombre de la especialidad de cada código en el PDF de la OPE */
+  const SPEC_NAME = new Map((FORZ.specs || []).map((s) => [s[0], s[1]]));
+
+  function plazasPara(esp, label) {
+    const variants = [String(esp), String(esp).padStart(4, '0'), String(parseInt(esp, 10) || '')];
+    for (const v of variants) if (PLAZAS.has(v)) return PLAZAS.get(v);
+    const nk = normKey(label);
+    for (const p of PLAZAS.values()) if (normKey(p.name) === nk) return p;
+    return null;
+  }
+
+  function registroEsp(code) {
+    const variants = [String(code), String(code).padStart(4, '0'), String(parseInt(code, 10) || '')];
+    for (const v of variants) if (ESP_BY_CODE.has(v)) return ESP_BY_CODE.get(v);
+    return ESP_BY_NAME.get(normKey(SPEC_NAME.get(code) || '')) || null;
+  }
 
   /* cuerpo de Profesorado de Enseñanza Secundaria (los seleccionados en la OPE son todos de ese cuerpo) */
   let PES_BODY = '';
@@ -864,15 +888,17 @@ window.DATA_READY.then(() => {
     if (label.indexOf('PROFESOR') !== -1 && label.indexOf('SECUNDARIA') !== -1) PES_BODY = c;
   });
   if (!PES_BODY) {
-    /* fallback: cuerpo con más personas en 2025 que tenga la especialidad 0237 */
-    const cs = espToCuerpos.get('0237') || [];
-    if (cs.length) PES_BODY = cs[0];
+    const rec = registroEsp('0237');
+    if (rec) PES_BODY = rec.cuerpo;
   }
 
-  function cuerpoPara(code) {
-    const cs = espToCuerpos.get(code) || [];
-    if (PES_BODY && cs.indexOf(PES_BODY) !== -1) return PES_BODY;
-    return cs.length ? cs[0] : (PES_BODY || null);
+  function datosOpe(code) {
+    let rec = registroEsp(code);
+    if (rec && PES_BODY && rec.cuerpo !== PES_BODY && SPECIALTIES[PES_BODY + '|' + rec.esp]) {
+      rec = { cuerpo: PES_BODY, esp: rec.esp, name: SPECIALTIES[PES_BODY + '|' + rec.esp] };
+    }
+    if (rec) return { cuerpo: rec.cuerpo, esp: rec.esp };
+    return { cuerpo: PES_BODY || '', esp: code };
   }
 
   /* ---------- construcción de la lista combinada ---------- */
@@ -901,13 +927,13 @@ window.DATA_READY.then(() => {
 
   FORZ.ope.forEach((o) => {
     const code = o[0];
-    const cuerpo = cuerpoPara(code);
-    if (!cuerpo) return;
+    const info = datosOpe(code);
+    if (!info.cuerpo) return;
     ALL.push({
-      key: 'F|' + o[4] + '|' + cuerpo + '|' + code + '|' + o[6],
+      key: 'F|' + o[4] + '|' + info.cuerpo + '|' + info.esp + '|' + o[6],
       tipo: 'forzoso',
-      cuerpo: cuerpo,
-      esp: code,
+      cuerpo: info.cuerpo,
+      esp: info.esp,
       name: o[1],
       turno: o[2],
       anexo: o[3],
@@ -955,7 +981,8 @@ window.DATA_READY.then(() => {
         if (a.tipo === 'forzoso') return a.orden - b.orden;
         return compareConcurso(a, b);
       });
-      const n = (PLAZAS.get(k.split('|')[1]) || {}).n || 0;
+      const p = plazasPara(list[0].esp, espLabel(list[0].cuerpo, list[0].esp));
+      const n = p ? p.n : 0;
       list.forEach((r, i) => {
         r.pos = i + 1;
         r.nPlazas = n;
@@ -1083,7 +1110,7 @@ window.DATA_READY.then(() => {
 
     if (state.esp) {
       const c = state.esp.split('|')[0], e = state.esp.split('|')[1];
-      const p = PLAZAS.get(e);
+      const p = plazasPara(e, espLabel(c, e));
       el('banner-esp').textContent = e + ' · ' + espLabel(c, e);
       el('banner-plazas').textContent = fmtInt(totalPlazas) + (totalPlazas === 1 ? ' plaza' : ' plazas');
       el('banner-detalle').textContent = p ? '(' + fmtInt(p.centros) + ' centros con vacantes en el documento provisional)' : '(sin vacantes en el documento provisional)';
