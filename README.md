@@ -60,7 +60,7 @@ Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
 - Clasificación combinada: participantes del concurso 2025 (con puntos, desempates y desglose) y, **a continuación en cada especialidad**, las 895 personas seleccionadas en la OPE 2025 (Anexos I, II y III de la Orden de 9/7/2026, BOPV n.º 138), en su orden de selección.
 - **Plazas ofertadas**: vacantes del documento *Lekualdatze Lehiaketa Eragina 27-28* (versión provisional de 19/11/2026): 410 plazas en 51 especialidades. Se muestran por especialidad y se recalculan al filtrar.
 - Se marca como «con plaza» a las primeras N personas *elegibles* de cada especialidad, donde N es el número de plazas ofertadas (recálculo orientativo).
-- **Exclusión de adjudicatarios previos**: quienes ya tienen destino o asignación en la clasificación del concurso anterior (572 y 233 personas respectivamente en 2025) se marcan como «Ya con plaza» y **no consumen plaza nueva**. Se puede desactivar con la casilla «Excluir quienes ya tienen plaza».
+- **Exclusión de adjudicatarios previos**: solo quienes tienen **destino adjudicado en el concurso anterior** (572 personas en 2025) se marcan como «Ya con plaza» y **no consumen plaza nueva**. La **asignación azul de principio de curso** (233 personas) no es una plaza de concurso: se muestra en azul junto al nombre, pero no excluye a la persona. Se puede desactivar con la casilla «Excluir plazas del concurso anterior».
 - Filtros por cuerpo, especialidad (Select2), modalidad, origen (clasificación / forzosos), búsqueda por nombre y «Solo con plaza». Indicadores y exportación a CSV.
 - Los datos de la OPE y de las plazas ofertadas están en `forzosak-data.js` (archivo público, sin datos personales sensibles: DNI enmascarado).
 

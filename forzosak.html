@@ -745,8 +745,8 @@ thead th.col-orig{width:118px}
             <option value="forzoso">Solo forzosos OPE</option>
           </select>
 
-          <label class="check" title="Quienes ya tienen destino o asignación no consumen una plaza nueva">
-            <input type="checkbox" id="excluir-ya" checked> Excluir quienes ya tienen plaza
+          <label class="check" title="Solo se excluye a quienes tienen destino adjudicado en el concurso anterior; la asignación azul de principio de curso no cuenta">
+            <input type="checkbox" id="excluir-ya" checked> Excluir plazas del concurso anterior
           </label>
 
           <label class="check" title="Muestra solo quienes entrarían en el número de plazas ofertadas">
@@ -761,7 +761,7 @@ thead th.col-orig{width:118px}
           <div class="stat"><span>Plazas ofertadas</span><b id="st-plazas">—</b></div>
           <div class="stat"><span>Con plaza</span><b id="st-adj">—</b></div>
           <div class="stat"><span>Forzosos con plaza</span><b id="st-forz">—</b></div>
-          <p class="note">Orden de adjudicación: primero quienes figuran en la clasificación del concurso (puntos y desempates) y, a continuación en cada especialidad, las personas seleccionadas en la OPE 2025 por su orden de selección. Se marcan como «con plaza» las primeras N de cada especialidad, donde N son las plazas ofertadas; quienes ya tenían destino o asignación en el concurso anterior se excluyen del reparto (no consumen plaza). Todo se recalcula al cambiar los filtros. <button type="button" class="clear-link" id="clear2">Limpiar filtros</button></p>
+          <p class="note">Orden de adjudicación: primero quienes figuran en la clasificación del concurso (puntos y desempates) y, a continuación en cada especialidad, las personas seleccionadas en la OPE 2025 por su orden de selección. Se marcan como «con plaza» las primeras N de cada especialidad, donde N son las plazas ofertadas; quienes ya tenían destino adjudicado en el concurso anterior se excluyen del reparto (no consumen plaza); la asignación en azul de principio de curso no se cuenta como plaza. Todo se recalcula al cambiar los filtros. <button type="button" class="clear-link" id="clear2">Limpiar filtros</button></p>
         </div>
       </section>
 
@@ -996,8 +996,9 @@ window.DATA_READY.then(() => {
       list.forEach((r, i) => {
         r.pos = i + 1;
         r.nPlazas = n;
-        /* quien ya tiene destino o asignación en el concurso anterior no consume plaza nueva */
-        r.yaTiene = r.tipo === 'concurso' && (tieneDestino(r) || !!r.asig);
+        /* solo excluye a quien tiene DESTINO ADJUDICADO en el concurso anterior;
+           la asignación azul de principio de curso no es una plaza de concurso */
+        r.yaTiene = r.tipo === 'concurso' && tieneDestino(r);
         if (state.excluirYa && r.yaTiene) {
           r.conPlaza = false;
         } else if (adjudicadas < n) {
@@ -1066,6 +1067,9 @@ window.DATA_READY.then(() => {
     const tipoChip = row.tipo === 'forzoso'
       ? '<span class="origen-chip f">OPE</span>'
       : '<span class="origen-chip c">Concurso</span>';
+    const asigLine = (row.tipo === 'concurso' && row.asig && row.asig.length)
+      ? '<span class="asig" title="Asignación para el curso 2026/2027">' + (row.asig[3] || '') + ' · ' + row.asig[0] + '</span>'
+      : '';
     const pts = row.tipo === 'forzoso'
       ? '<td class="sel">Selecc. ' + row.orden + '</td>'
       : '<td class="pts">' + fmt(row.total) + '</td>';
@@ -1076,7 +1080,7 @@ window.DATA_READY.then(() => {
         : '<span class="badge no">Sin plaza</span>');
     return '<tr class="main-row' + (row.tipo === 'forzoso' ? ' forzoso' : '') + '" data-key="' + row.key + '" aria-expanded="false">' +
       '<td class="pos"><span class="posnum' + medal + (row.tipo === 'forzoso' ? ' forz' : '') + '">' + row.pos + '</span></td>' +
-      '<td class="name">' + row.name + '</td>' +
+      '<td class="name">' + row.name + asigLine + '</td>' +
       '<td class="origen">' + tipoChip + '</td>' +
       '<td class="esp">' + espLabel(row.cuerpo, row.esp) + '</td>' +
       '<td class="moda"><b class="m-' + (row.moda || 'x') + '">' + (row.moda || '·') + '</b></td>' +
@@ -1118,7 +1122,11 @@ window.DATA_READY.then(() => {
         '<span>Puesto ' + row.pos + ' en la clasificación combinada</span></div>' +
         '<p class="detail-note">Desglose por apartados de la clasificación del concurso</p>' +
         '<div class="chips">' + chips + '</div>' +
-        (row.yaTiene ? '<p class="destino"><span class="tag">Plaza anterior</span> <b>' + destinoTexto(row) + '</b> · no consume una plaza nueva</p>' : '');
+        (row.yaTiene
+          ? '<p class="destino"><span class="tag">Plaza anterior</span> <b>' + destinoTexto(row) + '</b> · no consume una plaza nueva</p>'
+          : (row.asig && row.asig.length
+            ? '<p class="destino"><span class="tag asig-tag">Asignación 2026/27</span> <b>' + row.asig[0] + '</b> · no es plaza de concurso</p>'
+            : ''));
     }
     const plazasInfo = '<p class="destino"><span class="tag">Plazas</span> <b>' + row.nPlazas + '</b> en ' +
       espLabel(row.cuerpo, row.esp) + ' · ' + (row.conPlaza ? 'le correspondería plaza (puesto ' + row.pos + ')' : 'sin plaza (puesto ' + row.pos + ')') + '</p>';
@@ -1157,7 +1165,7 @@ window.DATA_READY.then(() => {
     }
     const excluidos = pool.filter((r) => r.yaTiene).length;
     el('banner-excluidos').textContent = state.excluirYa && excluidos
-      ? '· ' + fmtInt(excluidos) + ' ya tenían plaza (excluidos del reparto)'
+      ? '· ' + fmtInt(excluidos) + ' con plaza de concurso anterior (excluidos)'
       : '';
     el('banner-ope').textContent = '· ' + fmtInt(pool.filter((r) => r.tipo === 'forzoso').length) + ' forzosos OPE en la lista';
   }
