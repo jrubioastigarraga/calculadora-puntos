@@ -55,6 +55,9 @@ Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
 - Filtros por **provincia**, **cuerpo** (CPES, CPSING, especialistas y PTFP) y **especialidad** (Select2 con buscador), además de búsqueda libre por centro, municipio o especialidad.
 - Indicadores de plazas, centros, especialidades y municipios.
 - Gráficas por **provincia** y por **especialidad** (top 8), tabla centro-especialidad con plazas y **PL2**, y exportación a CSV.
+- **Tabla ordenable**: al pulsar en cualquier cabecera se ordena por esa columna; un segundo clic invierte el orden. Las columnas numéricas empiezan de mayor a menor.
+- **Mapa de centros** con las plazas de la selección actual: cada centro es un círculo cuyo tamaño indica sus plazas, coloreado por provincia y con detalle de especialidades al pulsarlo. Se ajusta automáticamente a los filtros.
+- El mapa funciona **sin teselas, sin API key y sin peticiones externas**: usa Leaflet en local y los límites provinciales incluidos en `vendor/euskadi-geo.js`.
 - Cada fila muestra el **código oficial de centro** (Orden de 8/10/2026, Anexo II-2) y el código RPT cuando difieren.
 - La RPT es plantilla orgánica: **no contiene información de ocupación**, así que no permite saber cuántas plazas están vacantes o sin cubrir.
 
@@ -108,7 +111,7 @@ calculadora-puntos/
 ├── config.js           · URL y clave pública de Supabase
 ├── auth.js             · guard de sesión, usuario y botón Salir
 ├── datos-loader.js     · descarga firmada de los datos desde Storage
-├── vendor/             · jQuery + Select2 + supabase-js
+├── vendor/             · jQuery + Select2 + supabase-js + Leaflet + límites provinciales
 └── README.md
 ```
 

@@ -8,6 +8,7 @@
 <meta name="theme-color" content="#4d0d22">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237a1738'/%3E%3Cpath d='M18 33l9 9 19-20' stroke='%23fff' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="vendor/select2.min.css">
+<link rel="stylesheet" href="vendor/leaflet.css">
 <style>
 :root{
   --bg:#f7eff1; --surface:#fff; --surface-2:#fdf7f9; --ink:#241419; --muted:#7d6b70;
@@ -123,6 +124,27 @@ td.centro{font-weight:600}
 td.centro small{display:block;font-weight:400;font-size:.68rem;color:#a08e94;margin-top:1px}
 td.muni,td.esp,td.nombre{color:var(--muted);font-size:.78rem}
 td.esp small{display:block;font-weight:400;font-size:.68rem;color:#a08e94;margin-top:1px}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--accent-ink)}
+th.sortable:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+th.sortable::after{content:"";display:inline-block;width:.9em;margin-left:1px;opacity:.35;font-size:.85em}
+th[aria-sort="ascending"]::after{content:"\25B2";opacity:.9;color:var(--accent)}
+th[aria-sort="descending"]::after{content:"\25BC";opacity:.9;color:var(--accent)}
+
+/* mapa */
+.map-card{min-width:0}
+#map{height:440px;background:#eef2f4}
+.map-note{padding:10px 16px 12px}
+.leaflet-container{font:inherit;background:#eef2f4}
+.leaflet-popup-content{font-size:.8rem;line-height:1.45;margin:10px 12px}
+.leaflet-popup-content b{display:block;margin-bottom:2px}
+.leaflet-popup-content .muni{color:var(--muted)}
+.leaflet-popup-content ul{margin:6px 0 0;padding-left:16px}
+.leaflet-popup-content li{margin:1px 0}
+.map-prov-label{background:transparent;border:0;box-shadow:none;color:#9b8a90;font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+.map-prov-label::before{display:none}
+@media (max-width:1179px){#map{height:360px}}
+@media print{.map-card{display:none}}
 td.nombre{color:var(--ink);font-weight:600}
 td.pts{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;color:var(--accent-ink);white-space:nowrap}
 td.situ{font-size:.76rem;color:var(--muted)}
@@ -278,6 +300,12 @@ footer .legal{color:#8d7a80;max-width:88ch}
         </section>
       </div>
 
+      <section class="card map-card" aria-label="Mapa de centros">
+        <div class="card-head"><h2>Mapa de centros</h2><span id="map-caption"></span></div>
+        <div id="map" role="region" aria-label="Mapa de centros con las plazas seleccionadas"></div>
+        <p class="note map-note" id="map-note">El tamaño del círculo indica las plazas del centro con los filtros actuales. Sin teselas ni peticiones externas: los límites provinciales van incluidos en la página.</p>
+      </section>
+
       <section class="card table-card" aria-label="Datos">
         <div class="table-head">
           <h2 id="table-title">—</h2>
@@ -311,6 +339,8 @@ footer .legal{color:#8d7a80;max-width:88ch}
 <script src="datos-loader.js" data-file="datos-rpt.js"></script>
 <script src="vendor/jquery.min.js"></script>
 <script src="vendor/select2.min.js"></script>
+<script src="vendor/leaflet.js"></script>
+<script src="vendor/euskadi-geo.js"></script>
 <script>
 window.DATA_READY.then(() => {
 (() => {
@@ -332,19 +362,22 @@ window.DATA_READY.then(() => {
   const ESP = RAW.especialidades || {};
 
   const CENTROS = RAW.centros.map((c) => ({
-    code: c[0], name: c[1], town: c[2], prov: c[3], official: c[4] || ''
+    code: c[0], name: c[1], town: c[2], prov: c[3], official: c[4] || '', lat: c[5], lon: c[6]
   }));
   const FILAS = RAW.filas.map((f) => ({
     centro: CENTROS[f[0]], spec: f[1], body: f[2], n: f[3], p1: f[4], p2: f[5]
   }));
 
   const PROVS = ['Araba', 'Bizkaia', 'Gipuzkoa', 'Otras'];
+  const PROV_COLORS = { Araba: '#b45309', Bizkaia: '#7a1738', Gipuzkoa: '#1d4ed8', Otras: '#8d7a80' };
+  const PROV_FILLS = { Araba: '#fbf3e8', Bizkaia: '#f9edf0', Gipuzkoa: '#eef2fb', Otras: '#f3eff0' };
   const BODY_ORDER = ['CPES', 'CPSING', 'ESPECIALISTA', 'PTFP'];
   const bodyLabel = (b) => CUERPOS[b] || b;
   const specLabel = (code) => ESP[code] || ('Especialidad ' + code);
   const sum = (rows) => rows.reduce((total, r) => total + r.n, 0);
 
   const state = { q: '', prov: '', body: '', esp: '' };
+  const sortState = { key: 'centro', dir: 1 };
   let filtered = [];
   let visible = 60;
   const STEP = 120;
@@ -375,20 +408,53 @@ window.DATA_READY.then(() => {
     el('table-count').textContent = fmtInt(sum(filtered)) + ' plazas · ' + fmtInt(filtered.length) + ' filas';
   }
 
+  const COLS = [
+    { key: 'centro', label: 'Centro', cls: 'centro' },
+    { key: 'muni', label: 'Municipio', cls: 'muni' },
+    { key: 'prov', label: 'Provincia', cls: 'muni' },
+    { key: 'body', label: 'Cuerpo', cls: 'muni' },
+    { key: 'spec', label: 'Especialidad', cls: 'esp' },
+    { key: 'n', label: 'Plazas', cls: 'pts' },
+    { key: 'p2', label: 'PL2', cls: 'pts' }
+  ];
+
+  const SORT_VALUE = {
+    centro: (r) => r.centro.name,
+    muni: (r) => r.centro.town,
+    prov: (r) => r.centro.prov,
+    body: (r) => bodyLabel(r.body),
+    spec: (r) => specLabel(r.spec),
+    n: (r) => r.n,
+    p2: (r) => r.p2
+  };
+
+  function sortRows() {
+    const value = SORT_VALUE[sortState.key] || SORT_VALUE.centro;
+    filtered.sort((a, b) => {
+      const va = value(a);
+      const vb = value(b);
+      let cmp = typeof va === 'number' ? va - vb : String(va).localeCompare(String(vb), 'es');
+      if (cmp === 0) {
+        cmp = a.centro.name.localeCompare(b.centro.name, 'es') ||
+          specLabel(a.spec).localeCompare(specLabel(b.spec), 'es') ||
+          a.body.localeCompare(b.body);
+      }
+      return cmp * sortState.dir;
+    });
+  }
+
   function renderTable() {
     const part = filtered.slice(0, visible);
-    el('thead').innerHTML = '<tr>' +
-      '<th class="centro">Centro</th>' +
-      '<th class="muni">Municipio</th>' +
-      '<th class="muni">Provincia</th>' +
-      '<th class="muni">Cuerpo</th>' +
-      '<th class="esp">Especialidad</th>' +
-      '<th class="pts">Plazas</th>' +
-      '<th class="pts">PL2</th>' +
-      '</tr>';
+
+    el('thead').innerHTML = '<tr>' + COLS.map((c) => {
+      const active = sortState.key === c.key;
+      const aria = active ? (sortState.dir > 0 ? 'ascending' : 'descending') : 'none';
+      const title = 'Ordenar por ' + c.label.toLowerCase();
+      return '<th class="sortable ' + c.cls + '" data-key="' + c.key + '" aria-sort="' + aria + '" tabindex="0" title="' + title + '">' + c.label + '</th>';
+    }).join('') + '</tr>';
 
     if (!part.length) {
-      el('tbody').innerHTML = '<tr class="empty-row"><td colspan="7">No hay plazas con estos filtros.</td></tr>';
+      el('tbody').innerHTML = '<tr class="empty-row"><td colspan="' + COLS.length + '">No hay plazas con estos filtros.</td></tr>';
     } else {
       el('tbody').innerHTML = part.map((r) => {
         const code = r.centro.official || r.centro.code;
@@ -410,11 +476,7 @@ window.DATA_READY.then(() => {
 
   function applyFilters() {
     filtered = scoped('none');
-    filtered.sort((a, b) =>
-      a.centro.name.localeCompare(b.centro.name, 'es') ||
-      specLabel(a.spec).localeCompare(specLabel(b.spec), 'es') ||
-      a.body.localeCompare(b.body)
-    );
+    sortRows();
     visible = 60;
     renderTable();
     renderKpis();
@@ -458,6 +520,114 @@ window.DATA_READY.then(() => {
     el('esp-caption').textContent = 'Top ' + top.length + ' · plazas';
   }
 
+  /* ---------- mapa ---------- */
+
+  const mapState = { map: null, markers: null, geo: null };
+
+  function initMap() {
+    if (typeof L === 'undefined' || !window.EUSKADI_GEO || !el('map')) {
+      el('map').hidden = true;
+      el('map-note').textContent = 'No se ha podido cargar el mapa (falta la librería Leaflet o los límites provinciales).';
+      return;
+    }
+
+    const map = L.map('map', {
+      zoomControl: true,
+      attributionControl: false,
+      minZoom: 8,
+      maxZoom: 14,
+      zoomSnap: .25,
+      scrollWheelZoom: false
+    });
+    map.setView([43.02, -2.55], 9);
+
+    mapState.geo = L.geoJSON(window.EUSKADI_GEO, {
+      interactive: false,
+      style: (feature) => {
+        const name = feature.properties.name;
+        return {
+          color: '#cdb9bf',
+          weight: 1,
+          opacity: .9,
+          fillColor: PROV_FILLS[name] || '#f3eff0',
+          fillOpacity: 1
+        };
+      }
+    }).addTo(map);
+
+    mapState.geo.eachLayer((layer) => {
+      if (!layer.feature || !layer.getBounds) return;
+      layer.bindTooltip(layer.feature.properties.name, {
+        permanent: true,
+        direction: 'center',
+        className: 'map-prov-label',
+        opacity: 1
+      });
+    });
+
+    mapState.markers = L.layerGroup().addTo(map);
+    mapState.map = map;
+
+    window.addEventListener('resize', () => {
+      if (mapState.map) mapState.map.invalidateSize({ debounceMoveend: true });
+    });
+  }
+
+  function popupHtml(group) {
+    const c = group.centro;
+    const top = Array.from(group.esps.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    return '<b>' + esc(c.name) + '</b>' +
+      '<div class="muni">' + esc(c.town) + ' · ' + esc(c.prov) + '</div>' +
+      '<div style="margin-top:4px"><strong>' + fmtInt(group.total) + '</strong> plazas seleccionadas</div>' +
+      (top.length ? '<ul>' + top.map(([code, n]) => '<li>' + esc(specLabel(code)) + ' · ' + fmtInt(n) + '</li>').join('') + '</ul>' : '');
+  }
+
+  function renderMap() {
+    if (!mapState.map || !mapState.markers) return;
+
+    const groups = new Map();
+    filtered.forEach((r) => {
+      const c = r.centro;
+      if (typeof c.lat !== 'number' || typeof c.lon !== 'number') return;
+      let group = groups.get(c.code);
+      if (!group) {
+        group = { centro: c, total: 0, esps: new Map() };
+        groups.set(c.code, group);
+      }
+      group.total += r.n;
+      group.esps.set(r.spec, (group.esps.get(r.spec) || 0) + r.n);
+    });
+
+    mapState.markers.clearLayers();
+    const max = Math.max.apply(null, Array.from(groups.values()).map((g) => g.total).concat([1]));
+    const bounds = [];
+    const list = Array.from(groups.values()).sort((a, b) => b.total - a.total);
+
+    list.forEach((group) => {
+      const c = group.centro;
+      const radius = 7 + Math.round(Math.sqrt(group.total / max) * 15);
+      const marker = L.circleMarker([c.lat, c.lon], {
+        radius: radius,
+        color: '#fff',
+        weight: 1.5,
+        opacity: .95,
+        fillColor: PROV_COLORS[c.prov] || '#8d7a80',
+        fillOpacity: .78
+      }).addTo(mapState.markers);
+      marker.bindTooltip(esc(c.name) + ' · ' + fmtInt(group.total) + ' plazas', { direction: 'top' });
+      marker.bindPopup(popupHtml(group), { maxWidth: 320 });
+      bounds.push([c.lat, c.lon]);
+    });
+
+    if (bounds.length) {
+      mapState.map.fitBounds(bounds, { padding: [24, 24], maxZoom: 11 });
+    } else {
+      mapState.map.setView([43.02, -2.55], 9);
+    }
+
+    el('map-caption').textContent = fmtInt(sum(filtered)) + ' plazas · ' + fmtInt(groups.size) + ' centros';
+  }
+
   /* ---------- selectores ---------- */
 
   function refreshSelect(select) {
@@ -497,6 +667,7 @@ window.DATA_READY.then(() => {
     renderProvChart();
     renderEspChart();
     applyFilters();
+    renderMap();
   }
 
   el('prov').addEventListener('change', (e) => {
@@ -522,6 +693,33 @@ window.DATA_READY.then(() => {
   el('more').addEventListener('click', () => {
     visible += STEP;
     renderTable();
+  });
+
+  function toggleSort(th) {
+    const key = th.dataset.key;
+    if (!key || !SORT_VALUE[key]) return;
+    if (sortState.key === key) {
+      sortState.dir *= -1;
+    } else {
+      sortState.key = key;
+      sortState.dir = key === 'n' || key === 'p2' ? -1 : 1;
+    }
+    sortRows();
+    visible = 60;
+    renderTable();
+  }
+
+  el('thead').addEventListener('click', (e) => {
+    const th = e.target.closest('th[data-key]');
+    if (th) toggleSort(th);
+  });
+
+  el('thead').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const th = e.target.closest('th[data-key]');
+    if (!th) return;
+    e.preventDefault();
+    toggleSort(th);
   });
 
   /* ---------- CSV ---------- */
@@ -570,6 +768,7 @@ window.DATA_READY.then(() => {
   el('table-title').textContent = 'Plazas de la RPT';
 
   rebuildSelects();
+  initMap();
   refresh();
   initSelects();
 })();
