@@ -1,0 +1,79 @@
+<div class="legacy-page legacy-plazas">
+<div class="legacy-tools">
+<button type="button" class="tool-btn" id="csv">Descargar CSV</button>
+</div>
+<div class="page">
+
+      <header class="page-head">
+        <p class="eyebrow">Concurso de traslados · Enseñanzas medias</p>
+        <h1>Plazas adjudicadas</h1>
+        <p class="lede" id="lede">Destinos por año</p>
+      </header>
+
+      <section class="panel" aria-label="Filtros y resumen">
+        <div class="filters">
+          <select id="year" aria-label="Año"></select>
+          <select id="esp" aria-label="Especialidad"><option value="">Todas las especialidades</option></select>
+          <label class="search">
+            <span class="sr-only">Buscar centro o persona</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+            <input type="search" id="q" placeholder="Buscar centro o persona" autocomplete="off">
+          </label>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>Plazas</span><b id="k-plazas">—</b></div>
+          <div class="stat"><span>Centros</span><b id="k-centros">—</b></div>
+          <div class="stat"><span>Especialidades</span><b id="k-esp">—</b></div>
+          <div class="stat"><span>Cuerpos</span><b id="k-cuerpos">—</b></div>
+        </div>
+
+        <div class="prov-head">
+          <span>Provincia</span>
+          <button type="button" class="clear-link" id="prov-clear">Todas</button>
+        </div>
+        <div class="provs" id="prov-chart" aria-label="Plazas por provincia"></div>
+      </section>
+
+      <div class="charts">
+        <section class="card" aria-label="Plazas por año">
+          <div class="card-head"><h2>Evolución por año</h2><span id="year-caption">Plazas adjudicadas</span></div>
+          <div class="chart">
+            <div class="years" id="year-chart"></div>
+            <div class="ylegend" id="year-legend"></div>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Plazas por especialidad">
+          <div class="card-head"><h2>Por especialidad</h2><span id="esp-year"></span></div>
+          <div class="hbars" id="esp-chart"></div>
+        </section>
+      </div>
+
+      <section class="card table-card" aria-label="Destinos">
+        <div class="table-head">
+          <h2>Destinos de <b id="table-year">—</b></h2>
+          <span id="table-count"></span>
+        </div>
+        <div class="table-scroll" id="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Centro</th>
+                <th>Municipio</th>
+                <th>Especialidad</th>
+                <th>Persona</th>
+                <th class="pts">Puntos</th>
+                <th class="mod">Mod.</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div class="table-foot">
+          <span id="showing">—</span>
+          <button type="button" class="btn" id="more" hidden>Mostrar más</button>
+        </div>
+      </section>
+    
+</div>
+</div>

@@ -1,0 +1,814 @@
+<div class="legacy-page legacy-calculadora">
+<div hidden aria-hidden="true"><b id="total-mobile">0,0000</b><span id="fuente-ref"></span></div>
+<div class="legacy-tools">
+<button type="button" class="tool-btn" id="btn-print">Imprimir / PDF</button>
+        <button type="button" class="tool-btn" id="btn-save">Guardar datos</button>
+        <label class="tool-btn" for="file-load">Cargar datos
+          <input id="file-load" type="file" accept="application/json,.json" hidden>
+        </label>
+        <button type="button" class="tool-btn danger" id="btn-reset">Reiniciar</button>
+</div>
+<div id="main" class="layout">
+
+      <header class="page-head">
+        <p class="eyebrow">Concurso de traslados · Cuerpos docentes no universitarios</p>
+        <h1>Calculadora de puntos</h1>
+        <p class="lede" id="lede-version">Baremo del Anexo I · convocatoria 2026/2027 (BOPV n.º 211)</p>
+      </header>
+
+      <div class="version-bar" role="tablist" aria-label="Convocatoria">
+        <button type="button" class="vtab" data-version="2526" role="tab" aria-selected="false">25-26</button>
+        <button type="button" class="vtab active" data-version="2627" role="tab" aria-selected="true">26-27</button>
+        <span class="version-ref" id="version-ref">Orden de 8/10/2026 · BOPV n.º 211 · ámbito estatal</span>
+      </div>
+
+      <div class="print-head print-only">
+    <h2 id="print-title">Baremo de méritos · Concurso de traslados docentes 2026/2027</h2>
+    <p>Cuerpos docentes no universitarios · Comunidad Autónoma del País Vasco</p>
+  </div>
+  <div class="content">
+
+    <section class="intro" aria-label="Información">
+      <div>
+        <p><strong>Baremo del Anexo I</strong> <span id="intro-ref">de la Orden de 8 de octubre de 2026 (BOPV n.º 211, 4/11/2026)</span>.
+          Introduce tus méritos y la puntuación se actualiza al instante, aplicando los topes de cada apartado.</p>
+        <p style="margin-top:6px">Los datos se guardan solo en este navegador. Nada se envía a ningún servidor.</p>
+      </div>
+    </section>
+
+    <!-- ============================ 1. ANTIGÜEDAD ============================ -->
+    <section class="card" id="sec-1" aria-labelledby="h-1">
+      <header class="card-head">
+        <div class="card-title"><span class="num">1</span><h2 id="h-1">Antigüedad</h2></div>
+        <div class="card-score">Subtotal <b id="sec1">0,0000</b></div>
+      </header>
+      <div class="card-body">
+
+        <div class="tool">
+          <p class="tool-title">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M8 2v4M16 2v4M3 10h18"></path></svg>
+            Calcular meses completos entre dos fechas
+          </p>
+          <div class="tool-row">
+            <label for="fecha-desde">Desde</label>
+            <input type="date" id="fecha-desde">
+            <label for="fecha-hasta">Hasta</label>
+            <input type="date" id="fecha-hasta">
+            <button type="button" class="link-btn" id="fecha-copy">Copiar meses</button>
+          </div>
+          <p class="tool-result" id="fecha-result" aria-live="polite">Introduce las fechas: el resultado sirve para rellenar los meses de cualquier apartado.</p>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">1.1.1</span>
+            <div>
+              <p class="fname">Permanencia ininterrumpida con destino definitivo en el centro</p>
+              <p class="fhelp">4 pts/año (1.º y 2.º) · 6 pts/año (3.º) · 8 pts/año (4.º y siguientes)</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="a111-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años de permanencia en el centro">
+            <span class="unit">años</span>
+            <input id="a111-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses de permanencia en el centro">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-111" for="a111-y a111-m">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">1.1.2</span>
+            <div>
+              <p class="fname">Años como funcionario/a de carrera en situación de provisionalidad</p>
+              <p class="fhelp">4 pts/año · 0,3333 pts por mes completo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="a112-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años en provisionalidad">
+            <span class="unit">años</span>
+            <input id="a112-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses en provisionalidad">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-112" for="a112-y a112-m">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">1.1.3</span>
+            <div>
+              <p class="fname">Servicios en centro o puesto de especial dificultad</p>
+              <p class="fhelp">4 pts/año · 0,3333 pts por mes completo · se suma a 1.1.1 o 1.1.2</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="a113-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años en centro de especial dificultad">
+            <span class="unit">años</span>
+            <input id="a113-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses en centro de especial dificultad">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-113" for="a113-y a113-m">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">1.2.1</span>
+            <div>
+              <p class="fname">Servicios efectivos en el cuerpo al que corresponde la vacante</p>
+              <p class="fhelp">2 pts/año · 0,1666 pts por mes completo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="a121-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años en el cuerpo">
+            <span class="unit">años</span>
+            <input id="a121-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses en el cuerpo">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-121" for="a121-y a121-m">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">1.2.2</span>
+            <div>
+              <p class="fname">Servicios en otros cuerpos docentes del mismo o superior subgrupo</p>
+              <p class="fhelp">1,5 pts/año · 0,1250 pts por mes completo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="a122-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años en otros cuerpos del mismo o superior subgrupo">
+            <span class="unit">años</span>
+            <input id="a122-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses en otros cuerpos del mismo o superior subgrupo">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-122" for="a122-y a122-m">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">1.2.3</span>
+            <div>
+              <p class="fname">Servicios en otros cuerpos docentes de subgrupo inferior</p>
+              <p class="fhelp">0,75 pts/año · 0,0625 pts por mes completo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="a123-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años en otros cuerpos de subgrupo inferior">
+            <span class="unit">años</span>
+            <input id="a123-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses en otros cuerpos de subgrupo inferior">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-123" for="a123-y a123-m">0,0000</output>
+        </div>
+      </div>
+
+      <details class="criteria">
+        <summary>Criterios y notas del apartado 1</summary>
+        <ul>
+          <li>Solo se computan los servicios prestados como personal funcionario de carrera en el cuerpo o cuerpos a los que corresponda la vacante.</li>
+          <li>Las fracciones se calculan por meses completos; no se bareman fracciones inferiores al mes.</li>
+          <li>En 1.1.3 el centro debe tener la calificación de especial dificultad en el momento de prestar el servicio.</li>
+          <li>Los servicios de 1.2.2 y 1.2.3 no se computan en los años en que sean simultáneos entre sí ni con los de 1.1.1 o 1.1.2.</li>
+          <li>Se computan los servicios prestados en situación de servicios especiales y la excedencia por cuidado de familiares (máximo 3 años).</li>
+          <li>El personal de los cuerpos de Catedráticos/as computa también los servicios de los cuerpos de Profesores/as correspondientes.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- ============================ 2. CATEDRÁTICOS ============================ -->
+    <section class="card" id="sec-2" aria-labelledby="h-2">
+      <header class="card-head">
+        <div class="card-title"><span class="num">2</span><h2 id="h-2">Pertenencia a los cuerpos de Catedráticos/as</h2></div>
+        <div class="card-score">Subtotal <b id="sec2">0,0000</b></div>
+      </header>
+      <div class="card-body">
+        <div class="field check">
+          <div class="fmain">
+            <label class="inline" for="catedratico">
+              <input type="checkbox" id="catedratico">
+              <span>Soy personal funcionario de carrera de un cuerpo de Catedráticos/as <span class="fhelp">(Enseñanza Secundaria, Música y Artes Escénicas, Escuelas Oficiales de Idiomas o Artes Plásticas y Diseño)</span></span>
+            </label>
+          </div>
+          <div class="finput"></div>
+          <output class="pts" id="o-catedratico" for="catedratico">0,0000</output>
+        </div>
+      </div>
+      <details class="criteria">
+        <summary>Criterios y notas del apartado 2</summary>
+        <ul><li>Se otorgan 5,0000 puntos por la pertenencia al cuerpo de Catedráticos/as. Se computa de oficio en la CAPV.</li></ul>
+      </details>
+    </section>
+
+    <!-- ============================ 3. MÉRITOS ACADÉMICOS ============================ -->
+    <section class="card" id="sec-3" aria-labelledby="h-3">
+      <header class="card-head">
+        <div class="card-title"><span class="num">3</span><h2 id="h-3">Méritos académicos <span class="fhelp">máximo 10 pts</span></h2></div>
+        <div class="card-score">Subtotal <b id="sec3">0,0000</b></div>
+      </header>
+      <div class="card-body">
+
+        <div class="subtotal"><span>3.1 · Doctorado, postgrados y premios extraordinarios <span class="fhelp">máximo 10 pts</span></span><b id="o-31">0,0000</b></div>
+
+        <div class="field check">
+          <div class="fmain">
+            <label class="inline" for="doc"><input type="checkbox" id="doc"><span>Título de Doctor/a <span class="fhelp">6 pts</span></span></label>
+          </div>
+          <div class="finput"></div>
+          <output class="pts" id="o-doc" for="doc">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">3.1.2</span>
+            <div>
+              <p class="fname">Títulos oficiales de Máster (mínimo 60 créditos)</p>
+              <p class="fhelp">3 pts cada uno · no se valora el exigido para el ingreso ni el de acceso al doctorado</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="master" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Número de títulos de Máster">
+            <span class="unit">títulos</span>
+          </div>
+          <output class="pts" id="o-master" for="master">0,0000</output>
+        </div>
+
+        <div class="field check">
+          <div class="fmain">
+            <label class="inline" for="dea"><input type="checkbox" id="dea"><span>Suficiencia investigadora o certificado de estudios avanzados <span class="fhelp">2 pts</span></span></label>
+          </div>
+          <div class="finput"></div>
+          <output class="pts" id="o-dea" for="dea">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">3.1.4</span>
+            <div>
+              <p class="fname">Premios extraordinarios (doctorado, licenciatura o grado)</p>
+              <p class="fhelp">1 pt cada uno</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="premio" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Número de premios extraordinarios">
+            <span class="unit">premios</span>
+          </div>
+          <output class="pts" id="o-premio" for="premio">0,0000</output>
+        </div>
+
+        <div class="subtotal"><span>3.2 · Otras titulaciones de nivel superior</span><b id="o-32">0,0000</b></div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">3.2.1</span>
+            <div>
+              <p class="fname">Títulos oficiales de Grado distintos del exigido para el ingreso</p>
+              <p class="fhelp">5 pts cada uno · 2,5 pts si deriva de otras titulaciones sin cursar todas las enseñanzas</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="grado" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Grados completos">
+            <span class="unit">completos</span>
+            <input id="grado-parcial" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Grados parciales">
+            <span class="unit">parciales</span>
+          </div>
+          <output class="pts" id="o-grado" for="grado grado-parcial">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">3.2.2</span>
+            <div>
+              <p class="fname">Titulaciones de primer ciclo (segunda y restantes)</p>
+              <p class="fhelp">3 pts cada una · diplomaturas, ingenierías y arquitecturas técnicas o primer ciclo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="primer-ciclo" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Titulaciones de primer ciclo">
+            <span class="unit">títulos</span>
+          </div>
+          <output class="pts" id="o-primer-ciclo" for="primer-ciclo">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">3.2.3</span>
+            <div>
+              <p class="fname">Titulaciones de segundo ciclo</p>
+              <p class="fhelp">3 pts cada una · licenciaturas, ingenierías y arquitecturas</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="segundo-ciclo" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Titulaciones de segundo ciclo">
+            <span class="unit">títulos</span>
+          </div>
+          <output class="pts" id="o-segundo-ciclo" for="segundo-ciclo">0,0000</output>
+        </div>
+
+        <div class="subtotal"><span id="lbl-33">3.3 a) – d) y 3.4 a) – d) · Certificados de idiomas · 3.3 e) – f) · FP y música/danza</span><b id="o-33">0,0000</b></div>
+
+        <div class="field" style="display:block; padding-top:4px">
+          <p class="fhelp" style="margin-bottom:8px" id="help-33"><strong>3.3.a</strong> C2 = 4 pts · <strong>3.3.b</strong> C1 = 3 pts · <strong>3.3.c</strong> B2 = 2 pts · <strong>3.3.d</strong> B1 = 1 pt. En 3.4 se aplica la misma escala. Solo puntúa el nivel superior de cada idioma, una única vez entre 3.3 y 3.4.</p>
+          <div class="rows" id="idiomas-rows"></div>
+          <button type="button" class="add-btn" id="add-idioma" style="margin-top:8px">+ Añadir idioma</button>
+          <datalist id="idiomas-list">
+            <option value="Euskera"></option>
+            <option value="Inglés"></option>
+            <option value="Francés"></option>
+            <option value="Alemán"></option>
+            <option value="Italiano"></option>
+            <option value="Portugués"></option>
+            <option value="Chino"></option>
+            <option value="Árabe"></option>
+          </datalist>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">3.3 e)</span>
+            <div>
+              <p class="fname">Títulos de Técnico/a Superior (FP, Artes Plásticas y Diseño o Deportivo)</p>
+              <p class="fhelp">2 pts cada uno</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="ts" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Títulos de Técnico Superior">
+            <span class="unit">títulos</span>
+          </div>
+          <output class="pts" id="o-ts" for="ts">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">3.3 f)</span>
+            <div>
+              <p class="fname">Títulos Profesionales de Música o Danza</p>
+              <p class="fhelp">2 pts cada uno</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="musica" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Títulos profesionales de Música o Danza">
+            <span class="unit">títulos</span>
+          </div>
+          <output class="pts" id="o-musica" for="musica">0,0000</output>
+        </div>
+
+        <div class="subtotal" style="background:#f6e7ec;border-color:#e3c3ce">
+          <span><strong>Total del apartado 3</strong> <span class="fhelp">se aplica el máximo de 10 pts</span></span>
+          <b id="o-3raw">0,0000</b>
+        </div>
+      </div>
+
+      <details class="criteria">
+        <summary>Criterios y notas del apartado 3</summary>
+        <ul>
+          <li>Solo se valoran títulos con validez oficial en el Estado español (los extranjeros, con homologación o reconocimiento).</li>
+          <li>El Máster que sea requisito para el ingreso en el cuerpo no se valora; si se alega el Doctorado, no se valora el Máster de acceso al doctorado.</li>
+          <li>No se valoran títulos propios, cursos de postgrado, especialización o experto universitario: se computan como formación en 5.1.</li>
+          <li>Las diferentes menciones o especialidades de una misma titulación no son títulos distintos.</li>
+          <li>El primer ciclo no se valora si sirvió para obtener otra titulación de ciclo largo alegada.</li>
+          <li>En 3.3/3.4, si hay varios certificados del mismo idioma, solo puntúa el de nivel superior.</li>
+          <li>El total del apartado 3 tiene un máximo de 10,0000 puntos.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- ============================ 4. CARGOS ============================ -->
+    <section class="card" id="sec-4" aria-labelledby="h-4">
+      <header class="card-head">
+        <div class="card-title"><span class="num">4</span><h2 id="h-4">Cargos directivos y otras funciones <span class="fhelp">máximo 30 pts</span></h2></div>
+        <div class="card-score">Subtotal <b id="sec4">0,0000</b></div>
+      </header>
+      <div class="card-body">
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">4.1</span>
+            <div>
+              <p class="fname">Director/a, director/a adjunto/a, director/a de CPR o de Agrupaciones de Lengua y Cultura</p>
+              <p class="fhelp">4,5 pts/año · 0,3750 pts por mes completo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="d41-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años como director">
+            <span class="unit">años</span>
+            <input id="d41-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses como director">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-41" for="d41-y d41-m">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">4.2</span>
+            <div>
+              <p class="fname">Vicedirector/a, subdirector/a, jefe/a de estudios, secretario/a y asimilados</p>
+              <p class="fhelp">3 pts/año · 0,2500 pts por mes completo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="d42-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años en cargos del 4.2">
+            <span class="unit">años</span>
+            <input id="d42-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses en cargos del 4.2">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-42" for="d42-y d42-m">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">4.3</span>
+            <div>
+              <p class="fname">Coordinación docente, jefatura de departamento o seminario, asesorías y tutoría</p>
+              <p class="fhelp">1,5 pts/año · 0,1250 pts por mes completo · máximo 10 pts</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="d43-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años en cargos del 4.3">
+            <span class="unit">años</span>
+            <input id="d43-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses en cargos del 4.3">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-43" for="d43-y d43-m">0,0000</output>
+        </div>
+
+        <div class="field" data-only="2526">
+          <div class="fmain">
+            <span class="code">4.4 a)</span>
+            <div>
+              <p class="fname">Dirección con valoración positiva</p>
+              <p class="fhelp">2 pts/año · 0,1667 pts por mes completo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="d44a-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años de dirección con valoración positiva">
+            <span class="unit">años</span>
+            <input id="d44a-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses de dirección con valoración positiva">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-44a" for="d44a-y d44a-m">0,0000</output>
+        </div>
+
+        <div class="field" data-only="2526">
+          <div class="fmain">
+            <span class="code">4.4 b)</span>
+            <div>
+              <p class="fname">Jefatura de estudios o secretaría con valoración positiva</p>
+              <p class="fhelp">1,25 pts/año · 0,1042 pts por mes completo</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="d44b-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años de jefatura o secretaría con valoración positiva">
+            <span class="unit">años</span>
+            <input id="d44b-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses de jefatura o secretaría con valoración positiva">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-44b" for="d44b-y d44b-m">0,0000</output>
+        </div>
+
+        <div class="field check" data-only="2526">
+          <div class="fmain">
+            <label class="inline" for="simultaneos">
+              <input type="checkbox" id="simultaneos">
+              <span>Los cargos anteriores se desempeñaron <strong>simultáneamente</strong> <span class="fhelp">(no se acumulan: se aplica el más ventajoso)</span></span>
+            </label>
+          </div>
+          <div class="finput"></div>
+          <output class="pts" id="o-simultaneos">—</output>
+        </div>
+      </div>
+
+      <details class="criteria">
+        <summary>Criterios y notas del apartado 4</summary>
+        <ul>
+          <li data-only="2526">Se valora el desempeño como personal funcionario. Si se desempeñaron varios cargos simultáneamente, no se acumula la puntuación: se aplica la más ventajosa.</li>
+          <li data-only="2627">Se valora el desempeño como personal funcionario. En esta convocatoria pueden acumularse los cargos y funciones de 4.1, 4.2, 4.3, 6.4 y 6.6 aunque se desempeñaran simultáneamente.</li>
+          <li>4.3 incluye coordinación de ciclo (Infantil y Primaria), de REM, de ESO, profesor/a delegado/a de ESO, asesoría de Berritzegune, responsabilidad de departamento y función tutorial desde la LOE.</li>
+          <li data-only="2526">La valoración positiva (4.4) se computa de oficio cuando consta en el Registro de Personal.</li>
+          <li data-only="2627">En 2026/2027 desaparece el subapartado 4.4 (valoración positiva de cargos directivos).</li>
+          <li>Máximo del apartado: 30,0000 puntos.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- ============================ 5. FORMACIÓN ============================ -->
+    <section class="card" id="sec-5" aria-labelledby="h-5">
+      <header class="card-head">
+        <div class="card-title"><span class="num">5</span><h2 id="h-5">Formación y perfeccionamiento <span class="fhelp">máximo 15 pts</span></h2></div>
+        <div class="card-score">Subtotal <b id="sec5">0,0000</b></div>
+      </header>
+      <div class="card-body">
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">5.1</span>
+            <div>
+              <p class="fname">Horas de actividades de formación superadas</p>
+              <p class="fhelp">0,1 pts por cada 10 h · máximo 9 pts · 1 crédito = 10 h</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="f51" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Horas de formación recibida">
+            <span class="unit">horas</span>
+          </div>
+          <output class="pts" id="o-51" for="f51">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">5.2</span>
+            <div>
+              <p class="fname">Horas de actividades de formación impartidas</p>
+              <p class="fhelp">0,1 pts por cada 3 h · máximo 3 pts · 1 crédito = 10 h</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="f52" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Horas de formación impartida">
+            <span class="unit">horas</span>
+          </div>
+          <output class="pts" id="o-52" for="f52">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">5.3</span>
+            <div>
+              <p class="fname">Nuevas especialidades adquiridas (distintas a la de ingreso)</p>
+              <p class="fhelp">0,5 pts por especialidad · máximo 1 pt</p>
+            </div>
+          </div>
+          <div class="finput">
+            <input id="f53" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Número de nuevas especialidades">
+            <span class="unit">especialidades</span>
+          </div>
+          <output class="pts" id="o-53" for="f53">0,0000</output>
+        </div>
+
+        <div class="field" data-only="2627">
+          <div class="fmain">
+            <span class="code">5.4</span>
+            <div>
+              <p class="fname">Competencia digital docente</p>
+              <p class="fhelp">A1 0,5 · A2 1 · B1 1,5 · B2 2 · C1 2,5 · C2 3 · solo el nivel superior · máximo 3</p>
+            </div>
+          </div>
+          <div class="finput">
+            <select id="dig" class="wide" aria-label="Nivel de competencia digital">
+              <option value="">Sin acreditación</option>
+              <option value="A1">A1 · 0,5</option>
+              <option value="A2">A2 · 1</option>
+              <option value="B1">B1 · 1,5</option>
+              <option value="B2">B2 · 2</option>
+              <option value="C1">C1 · 2,5</option>
+              <option value="C2">C2 · 3</option>
+            </select>
+          </div>
+          <output class="pts" id="o-54" for="dig">0,0000</output>
+        </div>
+
+        <div class="subtotal" data-only="2627"><span>5.5 · Certificados de idiomas externos (ACLES) <span class="fhelp">máximo 15 en el conjunto del apartado</span></span><b id="o-55">0,0000</b></div>
+
+        <div class="field" data-only="2627" style="display:block; padding-top:4px">
+          <p class="fhelp" style="margin-bottom:8px">C2 = 4 · C1 = 3 · B2 = 2 · B1 = 1. Solo el nivel superior de cada idioma. No se admiten certificados de EOI (van en 3.3) ni de español. Se computa una sola vez por idioma entre 3.3 y 5.5.</p>
+          <div class="rows" id="idiomas-ext-rows"></div>
+          <button type="button" class="add-btn" id="add-idioma-ext" style="margin-top:8px">+ Añadir idioma externo</button>
+        </div>
+      </div>
+
+      <details class="criteria">
+        <summary>Criterios y notas del apartado 5</summary>
+        <ul>
+          <li>Las horas de todas las actividades se suman; el resto inferior a 10 h (5.1) o a 3 h (5.2) no puntúa.</li>
+          <li>No se valoran las actividades organizadas directamente por los centros docentes en ejercicio de su autonomía pedagógica.</li>
+          <li>Sí se valoran las actividades realizadas antes del ingreso en el cuerpo docente.</li>
+          <li>5.3: la Orden fija un máximo de 1 punto; se aplica 0,5 puntos por especialidad.</li>
+          <li data-only="2627">5.4: competencia digital docente; solo se valora el nivel superior acreditado, con un máximo de 3 puntos.</li>
+          <li data-only="2627">5.5: certificados de idiomas externos (ACLES); los certificados de EOI se valoran exclusivamente en 3.3.</li>
+          <li>Máximo del apartado: 15,0000 puntos.</li>
+        </ul>
+      </details>
+    </section>
+
+    <!-- ============================ 6. OTROS MÉRITOS ============================ -->
+    <section class="card" id="sec-6" aria-labelledby="h-6">
+      <header class="card-head">
+        <div class="card-title"><span class="num">6</span><h2 id="h-6">Otros méritos <span class="fhelp">máximo 15 pts</span></h2></div>
+        <div class="card-score">Subtotal <b id="sec6">0,0000</b></div>
+      </header>
+      <div class="card-body">
+
+        <div class="subtotal"><span>6.1 · Publicaciones didácticas y científicas <span class="fhelp">máximo 8 pts</span></span><b id="o-61">0,0000</b></div>
+
+        <div class="field" style="display:block; padding-top:4px">
+          <div class="rows" id="pubs-rows"></div>
+          <button type="button" class="add-btn" id="add-pub" style="margin-top:8px">+ Añadir publicación</button>
+        </div>
+
+        <div class="subtotal"><span>6.2 · Premios y proyectos de investigación e innovación <span class="fhelp">máximo 2,5 pts</span></span><b id="o-62">0,0000</b></div>
+
+        <div class="field">
+          <div class="fmain"><span class="code">6.2</span><div><p class="fname">Premios internacionales</p><p class="fhelp">1,5 pts cada uno</p></div></div>
+          <div class="finput"><input id="prem-int" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="1.5" aria-label="Premios internacionales"><span class="unit">premios</span></div>
+          <output class="pts" id="o-prem-int">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.2</span><div><p class="fname">Premios nacionales</p><p class="fhelp">1 pt cada uno</p></div></div>
+          <div class="finput"><input id="prem-nac" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="1" aria-label="Premios nacionales"><span class="unit">premios</span></div>
+          <output class="pts" id="o-prem-nac">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.2</span><div><p class="fname">Premios autonómicos</p><p class="fhelp">0,5 pts cada uno</p></div></div>
+          <div class="finput"><input id="prem-aut" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.5" aria-label="Premios autonómicos"><span class="unit">premios</span></div>
+          <output class="pts" id="o-prem-aut">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.2</span><div><p class="fname">Participación en proyectos de investigación o innovación</p><p class="fhelp">0,05 pts por cada año</p></div></div>
+          <div class="finput"><input id="proy-anios" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.05" aria-label="Años en proyectos de investigación o innovación"><span class="unit">años</span></div>
+          <output class="pts" id="o-proy-anios">0,0000</output>
+        </div>
+
+        <div class="subtotal"><span>6.3 · Méritos artísticos, deportivos y literarios <span class="fhelp">máximo 2,5 pts</span></span><b id="o-63">0,0000</b></div>
+
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Primer premio en exposiciones, concursos o certámenes</p><p class="fhelp">0,75 pts cada uno · ámbito autonómico, nacional o internacional</p></div></div>
+          <div class="finput"><input id="art-premio1" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.75" aria-label="Primeros premios"><span class="unit">premios</span></div>
+          <output class="pts" id="o-art-premio1">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Segundo y tercer premio</p><p class="fhelp">0,5 pts cada uno</p></div></div>
+          <div class="finput"><input id="art-premio23" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.5" aria-label="Segundos y terceros premios"><span class="unit">premios</span></div>
+          <output class="pts" id="o-art-premio23">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Accésit</p><p class="fhelp">0,25 pts cada uno</p></div></div>
+          <div class="finput"><input id="art-accesit" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.25" aria-label="Accésits"><span class="unit">accésits</span></div>
+          <output class="pts" id="o-art-accesit">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Espectáculos teatrales o circenses, composiciones, coreografías o grabaciones</p><p class="fhelp">0,75 pts cada uno</p></div></div>
+          <div class="finput"><input id="art-espectaculo" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.75" aria-label="Espectáculos y composiciones"><span class="unit">obras</span></div>
+          <output class="pts" id="o-art-espectaculo">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Actuaciones como director/a, actor/actriz, intérprete, bailarín/a o solista</p><p class="fhelp">0,75 pts cada concierto</p></div></div>
+          <div class="finput"><input id="art-concierto" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.75" aria-label="Actuaciones como solista"><span class="unit">conciertos</span></div>
+          <output class="pts" id="o-art-concierto">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Actuaciones en agrupaciones camerísticas (dúos, tríos, cuartetos)</p><p class="fhelp">0,25 pts cada concierto</p></div></div>
+          <div class="finput"><input id="art-camara" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.25" aria-label="Conciertos en agrupaciones camerísticas"><span class="unit">conciertos</span></div>
+          <output class="pts" id="o-art-camara">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Exposiciones individuales</p><p class="fhelp">0,75 pts cada una</p></div></div>
+          <div class="finput"><input id="art-exp-ind" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.75" aria-label="Exposiciones individuales"><span class="unit">exposiciones</span></div>
+          <output class="pts" id="o-art-exp-ind">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Exposiciones colectivas</p><p class="fhelp">0,25 pts cada una</p></div></div>
+          <div class="finput"><input id="art-exp-col" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.25" aria-label="Exposiciones colectivas"><span class="unit">exposiciones</span></div>
+          <output class="pts" id="o-art-exp-col">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Conservación y restauración de bienes culturales</p><p class="fhelp">0,5 pts por participación en instituciones o campañas</p></div></div>
+          <div class="finput"><input id="art-conserva" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.5" aria-label="Participaciones en conservación"><span class="unit">participaciones</span></div>
+          <output class="pts" id="o-art-conserva">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Deportista de alto nivel</p><p class="fhelp">1 pt</p></div></div>
+          <div class="finput"><input id="art-alto-nivel" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="1" aria-label="Acreditaciones de deportista de alto nivel"><span class="unit">veces</span></div>
+          <output class="pts" id="o-art-alto-nivel">0,0000</output>
+        </div>
+        <div class="field">
+          <div class="fmain"><span class="code">6.3</span><div><p class="fname">Deportista de alto rendimiento</p><p class="fhelp">0,5 pts</p></div></div>
+          <div class="finput"><input id="art-alto-rend" type="number" min="0" step="1" value="0" inputmode="numeric" data-factor="0.5" aria-label="Acreditaciones de deportista de alto rendimiento"><span class="unit">veces</span></div>
+          <output class="pts" id="o-art-alto-rend">0,0000</output>
+        </div>
+
+        <div class="subtotal"><span>6.4 a 6.7 · Puestos en la Administración, tribunales, tutorización y euskera</span><b id="o-67b">0,0000</b></div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">6.4</span>
+            <div><p class="fname">Puestos en la Administración educativa de nivel igual o superior</p><p class="fhelp">1,5 pts/año · 0,1250 pts por mes completo</p></div>
+          </div>
+          <div class="finput">
+            <input id="d64-y" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Años en puestos de la Administración educativa">
+            <span class="unit">años</span>
+            <input id="d64-m" type="number" min="0" max="11" step="1" value="0" inputmode="numeric" aria-label="Meses en puestos de la Administración educativa">
+            <span class="unit">meses</span>
+          </div>
+          <output class="pts" id="o-64" for="d64-y d64-m">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">6.5</span>
+            <div><p class="fname">Miembro de tribunales de procedimientos selectivos</p><p class="fhelp">0,5 pts por cada convocatoria</p></div>
+          </div>
+          <div class="finput"><input id="trib" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Convocatorias como miembro de tribunal"><span class="unit">convocatorias</span></div>
+          <output class="pts" id="o-65" for="trib">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">6.6.1</span>
+            <div><p class="fname">Tutorización de prácticas de Máster o Grado</p><p class="fhelp">0,1 pts por cada curso</p></div>
+          </div>
+          <div class="finput"><input id="tut1" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Cursos tutorizados de Máster o Grado"><span class="unit">cursos</span></div>
+          <output class="pts" id="o-661" for="tut1">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">6.6.2</span>
+            <div><p class="fname">Tutorización de la fase de prácticas de nuevos funcionarios/as</p><p class="fhelp" id="help-662">0,2 pts por cada curso (desde 2024/2025)</p></div>
+          </div>
+          <div class="finput"><input id="tut2" type="number" min="0" step="1" value="0" inputmode="numeric" aria-label="Cursos tutorizados de la fase de prácticas"><span class="unit">cursos</span></div>
+          <output class="pts" id="o-662" for="tut2">0,0000</output>
+        </div>
+
+        <div class="field">
+          <div class="fmain">
+            <span class="code">6.7</span>
+            <div>
+              <p class="fname">Conocimiento de euskera en puestos sin perfil preceptivo</p>
+              <p class="fhelp">Solo en la adjudicación provisional o definitiva de destinos · máximo 5 pts</p>
+            </div>
+          </div>
+          <div class="finput">
+            <select id="perfil-plaza" class="wide" aria-label="Perfil lingüístico de la plaza">
+              <option value="none">Plaza sin perfil</option>
+              <option value="pl1-dif">PL 1 diferido</option>
+              <option value="pl1-ven">PL 1 vencido</option>
+              <option value="pl2-ven">PL 2 vencido</option>
+            </select>
+            <select id="perfil-acred" class="wide" aria-label="Perfil de euskera acreditado">
+              <option value="">Sin acreditar</option>
+              <option value="b2">PL 1 (B2)</option>
+              <option value="c1">PL 2 (C1)</option>
+              <option value="c2">C2</option>
+            </select>
+          </div>
+          <output class="pts" id="o-67" for="perfil-plaza perfil-acred">0,0000</output>
+        </div>
+      </div>
+
+      <details class="criteria">
+        <summary>Criterios y notas del apartado 6</summary>
+        <ul>
+          <li>6.1: no se valoran programaciones, temarios, TFG/TFM, unidades didácticas, prólogos, prensa diaria ni publicaciones sin ISBN/ISSN/ISMN. Máximo 8 puntos.</li>
+          <li>6.2: los premios deben ser nominativos y convocados por el Ministerio o las Administraciones educativas; no cuentan los de universidades. Máximo 2,5 puntos.</li>
+          <li>6.3: no se valoran exposiciones o conciertos realizados en centros educativos ni los trabajos curriculares. Máximo 2,5 puntos.</li>
+          <li>6.4: solo puestos del Departamento de Educación con competencias en enseñanza no universitaria.</li>
+          <li>6.5: puntúa por convocatoria, no por año, y exige participación efectiva en la fase de oposición.</li>
+          <li>6.7: se aplica solo al adjudicar destinos y solo si el puesto no tiene perfil lingüístico preceptivo.</li>
+          <li>Máximo del apartado: 15,0000 puntos.</li>
+        </ul>
+      </details>
+    </section>
+  </div>
+
+  <!-- ============================ RESUMEN ============================ -->
+  <aside class="summary" id="resumen" aria-label="Resumen de puntuación">
+    <div class="person">
+      <label for="persona">Nombre (para el informe)</label>
+      <input type="text" id="persona" placeholder="Nombre y apellidos" autocomplete="name">
+    </div>
+
+    <div class="total-card">
+      <p class="total-label">Puntuación total</p>
+      <p class="total-value"><span id="total">0,0000</span><small>puntos</small></p>
+      <p class="total-note">Suma de los apartados 1 a 6 con los topes de la convocatoria aplicados.</p>
+      <p class="print-only" id="print-meta" style="font-size:.8rem;margin-top:6px"></p>
+    </div>
+
+    <ul class="brk" id="brk">
+      <li data-sec="1"><span class="name"><i>1</i> Antigüedad</span><b id="s1">0,0000</b></li>
+      <li data-sec="2"><span class="name"><i>2</i> Catedráticos/as</span><b id="s2">0,0000</b></li>
+      <li data-sec="3"><span class="name"><i>3</i> Méritos académicos</span><b id="s3">0,0000</b></li>
+      <li data-sec="4"><span class="name"><i>4</i> Cargos y funciones</span><b id="s4">0,0000</b></li>
+      <li data-sec="5"><span class="name"><i>5</i> Formación</span><b id="s5">0,0000</b></li>
+      <li data-sec="6"><span class="name"><i>6</i> Otros méritos</span><b id="s6">0,0000</b></li>
+    </ul>
+
+    <div class="comp" aria-label="Composición de la puntuación">
+      <p class="comp-title">Composición</p>
+      <div class="comp-bar" id="comp-bar"></div>
+      <p class="comp-empty" id="comp-empty">Aún no hay puntos.</p>
+      <ul class="comp-legend" id="comp-legend"></ul>
+    </div>
+
+    <div class="cap-box" id="cap-box" hidden>
+      <p>Topes aplicados</p>
+      <ul id="cap-list"></ul>
+    </div>
+
+    <p class="aside-note">
+      Cálculo orientativo basado en el Anexo I <span id="aside-ref">de la Orden de 13 de noviembre de 2025
+      (<a href="https://www.euskadi.eus/bopv2/datos/2025/12/2505405a.shtml" target="_blank" rel="noopener">BOPV n.º 243</a>)</span>.
+      La baremación oficial corresponde al Departamento de Educación.
+    </p>
+  </aside>
+
+</div>
+</div>

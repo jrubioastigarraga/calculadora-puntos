@@ -1,0 +1,79 @@
+<div class="legacy-page legacy-ikha">
+<div class="legacy-tools">
+<button type="button" class="tool-btn" id="csv">Descargar CSV</button>
+</div>
+<div class="page">
+
+      <header class="page-head">
+        <p class="eyebrow">Euskadi · inicio de curso</p>
+        <h1>IKHA</h1>
+        <p class="lede" id="lede">Puestos, sustitutos, funcionarios de carrera y prácticas · 2026/2027</p>
+      </header>
+
+      <div class="tabs" role="tablist" aria-label="Conjuntos de datos">
+        <button type="button" class="tab active" data-tab="puestos" role="tab" aria-selected="true">Puestos <span id="c-puestos">—</span></button>
+        <button type="button" class="tab" data-tab="sustitutos" role="tab" aria-selected="false">Sustitutos <span id="c-sustitutos">—</span></button>
+        <button type="button" class="tab" data-tab="carrera" role="tab" aria-selected="false">Carrera <span id="c-carrera">—</span></button>
+        <button type="button" class="tab" data-tab="practicas" role="tab" aria-selected="false">Prácticas <span id="c-practicas">—</span></button>
+      </div>
+
+      <section class="panel" aria-label="Filtros y resumen">
+        <div class="filters">
+          <label class="search">
+            <span class="sr-only">Buscar</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+            <input type="search" id="q" placeholder="Buscar centro, nombre o especialidad" autocomplete="off">
+          </label>
+          <select id="prov" aria-label="Provincia">
+            <option value="">Todas las provincias</option>
+            <option value="Araba">Araba</option>
+            <option value="Bizkaia">Bizkaia</option>
+            <option value="Gipuzkoa">Gipuzkoa</option>
+            <option value="Otras">Otras</option>
+          </select>
+          <select id="nivel" aria-label="Nivel"><option value="">Todos los niveles</option></select>
+          <select id="esp" aria-label="Especialidad"><option value="">Todas las especialidades</option></select>
+          <label class="check-inline" id="named-wrap" hidden>
+            <input type="checkbox" id="only-named"> Solo con nombre
+          </label>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span>Registros</span><b id="k-rows">—</b></div>
+          <div class="stat"><span>Centros</span><b id="k-centros">—</b></div>
+          <div class="stat"><span>Especialidades</span><b id="k-esp">—</b></div>
+          <div class="stat"><span>Municipios</span><b id="k-muni">—</b></div>
+        </div>
+        <p class="note" id="tab-note" hidden></p>
+      </section>
+
+      <div class="charts">
+        <section class="card" aria-label="Por provincia">
+          <div class="card-head"><h2>Por provincia</h2><span id="prov-caption"></span></div>
+          <div class="hbars" id="prov-chart"></div>
+        </section>
+        <section class="card" aria-label="Por especialidad">
+          <div class="card-head"><h2>Por especialidad</h2><span id="esp-caption"></span></div>
+          <div class="hbars" id="esp-chart"></div>
+        </section>
+      </div>
+
+      <section class="card table-card" aria-label="Datos">
+        <div class="table-head">
+          <h2 id="table-title">—</h2>
+          <span id="table-count"></span>
+        </div>
+        <div class="table-scroll" id="scroll">
+          <table>
+            <thead id="thead"></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div class="table-foot">
+          <span id="showing">—</span>
+          <button type="button" class="btn" id="more" hidden>Mostrar más</button>
+        </div>
+      </section>
+    
+</div>
+</div>

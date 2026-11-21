@@ -1,0 +1,121 @@
+<div class="legacy-page legacy-forzosak">
+<div class="legacy-tools">
+<button type="button" class="tool-btn" id="csv">Descargar CSV</button>
+</div>
+<div class="page">
+
+      <header class="page-head">
+        <p class="eyebrow">Concurso de traslados · Proceso 27/28</p>
+        <h1>Forzosak 27-28 LAL</h1>
+        <p class="lede" id="subtitle">Clasificación del concurso + personas seleccionadas en la OPE 2025</p>
+      </header>
+
+      <section class="panel" aria-label="Filtros y resumen">
+        <div class="filters">
+          <select id="f-cuerpo" aria-label="Filtrar por cuerpo">
+            <option value="">Todos los cuerpos</option>
+          </select>
+
+          <select id="f-esp" aria-label="Filtrar por especialidad">
+            <option value="">Todas las especialidades</option>
+          </select>
+
+          <select id="f-prov" aria-label="Filtrar por provincia">
+            <option value="">Todas las provincias</option>
+            <option value="Araba">Araba</option>
+            <option value="Bizkaia">Bizkaia</option>
+            <option value="Gipuzkoa">Gipuzkoa</option>
+            <option value="Sin provincia">Sin provincia</option>
+          </select>
+
+          <label class="search">
+            <span class="sr-only">Buscar por nombre</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+            <input type="search" id="q" placeholder="Buscar por nombre" autocomplete="off">
+          </label>
+
+          <select id="moda" multiple aria-label="Filtrar por modalidad">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
+            <option value="J">J</option>
+          </select>
+
+          <select id="f-tipo" aria-label="Filtrar por origen">
+            <option value="">Todos los participantes</option>
+            <option value="concurso">Solo clasificación</option>
+            <option value="forzoso">Solo forzosos OPE</option>
+          </select>
+
+          <label class="check" title="Solo se excluye a quienes tienen destino adjudicado en el concurso anterior; la asignación azul de principio de curso no cuenta">
+            <input type="checkbox" id="excluir-ya" checked> Excluir plazas del concurso anterior
+          </label>
+
+          <label class="check" title="Muestra solo quienes entrarían en el número de plazas ofertadas">
+            <input type="checkbox" id="solo-plaza"> Solo con plaza
+          </label>
+
+          <button type="button" class="btn small" id="clear">Limpiar filtros</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat"><span>Resultados</span><b id="st-count">—</b></div>
+          <div class="stat"><span>Plazas ofertadas</span><b id="st-plazas">—</b></div>
+          <div class="stat"><span>Con plaza</span><b id="st-adj">—</b></div>
+          <div class="stat"><span>Forzosos con plaza</span><b id="st-forz">—</b></div>
+          <p class="note">Orden de adjudicación: primero quienes figuran en la clasificación del concurso (puntos y desempates) y, a continuación en cada especialidad, las personas seleccionadas en la OPE 2025 por su orden de selección. La clasificación y las plazas se separan por **provincia elegida el curso anterior** (Araba / Bizkaia / Gipuzkoa): en cada especialidad y provincia se marcan como «con plaza» las primeras N, donde N son las plazas ofertadas en esa provincia. La provincia de la clasificación sale del destino del concurso o de la asignación azul y, si no consta, del PDF del traslado 2025 (columna LH/TH, marcada con *); la de los seleccionados OPE, de su destino de prácticas. Quienes ya tenían destino adjudicado en el concurso anterior no consumen plaza; la asignación en azul de principio de curso no se cuenta como plaza. Solo queda «Sin provincia» si tampoco aparece en ese PDF, y entonces no opta a plazas provinciales. Todo se recalcula al cambiar los filtros. <button type="button" class="clear-link" id="clear2">Limpiar filtros</button></p>
+        </div>
+      </section>
+
+      <section class="plazas-banner" aria-live="polite">
+        <span>Plazas ofertadas en la selección actual:</span>
+        <strong id="banner-esp">Todas las especialidades</strong>
+        <span>·</span>
+        <b id="banner-plazas">—</b>
+        <span id="banner-detalle"></span>
+        <button type="button" class="centros-toggle" id="btn-centros" hidden aria-expanded="false" aria-controls="centros-panel">Ver centros</button>
+        <span id="banner-excluidos"></span>
+        <span id="banner-ope"></span>
+      </section>
+
+      <div class="centros-panel" id="centros-panel" hidden>
+        <div class="centros-head">
+          <strong>Centros con vacantes</strong>
+          <span id="centros-resumen"></span>
+        </div>
+        <ul class="centros-list" id="centros-lista"></ul>
+      </div>
+
+      <section class="table-card" aria-label="Clasificación combinada">
+        <div class="table-scroll" id="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th class="col-pos">#</th>
+                <th>Nombre</th>
+                <th class="col-orig">Origen</th>
+                <th class="sortable" id="th-esp"><button type="button" data-sort="esp">Especialidad <span class="arrow">▲</span></button></th>
+                <th class="col-prov">Prov.</th>
+                <th class="col-prov" title="Provincia del PDF del traslado 2025 (campo LH/TH)">LH/TH</th>
+                <th class="col-moda">Mod.</th>
+                <th class="col-pts sortable" id="th-pts"><button type="button" data-sort="puntos">Puntos / Sel. <span class="arrow">↕</span></button></th>
+                <th class="col-plaza">Plaza</th>
+                <th class="col-chev"><span class="sr-only">Detalle</span></th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+          <div class="empty" id="empty" hidden>
+            <p>No hay resultados con estos filtros.</p>
+            <p>Prueba con otra especialidad, origen o nombre.</p>
+          </div>
+        </div>
+        <div class="table-foot">
+          <span id="showing">—</span>
+          <button type="button" class="btn small" id="more" hidden>Mostrar más</button>
+        </div>
+      </section>
+    
+</div>
+</div>

@@ -1,0 +1,96 @@
+<div class="legacy-page legacy-clasificacion">
+<div class="legacy-tools">
+<button type="button" class="tool-btn" id="csv">Descargar CSV</button>
+</div>
+<div class="page">
+
+      <header class="page-head">
+        <p class="eyebrow">Concurso de traslados · Enseñanzas medias</p>
+        <h1>Clasificación</h1>
+        <p class="lede" id="subtitle">1.486 participantes</p>
+      </header>
+
+      <section class="panel" aria-label="Filtros y resumen">
+    <div class="filters">
+      <select id="f-year" aria-label="Año" class="year-select"></select>
+      <label class="search">
+        <span class="sr-only">Buscar por nombre</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+        <input type="search" id="q" placeholder="Buscar por nombre" autocomplete="off">
+      </label>
+
+      <select id="f-cuerpo" aria-label="Filtrar por cuerpo">
+        <option value="">Todos los cuerpos</option>
+      </select>
+
+      <select id="f-esp" aria-label="Filtrar por especialidad">
+        <option value="">Todas las especialidades</option>
+      </select>
+
+      <select id="moda" multiple aria-label="Filtrar por modalidad">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="E">E</option>
+        <option value="F">F</option>
+        <option value="J">J</option>
+      </select>
+    </div>
+
+    <div class="stats">
+      <div class="stat" title="Una fila por cada especialidad solicitada"><span>Resultados</span><b id="st-count">—</b></div>
+      <div class="stat"><span>Especialidades</span><b id="st-esp">—</b></div>
+      <div class="stat"><span>Puntuación máxima</span><b id="st-max">—</b></div>
+      <div class="stat"><span>Puntuación media</span><b id="st-avg">—</b></div>
+      <p class="note">Orden por puntuación y criterios de desempate del baremo. El nº de puesto se calcula dentro de cada especialidad. <button type="button" class="clear-link" id="clear">Limpiar filtros</button></p>
+    </div>
+  </section>
+
+  <section class="compare" aria-label="Comparar mi puntuación">
+    <div class="compare-txt">
+      <strong>¿Dónde quedarías?</strong>
+      <p>Compara tu puntuación con la del año seleccionado.</p>
+    </div>
+    <div class="compare-input">
+      <label class="sr-only" for="mi-puntos">Tu puntuación</label>
+      <input type="text" id="mi-puntos" inputmode="decimal" placeholder="0,0000" autocomplete="off">
+      <span>puntos</span>
+    </div>
+    <p class="compare-result" id="compare-result" aria-live="polite">Selecciona una especialidad para ver tu puesto.</p>
+    <div class="gauge" id="gauge" hidden>
+      <div class="gauge-track">
+        <span class="gauge-fill" id="gauge-fill"></span>
+        <span class="gauge-mark" id="gauge-mark"></span>
+      </div>
+      <div class="gauge-labels"><span id="gauge-min">—</span><span id="gauge-max">—</span></div>
+    </div>
+  </section>
+
+  <section class="table-card" aria-label="Clasificación">
+    <div class="table-scroll" id="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th class="col-pos">#</th>
+            <th>Nombre</th>
+            <th class="sortable" id="th-esp"><button type="button" data-sort="esp">Especialidad <span class="arrow">▲</span></button></th>
+            <th class="col-moda">Mod.</th>
+            <th class="col-pl">PL</th>
+            <th class="col-pts sortable" id="th-pts"><button type="button" data-sort="puntos">Puntos <span class="arrow">↕</span></button></th>
+            <th class="col-chev"><span class="sr-only">Detalle</span></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="empty" id="empty" hidden>
+        <p>No hay resultados con estos filtros.</p>
+        <p>Prueba con otra especialidad, modalidad o nombre.</p>
+      </div>
+    </div>
+    <div class="table-foot">
+      <span id="showing">—</span>
+      <button type="button" class="btn small" id="more" hidden>Mostrar más</button>
+    </div>
+  </section>
+
+</div>
+</div>

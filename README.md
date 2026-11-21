@@ -141,10 +141,12 @@ Todo funciona sin conexión una vez iniciada la sesión y cargados los datos.
 ## Migración a Angular
 
 - La carpeta `angular/` contiene la nueva aplicación **Angular 22 + Bootstrap 5** con el aspecto **SB Admin** (sidebar oscuro, topbar, tarjetas, tablas).
-- **Fase 1 completada**: estructura SB Admin, login con Supabase, FAQ pública y **Plazas RPT** (filtros, KPIs, gráficas, mapa Leaflet, tabla ordenable y CSV).
-- **Pendiente de migrar**: Calculadora, Clasificación, Plazas, IKHA y Forzosak. Hasta completarlas, la raíz del repositorio sigue sirviendo la versión estática actual.
+- **Todas las pantallas funcionan en Angular**: Calculadora, Clasificación, Plazas, Plazas RPT, IKHA, Forzosak y FAQ.
+- **Nativas**: shell SB Admin, login con Supabase, FAQ y Plazas RPT (filtros, KPIs, gráficas, mapa Leaflet, tabla ordenable y CSV).
+- **Integradas desde la versión estática**: Calculadora, Clasificación, Plazas, IKHA y Forzosak conservan toda su lógica y datos, aislados por componente; queda pendiente el pulido visual fino para homogeneizarlas con SB Admin.
+- Rutas con **hash** (`/#/rpt`) para que funcionen directamente en GitHub Pages.
 - Desarrollo: `cd angular && npm install && npm start`.
-- Build de producción: `npm run build` (salida en `angular/dist/angular`).
+- Build de producción: `npm run build -- --base-href=/calculadora-puntos/` (salida en `angular/dist/angular/browser`).
 
 ## Aviso
 

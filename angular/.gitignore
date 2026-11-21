@@ -45,3 +45,6 @@ Thumbs.db
 
 # datos de demo (privados)
 public/datos-rpt.js
+
+public/datos.js
+public/datos-curso.js
