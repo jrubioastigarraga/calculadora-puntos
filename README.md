@@ -1,6 +1,6 @@
 # Hezkuntzako datuak · Traslados docentes Euskadi
 
-Cinco pantallas sobre los datos educativos de Euskadi, sin servidor:
+Seis pantallas de datos y una de ayuda sobre los datos educativos de Euskadi, sin servidor:
 
 | Archivo | Qué hace |
 |---|---|
@@ -10,10 +10,11 @@ Cinco pantallas sobre los datos educativos de Euskadi, sin servidor:
 | `rpt.html` | **Plazas RPT**: plantilla orgánica de Secundaria y FP de Euskadi, curso 2026/2027. |
 | `ikha.html` | **IKHA**: puestos, sustitutos, funcionarios de carrera y prácticas del curso 2026/2027. |
 | `forzosak.html` | **Forzosak 27-28 LAL**: clasificación del concurso + seleccionados de la OPE 2025, con plazas ofertadas y adjudicación orientativa. |
+| `faq.html` | **Preguntas frecuentes**: modalidades de participación (A-K), perfiles y glosario. Es la única pantalla pública. |
 | `datos.js` | Datos de todos los años de traslados (participantes y plazas). |
 | `datos-curso.js` | Datos del curso 2026/2027 de IKHA. |
 
-Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
+Abre `index.html` con doble clic. El menú lateral enlaza todas las pantallas; `faq.html` no necesita sesión.
 
 ## Calculadora · 25/26 y 26/27
 
@@ -80,6 +81,14 @@ Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
 - Filtros por cuerpo, especialidad (Select2), provincia, modalidad, origen (clasificación / forzosos), búsqueda por nombre y «Solo con plaza». Indicadores y exportación a CSV.
 - Los datos de la OPE y de las plazas ofertadas están en `forzosak-data.js` (archivo público, sin datos personales sensibles: DNI enmascarado).
 
+## Preguntas frecuentes
+
+- Página de ayuda **pública** (`faq.html`), sin sesión ni datos personales.
+- Explica las **modalidades de participación** del concurso (códigos A-K) y destaca las cinco que aparecen en los listados: **A** destino definitivo, **B** excedente voluntario, **E** supresión o modificación del puesto, **F** reingreso con destino provisional y **J** sin primer destino definitivo.
+- Aclara que la modalidad **no suma puntos** ni cambia el orden, y la diferencia frente al **perfil lingüístico** (PL1/PL2), el **turno de la OPE** o la **RPT**.
+- Incluye un glosario y preguntas habituales sobre «Ya con plaza», el derecho preferente y el origen de los datos.
+- Enlazada desde el menú lateral de todas las pantallas y desde la página de acceso.
+
 ## Origen de los datos
 
 - `lekualdatze/resultado-*.pdf`: listados de participantes admitidos y de resolución con puntuación de cada año (2010–2024).
@@ -92,7 +101,7 @@ Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
 
 ## Acceso
 
-- La web está protegida con **Supabase Auth** (usuario y contraseña).
+- La web está protegida con **Supabase Auth** (usuario y contraseña). La única excepción es `faq.html`, que es pública.
 - El usuario `hezkuntza` se mapea internamente al email `hezkuntza@hezkuntza.eus`; el formulario solo pide el nombre de usuario.
 - Los datos **no están en el repositorio**: `datos.js`, `datos-curso.js` y `datos-rpt.js` viven en el bucket privado `calculadora-datos` de Supabase Storage.
 - Solo las sesiones autenticadas pueden firmar la descarga (política RLS `calculadora_datos_select_authenticated`).
@@ -108,6 +117,8 @@ calculadora-puntos/
 ├── plazas.html         · plazas y gráficas
 ├── rpt.html            · plantilla orgánica (RPT) de Secundaria y FP
 ├── ikha.html           · curso 2026/2027: puestos, sustitutos, carrera y prácticas
+├── forzosak.html       · forzosos OPE 2025 y plazas ofertadas 27-28
+├── faq.html            · preguntas frecuentes y modalidades (pública)
 ├── login.html          · acceso con Supabase Auth
 ├── config.js           · URL y clave pública de Supabase
 ├── auth.js             · guard de sesión, usuario y botón Salir
