@@ -1,0 +1,93 @@
+<div class="row g-3">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header d-flex flex-wrap justify-content-between gap-2">
+        <span><i class="bi bi-list-check me-2"></i>Modalidades de participación</span>
+        <span class="text-muted small">A · B · E · F · J</span>
+      </div>
+      <div class="card-body">
+        <p class="text-muted mb-3">
+          La <strong class="text-dark">modalidad</strong> indica la situación administrativa con la que participa cada
+          persona. No es una preferencia de destino ni una puntuación: los puntos salen del baremo y de los desempates.
+        </p>
+
+        <div class="row g-3">
+          @for (item of primary; track item.code) {
+            <div class="col-12 col-md-6 col-xl">
+              <div class="mod-card h-100">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="code-badge" [class]="'code-badge ' + item.cls">{{ item.code }}</span>
+                  <strong>{{ item.title }}</strong>
+                </div>
+                <p class="mb-0 text-muted small">{{ item.text }}</p>
+              </div>
+            </div>
+          }
+        </div>
+
+        <p class="small text-muted mt-3 mb-3">
+          En los listados de 2010-2025 aparecen estas cinco modalidades. Las demás existen en la convocatoria, pero no
+          constan en esos listados.
+        </p>
+
+        <details class="faq-item">
+          <summary>Ver todos los códigos oficiales (A-K)</summary>
+          <div class="faq-answer pt-0">
+            <dl class="codes-grid mb-0">
+              @for (item of all; track item.code) {
+                <div>
+                  <dt>
+                    <span class="code-badge" [class]="'code-badge ' + item.cls">{{ item.code }}</span>
+                    {{ item.title }}
+                  </dt>
+                  <dd>{{ item.text }}</dd>
+                </div>
+              }
+            </dl>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header"><i class="bi bi-info-circle me-2"></i>Cómo se leen en la web</div>
+      <div class="card-body">
+        <ul class="mb-0 text-muted small d-grid gap-2">
+          <li>En las tablas, la modalidad aparece como una <strong class="text-dark">insignia con su letra y color</strong>.</li>
+          <li>El filtro <strong class="text-dark">Modalidad</strong> es múltiple: se pueden combinar varias a la vez.</li>
+          <li>La modalidad <strong class="text-dark">no altera el orden</strong>: lo determinan la puntuación y los desempates.</li>
+          <li>En <strong class="text-dark">Forzosak</strong>, la columna Modalidad corresponde al concurso; el profesorado de la OPE aparece con su turno (libre, vertical o discapacidad).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header"><i class="bi bi-question-circle me-2"></i>Preguntas frecuentes</div>
+      <div class="card-body">
+        @for (item of faqs; track item.q) {
+          <details class="faq-item">
+            <summary>{{ item.q }}</summary>
+            <div class="faq-answer">{{ item.a }}</div>
+          </details>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="alert alert-light border small text-muted mb-0">
+      <strong>Fuentes:</strong> convocatorias del concurso de traslados de enseñanzas medias (BOPV) y documento oficial de
+      <a
+        href="https://www.euskadi.eus/contenidos/informacion/langile_d_ct_secundaria_2627/es_def/adjuntos/modalidades-de-participacion-y-supuestos.pdf"
+        target="_blank"
+        rel="noopener"
+        >modalidades de participación</a
+      >
+      del Departamento de Educación. Página sin carácter oficial: prevalece la convocatoria.
+    </div>
+  </div>
+</div>

@@ -1,0 +1,245 @@
+@if (loading()) {
+  <div class="text-center py-5 text-muted">
+    <div class="spinner-border text-primary mb-3" role="status" aria-hidden="true"></div>
+    <p class="mb-0">Cargando datos de la RPT…</p>
+  </div>
+} @else if (error()) {
+  <div class="alert alert-danger" role="alert">
+    <strong>No se han podido cargar los datos.</strong> {{ error() }}
+  </div>
+} @else {
+  <div class="row g-3">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-2 align-items-end">
+            <div class="col-12 col-lg-4">
+              <label class="form-label small text-muted mb-1" for="rpt-q">Buscar</label>
+              <input
+                id="rpt-q"
+                class="form-control"
+                type="search"
+                placeholder="Centro, municipio o especialidad"
+                [(ngModel)]="q"
+                (ngModelChange)="applyFilters()"
+              />
+            </div>
+            <div class="col-6 col-lg-2">
+              <label class="form-label small text-muted mb-1" for="rpt-prov">Provincia</label>
+              <select id="rpt-prov" class="form-select" [(ngModel)]="prov" (ngModelChange)="applyFilters()">
+                <option value="">Todas</option>
+                @for (p of provinces; track p) {
+                  <option [value]="p">{{ p }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-6 col-lg-3">
+              <label class="form-label small text-muted mb-1" for="rpt-body">Cuerpo</label>
+              <select id="rpt-body" class="form-select" [(ngModel)]="body" (ngModelChange)="applyFilters()">
+                <option value="">Todos los cuerpos</option>
+                @for (b of bodies(); track b.code) {
+                  <option [value]="b.code">{{ b.code }} — {{ b.label }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-12 col-lg-3">
+              <label class="form-label small text-muted mb-1" for="rpt-esp">Especialidad</label>
+              <select id="rpt-esp" class="form-select" [(ngModel)]="esp" (ngModelChange)="applyFilters()">
+                <option value="">Todas las especialidades</option>
+                @for (s of specs(); track s.code) {
+                  <option [value]="s.code">{{ s.code }} — {{ s.label }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3 pt-3 border-top">
+            <span class="small text-muted">
+              Plantilla orgánica · {{ fmtInt(meta()?.total || 0) }} plazas · {{ fmtInt(meta()?.centros || 0) }} centros ·
+              {{ fmtInt(meta()?.especialidades || 0) }} especialidades · {{ meta()?.curso }}
+            </span>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="resetFilters()">
+              <i class="bi bi-arrow-counterclockwise me-1"></i>Limpiar filtros
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-xl-3">
+      <div class="card kpi-card h-100">
+        <div class="card-body py-3">
+          <div class="kpi-label">Plazas</div>
+          <div class="kpi-value">{{ fmtInt(kpis().plazas) }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-xl-3">
+      <div class="card kpi-card kpi-green h-100">
+        <div class="card-body py-3">
+          <div class="kpi-label">Centros</div>
+          <div class="kpi-value">{{ fmtInt(kpis().centros) }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-xl-3">
+      <div class="card kpi-card kpi-amber h-100">
+        <div class="card-body py-3">
+          <div class="kpi-label">Especialidades</div>
+          <div class="kpi-value">{{ fmtInt(kpis().esp) }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-xl-3">
+      <div class="card kpi-card kpi-purple h-100">
+        <div class="card-body py-3">
+          <div class="kpi-label">Municipios</div>
+          <div class="kpi-value">{{ fmtInt(kpis().muni) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between">
+          <span>Por provincia</span>
+          <span class="text-muted small">{{ fmtInt(kpis().plazas) }} plazas</span>
+        </div>
+        <div class="card-body">
+          @for (bar of provBars(); track bar.label) {
+            <div class="barra-row">
+              <span class="label">{{ bar.label }}</span>
+              <span class="barra"><i [style.width.%]="bar.pct"></i></span>
+              <b>{{ fmtInt(bar.n) }}</b>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card h-100">
+        <div class="card-header d-flex justify-content-between">
+          <span>Por especialidad</span>
+          <span class="text-muted small">Top 8 · plazas</span>
+        </div>
+        <div class="card-body">
+          @if (!espBars().length) {
+            <p class="text-muted small mb-0">Sin datos.</p>
+          } @else {
+            @for (bar of espBars(); track bar.code) {
+              <div class="barra-row">
+                <span class="label" [title]="bar.label">{{ bar.label }}</span>
+                <span class="barra"><i [style.width.%]="bar.pct"></i></span>
+                <b>{{ fmtInt(bar.n) }}</b>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <span>Mapa de centros</span>
+          <span class="text-muted small">{{ fmtInt(kpis().plazas) }} plazas · {{ fmtInt(kpis().centros) }} centros</span>
+        </div>
+        <div class="card-body p-0">
+          <div id="mapRpt" class="map-rpt"></div>
+        </div>
+        <div class="card-footer small text-muted">
+          El tamaño del círculo indica las plazas del centro con los filtros actuales. Sin teselas ni peticiones
+          externas: los límites provinciales van incluidos en la aplicación.
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex flex-wrap justify-content-between gap-2">
+          <span>Plazas de la RPT</span>
+          <span class="text-muted small">{{ fmtInt(kpis().plazas) }} plazas · {{ fmtInt(filtered().length) }} filas</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-hover align-middle mb-0 table-sortable">
+            <thead class="table-light">
+              <tr>
+                <th class="sortable" (click)="sortBy('centro')" [attr.aria-sort]="ariaSort('centro')">
+                  Centro <span class="sort-arrow">{{ ariaSort('centro') === 'ascending' ? '▲' : ariaSort('centro') === 'descending' ? '▼' : '↕' }}</span>
+                </th>
+                <th class="sortable" (click)="sortBy('muni')" [attr.aria-sort]="ariaSort('muni')">
+                  Municipio <span class="sort-arrow">{{ ariaSort('muni') === 'ascending' ? '▲' : ariaSort('muni') === 'descending' ? '▼' : '↕' }}</span>
+                </th>
+                <th class="sortable" (click)="sortBy('prov')" [attr.aria-sort]="ariaSort('prov')">
+                  Provincia <span class="sort-arrow">{{ ariaSort('prov') === 'ascending' ? '▲' : ariaSort('prov') === 'descending' ? '▼' : '↕' }}</span>
+                </th>
+                <th class="sortable" (click)="sortBy('body')" [attr.aria-sort]="ariaSort('body')">
+                  Cuerpo <span class="sort-arrow">{{ ariaSort('body') === 'ascending' ? '▲' : ariaSort('body') === 'descending' ? '▼' : '↕' }}</span>
+                </th>
+                <th class="sortable" (click)="sortBy('spec')" [attr.aria-sort]="ariaSort('spec')">
+                  Especialidad <span class="sort-arrow">{{ ariaSort('spec') === 'ascending' ? '▲' : ariaSort('spec') === 'descending' ? '▼' : '↕' }}</span>
+                </th>
+                <th class="sortable text-end" (click)="sortBy('n')" [attr.aria-sort]="ariaSort('n')">
+                  Plazas <span class="sort-arrow">{{ ariaSort('n') === 'ascending' ? '▲' : ariaSort('n') === 'descending' ? '▼' : '↕' }}</span>
+                </th>
+                <th class="sortable text-end" (click)="sortBy('p2')" [attr.aria-sort]="ariaSort('p2')">
+                  PL2 <span class="sort-arrow">{{ ariaSort('p2') === 'ascending' ? '▲' : ariaSort('p2') === 'descending' ? '▼' : '↕' }}</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (!part().length) {
+                <tr>
+                  <td colspan="7" class="text-center text-muted py-4">No hay plazas con estos filtros.</td>
+                </tr>
+              } @else {
+                @for (r of part(); track r.centro.code + '|' + r.spec + '|' + r.body) {
+                  <tr>
+                    <td>
+                      <span class="fw-semibold">{{ r.centro.name }}</span>
+                      <small class="d-block text-muted">
+                        {{ r.centro.official || r.centro.code }}
+                        @if (r.centro.official) {
+                          · RPT {{ r.centro.code }}
+                        }
+                      </small>
+                    </td>
+                    <td class="text-muted small">{{ r.centro.town }}</td>
+                    <td class="text-muted small">{{ r.centro.prov }}</td>
+                    <td class="text-muted small">{{ bodyLabel(r.body) }}</td>
+                    <td class="text-muted small">
+                      {{ specLabel(r.spec) }}
+                      <small class="d-block text-body-tertiary">{{ r.spec }}</small>
+                    </td>
+                    <td class="text-end fw-semibold">{{ fmtInt(r.n) }}</td>
+                    <td class="text-end">{{ r.p2 ? fmtInt(r.p2) : '—' }}</td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <span class="small text-muted">
+            Mostrando {{ fmtInt(part().length) }} de {{ fmtInt(filtered().length) }} filas
+          </span>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="downloadCsv()">
+              <i class="bi bi-download me-1"></i>CSV
+            </button>
+            @if (hasMore()) {
+              <button type="button" class="btn btn-primary btn-sm" (click)="more()">Mostrar más</button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12">
+      <div class="alert alert-light border small text-muted mb-0">
+        Plazas de la plantilla orgánica (RPT), no de un proceso selectivo. La RPT no recoge la ocupación: no indica
+        cuántas plazas están vacantes o sin cubrir. El CIFP BIRTLH se añade con su propuesta de RPT 2026/27.
+      </div>
+    </div>
+  </div>
+}

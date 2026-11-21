@@ -138,6 +138,14 @@ Todo funciona sin conexión una vez iniciada la sesión y cargados los datos.
 - Los datos personales quedan en Supabase y no se publican en GitHub.
 
 
+## Migración a Angular
+
+- La carpeta `angular/` contiene la nueva aplicación **Angular 22 + Bootstrap 5** con el aspecto **SB Admin** (sidebar oscuro, topbar, tarjetas, tablas).
+- **Fase 1 completada**: estructura SB Admin, login con Supabase, FAQ pública y **Plazas RPT** (filtros, KPIs, gráficas, mapa Leaflet, tabla ordenable y CSV).
+- **Pendiente de migrar**: Calculadora, Clasificación, Plazas, IKHA y Forzosak. Hasta completarlas, la raíz del repositorio sigue sirviendo la versión estática actual.
+- Desarrollo: `cd angular && npm install && npm start`.
+- Build de producción: `npm run build` (salida en `angular/dist/angular`).
+
 ## Aviso
 
 Herramientas de ayuda sin carácter oficial. No sustituyen la autobaremación ni la puntuación

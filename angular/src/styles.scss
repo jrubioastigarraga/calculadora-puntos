@@ -1,0 +1,324 @@
+:root {
+  --sb-primary: #0d6efd;
+  --sb-dark: #212529;
+  --sb-nav-width: 225px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #f2f4f7;
+  color: #212529;
+  font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 15px;
+}
+
+a {
+  color: var(--sb-primary);
+}
+
+/* ---------- estructura SB Admin ---------- */
+.sb-nav-fixed .sb-topnav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1039;
+  height: 56px;
+}
+
+.sb-nav-fixed #layoutSidenav {
+  padding-top: 56px;
+}
+
+.sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
+  position: fixed;
+  top: 56px;
+  bottom: 0;
+  left: 0;
+  width: var(--sb-nav-width);
+  z-index: 1038;
+  overflow-y: auto;
+}
+
+.sb-nav-fixed #layoutSidenav #layoutSidenav_content {
+  margin-left: var(--sb-nav-width);
+  min-height: calc(100vh - 56px);
+}
+
+.sb-topnav {
+  background: #212529;
+}
+
+.sb-topnav .navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+#layoutSidenav_content {
+  display: flex;
+  flex-direction: column;
+}
+
+#layoutSidenav_content main {
+  flex: 1 0 auto;
+}
+
+.sb-sidenav-dark {
+  background: #212529;
+  color: rgba(255, 255, 255, 0.65);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sb-sidenav-dark .sb-sidenav-menu {
+  flex: 1 1 auto;
+}
+
+.sb-sidenav-menu .nav {
+  display: block;
+}
+
+.sb-sidenav-dark .nav-link {
+  width: 100%;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.sb-sidenav-dark .nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.sb-sidenav-dark .nav-link.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 3px 0 0 var(--sb-primary);
+}
+
+.sb-nav-link-icon {
+  width: 1.4rem;
+  margin-right: 0.5rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.sb-sidenav-dark .nav-link.active .sb-nav-link-icon,
+.sb-sidenav-dark .nav-link:hover .sb-nav-link-icon {
+  color: #fff;
+}
+
+.sb-sidenav-footer {
+  padding: 0.75rem 1rem;
+  background: #1a1d20;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
+  transform: translateX(calc(-1 * var(--sb-nav-width)));
+}
+
+.sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
+  margin-left: 0;
+}
+
+#layoutSidenav_nav {
+  transition: transform 0.2s ease;
+}
+
+#layoutSidenav_content {
+  transition: margin-left 0.2s ease;
+}
+
+@media (max-width: 991.98px) {
+  .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
+    transform: translateX(calc(-1 * var(--sb-nav-width)));
+  }
+  .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
+    margin-left: 0;
+  }
+  .sb-nav-fixed.sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
+    transform: none;
+  }
+}
+
+/* ---------- tarjetas y tablas ---------- */
+.card {
+  border: 0;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.1);
+}
+
+.card-header {
+  background: #fff;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(33, 40, 50, 0.08);
+}
+
+.kpi-card {
+  border-left: 0.3rem solid var(--sb-primary);
+}
+
+.kpi-card.kpi-green {
+  border-left-color: #198754;
+}
+.kpi-card.kpi-amber {
+  border-left-color: #ffc107;
+}
+.kpi-card.kpi-purple {
+  border-left-color: #6f42c1;
+}
+.kpi-card .kpi-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6c757d;
+  font-weight: 700;
+}
+.kpi-card .kpi-value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-sortable th.sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.table-sortable th.sortable:hover {
+  color: var(--sb-primary);
+}
+.table-sortable th .sort-arrow {
+  font-size: 0.7rem;
+  opacity: 0.45;
+  margin-left: 2px;
+}
+.table-sortable th[aria-sort='ascending'] .sort-arrow,
+.table-sortable th[aria-sort='descending'] .sort-arrow {
+  opacity: 1;
+  color: var(--sb-primary);
+}
+
+.barra {
+  height: 10px;
+  border-radius: 999px;
+  background: #e9ecef;
+  overflow: hidden;
+}
+.barra > i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--sb-primary);
+  transition: width 0.35s ease;
+}
+.barra-row {
+  display: grid;
+  grid-template-columns: minmax(110px, 42%) 1fr 56px;
+  gap: 10px;
+  align-items: center;
+  font-size: 0.82rem;
+  margin-bottom: 0.55rem;
+}
+.barra-row .label {
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.barra-row b {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- mapa ---------- */
+.map-rpt {
+  height: 440px;
+  background: #eef2f4;
+  border-radius: 0.35rem;
+}
+.leaflet-popup-content {
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+/* ---------- FAQ ---------- */
+.faq-item {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.5rem;
+  background: #fff;
+  margin-bottom: 0.5rem;
+}
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  font-weight: 600;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-item summary::after {
+  content: '+';
+  color: var(--sb-primary);
+  font-weight: 700;
+}
+.faq-item[open] summary::after {
+  content: '−';
+}
+.faq-answer {
+  padding: 0 1rem 0.9rem;
+  color: #6c757d;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.codes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.5rem;
+}
+.codes-grid dt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  margin: 0;
+}
+.codes-grid dd {
+  margin: 0.15rem 0 0 2.1rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+.code-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 0.4rem;
+  font-weight: 800;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 767.98px) {
+  .codes-grid {
+    grid-template-columns: 1fr;
+  }
+  .map-rpt {
+    height: 360px;
+  }
+}

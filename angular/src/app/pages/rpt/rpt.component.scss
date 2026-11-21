@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+.table-sortable th.sortable {
+  user-select: none;
+}
+
+.table-sortable td small {
+  font-size: 0.7rem;
+}
+
+.map-rpt {
+  border-radius: 0;
+}
