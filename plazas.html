@@ -170,8 +170,8 @@ footer .legal{color:#8d7a80;max-width:88ch}
   .side-tools{margin:0 0 0 auto;border:0;padding:0;flex:0 0 auto}
   .side-tools summary{padding:7px 9px;font-size:.68rem}
   .side-tools-body{position:absolute;right:8px;top:calc(100% + 6px);width:208px;padding:8px;border-radius:12px;background:#3a0a19;border:1px solid rgba(255,255,255,.14);box-shadow:0 20px 40px -18px rgba(0,0,0,.7);z-index:80}
-  .side-nav{order:3;width:100%;display:flex;gap:4px}
-  .side-link{flex:1;justify-content:center;padding:7px 8px;font-size:.76rem}
+  .side-nav{order:3;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+  .side-link{display:block;padding:7px 4px;font-size:.7rem;line-height:1.15;text-align:center;white-space:normal}
   .side-link svg{display:none}
   .side-foot{display:none}
   .page{width:calc(100% - 24px);padding:18px 0 26px}
@@ -211,6 +211,7 @@ footer .legal{color:#8d7a80;max-width:88ch}
   #year + .select2-container{flex:0 0 92px;max-width:92px}
   #esp + .select2-container{flex:1 1 calc(100% - 100px);max-width:none;min-width:0}
 }
+@media (max-width:360px){.nav-sub{display:none}}
 </style>
 </head>
 <body>
@@ -248,7 +249,7 @@ footer .legal{color:#8d7a80;max-width:88ch}
       </a>
       <a class="side-link" href="forzosak.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
-        Forzosak 27-28 LAL
+        Forzosak <span class="nav-sub">27-28 LAL</span>
       </a>
 
 
