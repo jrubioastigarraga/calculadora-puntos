@@ -1,6 +1,7 @@
 # Datos personales: no se versionan (viven en Supabase Storage, bucket privado)
 datos.js
 datos-curso.js
+datos-rpt.js
 *.pdf
 
 # Entorno

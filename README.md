@@ -1,12 +1,13 @@
 # Hezkuntzako datuak · Traslados docentes Euskadi
 
-Cuatro pantallas sobre los datos educativos de Euskadi, sin servidor:
+Cinco pantallas sobre los datos educativos de Euskadi, sin servidor:
 
 | Archivo | Qué hace |
 |---|---|
 | `index.html` | **Calculadora**: baremo del Anexo I para las convocatorias **2025/2026** y **2026/2027**. |
 | `clasificacion.html` | **Clasificación**: participantes de 2010–2025, con desplegable de año, filtros y comparador. |
 | `plazas.html` | **Plazas adjudicadas**: destinos por año, con gráficas y tabla. |
+| `rpt.html` | **Plazas RPT**: plantilla orgánica de Secundaria y FP de Euskadi, curso 2026/2027. |
 | `ikha.html` | **IKHA**: puestos, sustitutos, funcionarios de carrera y prácticas del curso 2026/2027. |
 | `forzosak.html` | **Forzosak 27-28 LAL**: clasificación del concurso + seleccionados de la OPE 2025, con plazas ofertadas y adjudicación orientativa. |
 | `datos.js` | Datos de todos los años de traslados (participantes y plazas). |
@@ -47,6 +48,16 @@ Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
 - Tabla de destinos del año (centro, municipio, provincia, especialidad, persona y puntos) con búsqueda y filtro.
 - Exportación a CSV.
 
+## Plazas RPT (curso 2026/2027)
+
+- Relación de puestos de trabajo (RPT) de los centros públicos de Educación Secundaria y Formación Profesional: **11.086 plazas**, **183 centros**, **109 especialidades** y **83 municipios**.
+- Incluye la propuesta de RPT del **CIFP de Aprendizajes Virtuales y Digitalizados (BIRTLH, 013613)**: 69 plazas.
+- Filtros por **provincia**, **cuerpo** (CPES, CPSING, especialistas y PTFP) y **especialidad** (Select2 con buscador), además de búsqueda libre por centro, municipio o especialidad.
+- Indicadores de plazas, centros, especialidades y municipios.
+- Gráficas por **provincia** y por **especialidad** (top 8), tabla centro-especialidad con plazas y **PL2**, y exportación a CSV.
+- Cada fila muestra el **código oficial de centro** (Orden de 8/10/2026, Anexo II-2) y el código RPT cuando difieren.
+- La RPT es plantilla orgánica: **no contiene información de ocupación**, así que no permite saber cuántas plazas están vacantes o sin cubrir.
+
 ## IKHA (curso 2026/2027)
 
 - Pestañas: **Puestos** (10.570), **Sustitutos** (8.590), **Carrera** (873) y **Prácticas** (886).
@@ -79,7 +90,7 @@ Abre `index.html` con doble clic. El menú lateral enlaza las cuatro pantallas.
 
 - La web está protegida con **Supabase Auth** (usuario y contraseña).
 - El usuario `hezkuntza` se mapea internamente al email `hezkuntza@hezkuntza.eus`; el formulario solo pide el nombre de usuario.
-- Los datos **no están en el repositorio**: `datos.js` y `datos-curso.js` viven en el bucket privado `calculadora-datos` de Supabase Storage.
+- Los datos **no están en el repositorio**: `datos.js`, `datos-curso.js` y `datos-rpt.js` viven en el bucket privado `calculadora-datos` de Supabase Storage.
 - Solo las sesiones autenticadas pueden firmar la descarga (política RLS `calculadora_datos_select_authenticated`).
 - La clave `anon` de `config.js` es pública por diseño; no da acceso a los datos sin iniciar sesión.
 - Para probar en local hace falta conexión (login y descarga de datos van contra Supabase).
@@ -91,6 +102,7 @@ calculadora-puntos/
 ├── index.html          · calculadora
 ├── clasificacion.html  · clasificación multi-año
 ├── plazas.html         · plazas y gráficas
+├── rpt.html            · plantilla orgánica (RPT) de Secundaria y FP
 ├── ikha.html           · curso 2026/2027: puestos, sustitutos, carrera y prácticas
 ├── login.html          · acceso con Supabase Auth
 ├── config.js           · URL y clave pública de Supabase
@@ -100,7 +112,7 @@ calculadora-puntos/
 └── README.md
 ```
 
-`datos.js` y `datos-curso.js` se suben a mano al bucket `calculadora-datos` (no se versionan).
+`datos.js`, `datos-curso.js` y `datos-rpt.js` se suben a mano al bucket `calculadora-datos` (no se versionan). `datos-rpt.js` se genera con `exportar_rpt.py` a partir de los datos de la RPT (`data.json`, `birtlh.json` y `codigos_centro.json`).
 Todo funciona sin conexión una vez iniciada la sesión y cargados los datos.
 
 ## Despliegue
