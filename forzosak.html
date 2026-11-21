@@ -661,6 +661,23 @@ thead th.col-orig{width:118px}
 .plazas-banner{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;background:linear-gradient(180deg,#fdf9fa,#fcf6f8);border:1px solid #e6cbd4;border-radius:13px;padding:10px 14px;font-size:.8rem;color:var(--muted)}
 .plazas-banner strong{color:var(--accent-ink)}
 .plazas-banner b{font-variant-numeric:tabular-nums;color:var(--accent-ink)}
+.centros-toggle{font:inherit;font-size:.74rem;font-weight:650;color:var(--accent-ink);background:var(--accent-soft);border:1px solid #e3c3ce;border-radius:8px;padding:4px 9px;cursor:pointer}
+.centros-toggle:hover{background:#f0d9e1}
+.centros-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.centros-panel{background:var(--surface);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);padding:12px 14px}
+.centros-panel[hidden]{display:none}
+.centros-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;margin-bottom:4px}
+.centros-head strong{font-size:.85rem;color:var(--ink)}
+.centros-head span{font-size:.75rem;color:var(--muted)}
+.centros-list{list-style:none;margin:0;padding:0;display:grid}
+.centros-list li{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--line-soft);font-size:.8rem}
+.centros-list li:first-child{border-top:0}
+.centro-name{font-weight:600;color:var(--ink)}
+.centro-code{font-size:.68rem;color:#9b8a90;margin-left:6px;font-variant-numeric:tabular-nums}
+.centro-meta{display:block;font-size:.72rem;color:var(--muted);margin-top:1px}
+.centro-vac{flex:0 0 auto;font-weight:700;color:var(--accent-ink);white-space:nowrap}
+@media (max-width:520px){.centros-list li{display:grid;grid-template-columns:1fr;gap:2px}.centro-vac{text-align:left}}
+@media print{.centros-panel{display:none}}
 @media (max-width:760px){#f-tipo{flex:1 1 100%;max-width:none}}
 @media print{.plazas-banner{display:none}}
 
@@ -794,9 +811,18 @@ thead th.col-orig{width:118px}
         <span>·</span>
         <b id="banner-plazas">—</b>
         <span id="banner-detalle"></span>
+        <button type="button" class="centros-toggle" id="btn-centros" hidden aria-expanded="false" aria-controls="centros-panel">Ver centros</button>
         <span id="banner-excluidos"></span>
         <span id="banner-ope"></span>
       </section>
+
+      <div class="centros-panel" id="centros-panel" hidden>
+        <div class="centros-head">
+          <strong>Centros con vacantes</strong>
+          <span id="centros-resumen"></span>
+        </div>
+        <ul class="centros-list" id="centros-lista"></ul>
+      </div>
 
       <section class="table-card" aria-label="Clasificación combinada">
         <div class="table-scroll" id="scroll">
@@ -1086,6 +1112,7 @@ window.DATA_READY.then(() => {
   }
 
   const state = { q: '', cuerpo: '', esp: '', prov: '', moda: [], tipo: '', soloPlaza: false, excluirYa: true, sort: 'esp' };
+  let centrosOpen = false;
 
   function tieneDestino(r) {
     if (!r.dest) return false;
@@ -1221,6 +1248,46 @@ window.DATA_READY.then(() => {
     el('more').hidden = visible >= filtered.length;
   }
 
+  function centrosEspecialidad() {
+    if (!state.esp) return [];
+    const sep = state.esp.indexOf('|');
+    const c = state.esp.slice(0, sep), e = state.esp.slice(sep + 1);
+    const code = codigoPlazas(e, espLabel(c, e));
+    const list = (code && (FORZ.plazasCentros || {})[code]) || [];
+    return list
+      .filter((r) => !state.prov || r[3] === state.prov)
+      .map((r) => ({ code: r[0], name: r[1], town: r[2], prov: r[3], vac: r[4] }));
+  }
+
+  function renderCentros() {
+    const btn = el('btn-centros');
+    const panel = el('centros-panel');
+    if (!state.esp) {
+      centrosOpen = false;
+      btn.hidden = true;
+      panel.hidden = true;
+      return;
+    }
+    const list = centrosEspecialidad();
+    if (!list.length) {
+      btn.hidden = true;
+      panel.hidden = true;
+      return;
+    }
+    const total = list.reduce((n, r) => n + r.vac, 0);
+    el('centros-resumen').textContent = fmtInt(list.length) + (list.length === 1 ? ' centro' : ' centros') + ' · ' +
+      fmtInt(total) + (total === 1 ? ' plaza' : ' plazas') + (state.prov ? ' · ' + state.prov : '');
+    el('centros-lista').innerHTML = list.map((r) =>
+      '<li><div><span class="centro-name">' + r.name + '</span><span class="centro-code">' + r.code + '</span>' +
+      '<span class="centro-meta">' + r.town + ' · ' + r.prov + '</span></div>' +
+      '<span class="centro-vac">' + fmtInt(r.vac) + (r.vac === 1 ? ' plaza' : ' plazas') + '</span></li>'
+    ).join('');
+    btn.hidden = false;
+    btn.textContent = centrosOpen ? 'Ocultar centros' : 'Ver centros';
+    btn.setAttribute('aria-expanded', centrosOpen ? 'true' : 'false');
+    panel.hidden = !centrosOpen;
+  }
+
   function renderStats(plazasPorGrupo, pool) {
     const totalPlazas = Array.from(plazasPorGrupo.values()).reduce((a, b) => a + b, 0);
     const conPlaza = pool.filter((r) => r.conPlaza).length;
@@ -1235,7 +1302,8 @@ window.DATA_READY.then(() => {
       const p = plazasPara(e, espLabel(c, e));
       el('banner-esp').textContent = e + ' · ' + espLabel(c, e) + (state.prov ? ' · ' + state.prov : '');
       el('banner-plazas').textContent = fmtInt(totalPlazas) + (totalPlazas === 1 ? ' plaza' : ' plazas');
-      el('banner-detalle').textContent = p ? '(' + fmtInt(p.centros) + ' centros con vacantes en el documento provisional)' : '(sin vacantes en el documento provisional)';
+      const nCentros = centrosEspecialidad().length;
+      el('banner-detalle').textContent = p ? '(' + fmtInt(nCentros) + (nCentros === 1 ? ' centro' : ' centros') + ' con vacantes en el documento provisional)' : '(sin vacantes en el documento provisional)';
     } else {
       el('banner-esp').textContent = 'Todas las especialidades';
       el('banner-plazas').textContent = fmtInt(totalPlazas) + ' plazas ofertadas';
@@ -1246,6 +1314,7 @@ window.DATA_READY.then(() => {
       ? '· ' + fmtInt(excluidos) + ' con plaza de concurso anterior (excluidos)'
       : '';
     el('banner-ope').textContent = '· ' + fmtInt(pool.filter((r) => r.tipo === 'forzoso').length) + ' forzosos OPE en la lista';
+    renderCentros();
   }
 
   function renderAll(plazasPorGrupo, pool) {
@@ -1389,6 +1458,11 @@ window.DATA_READY.then(() => {
   $$('th.sortable button').forEach((b) => b.addEventListener('click', () => setSort(b.dataset.sort)));
 
   el('more').addEventListener('click', () => { visible += STEP; renderRows(); });
+
+  el('btn-centros').addEventListener('click', () => {
+    centrosOpen = !centrosOpen;
+    renderCentros();
+  });
 
   /* ---------- CSV ---------- */
 
