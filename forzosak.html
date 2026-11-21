@@ -641,6 +641,8 @@ tr.detail-row td{animation:detail .22s ease}
 #f-tipo{flex:0 1 175px;max-width:195px}
 .col-prov{width:78px;text-align:center}
 td.prov{text-align:center;font-size:.74rem;color:var(--muted)}
+td.prov.lal{color:#6b5b60}
+.lal-fallback{color:var(--accent);font-weight:800}
 .col-plaza{width:104px;text-align:center}
 td.plaza{text-align:center}
 .badge{display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border-radius:20px;padding:3px 8px;white-space:nowrap}
@@ -782,7 +784,7 @@ thead th.col-orig{width:118px}
           <div class="stat"><span>Plazas ofertadas</span><b id="st-plazas">—</b></div>
           <div class="stat"><span>Con plaza</span><b id="st-adj">—</b></div>
           <div class="stat"><span>Forzosos con plaza</span><b id="st-forz">—</b></div>
-          <p class="note">Orden de adjudicación: primero quienes figuran en la clasificación del concurso (puntos y desempates) y, a continuación en cada especialidad, las personas seleccionadas en la OPE 2025 por su orden de selección. La clasificación y las plazas se separan por **provincia elegida el curso anterior** (Araba / Bizkaia / Gipuzkoa): en cada especialidad y provincia se marcan como «con plaza» las primeras N, donde N son las plazas ofertadas en esa provincia. La provincia de la clasificación sale del destino del concurso o de la asignación azul; la de los seleccionados OPE, de su destino de prácticas. Quienes ya tenían destino adjudicado en el concurso anterior no consumen plaza; la asignación en azul de principio de curso no se cuenta como plaza. «Sin provincia» significa que no consta destino ni asignación en el curso anterior, por lo que no opta a plazas provinciales. Todo se recalcula al cambiar los filtros. <button type="button" class="clear-link" id="clear2">Limpiar filtros</button></p>
+          <p class="note">Orden de adjudicación: primero quienes figuran en la clasificación del concurso (puntos y desempates) y, a continuación en cada especialidad, las personas seleccionadas en la OPE 2025 por su orden de selección. La clasificación y las plazas se separan por **provincia elegida el curso anterior** (Araba / Bizkaia / Gipuzkoa): en cada especialidad y provincia se marcan como «con plaza» las primeras N, donde N son las plazas ofertadas en esa provincia. La provincia de la clasificación sale del destino del concurso o de la asignación azul y, si no consta, del PDF del traslado 2025 (columna LH/TH, marcada con *); la de los seleccionados OPE, de su destino de prácticas. Quienes ya tenían destino adjudicado en el concurso anterior no consumen plaza; la asignación en azul de principio de curso no se cuenta como plaza. Solo queda «Sin provincia» si tampoco aparece en ese PDF, y entonces no opta a plazas provinciales. Todo se recalcula al cambiar los filtros. <button type="button" class="clear-link" id="clear2">Limpiar filtros</button></p>
         </div>
       </section>
 
@@ -806,6 +808,7 @@ thead th.col-orig{width:118px}
                 <th class="col-orig">Origen</th>
                 <th class="sortable" id="th-esp"><button type="button" data-sort="esp">Especialidad <span class="arrow">▲</span></button></th>
                 <th class="col-prov">Prov.</th>
+                <th class="col-prov" title="Provincia del PDF del traslado 2025 (campo LH/TH)">LH/TH</th>
                 <th class="col-moda">Mod.</th>
                 <th class="col-pts sortable" id="th-pts"><button type="button" data-sort="puntos">Puntos / Sel. <span class="arrow">↕</span></button></th>
                 <th class="col-plaza">Plaza</th>
@@ -880,6 +883,10 @@ window.DATA_READY.then(() => {
   const PLAZAS_PROV = new Map((FORZ.plazasProv || []).map((p) => [p[0] + '|' + p[1], p[2]]));
 
   const normKey = (s) => normalize(s).replace(/[^A-Z0-9]/g, '');
+
+  /* provincia del PDF del traslado 2025 (CK3024, campo LH/TH) */
+  const LAL = new Map((FORZ.lal || []).map((r) => [normKey(r[0]) + '|' + r[1], r[2]]));
+  const provinciaLal = (name, cuerpo) => LAL.get(normKey(name) + '|' + cuerpo) || '';
 
   /* Emparejamiento robusto: el PDF usa códigos "0237" pero los listados pueden
      usar "237", el nombre de la especialidad u otro formato. */
@@ -970,12 +977,16 @@ window.DATA_READY.then(() => {
 
   (RAW.people || []).filter((p) => p[0] === 2025).forEach((person) => {
     (person[5] || []).forEach((esp) => {
+      const provBase = provinciaConcurso(person, esp);
+      const provLal = provinciaLal(person[1], person[2]);
       ALL.push({
         key: 'C|' + person[1] + '|' + person[2] + '|' + esp,
         tipo: 'concurso',
         cuerpo: person[2],
         esp: esp,
-        prov: provinciaConcurso(person, esp),
+        prov: provBase !== 'Sin provincia' ? provBase : (provLal || 'Sin provincia'),
+        provLal: provLal,
+        usaLal: provBase === 'Sin provincia' && !!provLal,
         name: person[1],
         moda: person[3],
         pl: person[4],
@@ -995,12 +1006,16 @@ window.DATA_READY.then(() => {
     const code = o[0];
     const info = datosOpe(code);
     if (!info.cuerpo) return;
+    const provBase = o[7] || 'Sin provincia';
+    const provLal = provinciaLal(o[1], info.cuerpo);
     ALL.push({
       key: 'F|' + o[4] + '|' + info.cuerpo + '|' + info.esp + '|' + o[6],
       tipo: 'forzoso',
       cuerpo: info.cuerpo,
       esp: info.esp,
-      prov: o[7] || 'Sin provincia',
+      prov: provBase !== 'Sin provincia' ? provBase : (provLal || 'Sin provincia'),
+      provLal: provLal,
+      usaLal: provBase === 'Sin provincia' && !!provLal,
       name: o[1],
       turno: o[2],
       anexo: o[3],
@@ -1122,6 +1137,9 @@ window.DATA_READY.then(() => {
 
   function rowHtml(row) {
     const medal = row.conPlaza ? ' p1' : (row.pos <= 3 ? ' p' + row.pos : '');
+    const lalTxt = row.provLal
+      ? row.provLal + (row.usaLal ? ' <span class="lal-fallback" title="Provincia usada porque no consta destino ni asignación">*</span>' : '')
+      : '—';
     const tipoChip = row.tipo === 'forzoso'
       ? '<span class="origen-chip f">OPE</span>'
       : '<span class="origen-chip c">Concurso</span>';
@@ -1142,6 +1160,7 @@ window.DATA_READY.then(() => {
       '<td class="origen">' + tipoChip + '</td>' +
       '<td class="esp">' + espLabel(row.cuerpo, row.esp) + '</td>' +
       '<td class="prov">' + (row.prov === 'Sin provincia' ? '—' : row.prov) + '</td>' +
+      '<td class="prov lal" title="PDF del traslado 2025 · LH/TH">' + lalTxt + '</td>' +
       '<td class="moda"><b class="m-' + (row.moda || 'x') + '">' + (row.moda || '·') + '</b></td>' +
       pts +
       '<td class="plaza">' + badge + '</td>' +
@@ -1164,7 +1183,7 @@ window.DATA_READY.then(() => {
       info = '<div class="detail-top"><strong>' + row.name + '</strong>' +
         '<span>Seleccionado/a en la OPE 2025 · Anexo ' + row.anexo + ' · Turno ' + (row.turno || '—') + '</span>' +
         '<span>Orden de selección: ' + row.orden + ' · Código ' + (row.codigo || '—') + ' · DNI ' + (row.dni || '—') + '</span>' +
-        '<span>Puesto ' + row.pos + ' en la clasificación combinada de ' + espLabel(row.cuerpo, row.esp) + ' · ' + row.prov + '</span></div>';
+        '<span>Puesto ' + row.pos + ' en la clasificación combinada de ' + espLabel(row.cuerpo, row.esp) + ' · ' + row.prov + (row.provLal ? ' · LH/TH ' + row.provLal : '') + '</span></div>';
     } else {
       const labels = ['1.1', '1.2', '2', '3', '4', '5', '6'];
       const desc = {
@@ -1375,12 +1394,12 @@ window.DATA_READY.then(() => {
 
   const cell = (v) => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
   el('csv').addEventListener('click', () => {
-    const header = ['Puesto', 'Nombre', 'Origen', 'Cuerpo', 'Especialidad', 'Provincia', 'Modalidad', 'Perfil', 'Puntos', 'Orden selección OPE', 'Anexo', 'Turno', 'Plazas ofertadas', 'Con plaza', 'Ya tenía plaza'];
+    const header = ['Puesto', 'Nombre', 'Origen', 'Cuerpo', 'Especialidad', 'Provincia', 'LH/TH (PDF traslado)', 'Modalidad', 'Perfil', 'Puntos', 'Orden selección OPE', 'Anexo', 'Turno', 'Plazas ofertadas', 'Con plaza', 'Ya tenía plaza'];
     const lines = [header.map(cell).join(';')];
     filtered.forEach((r) => {
       lines.push([
         r.pos, r.name, r.tipo === 'forzoso' ? 'Forzoso OPE' : 'Clasificación',
-        r.cuerpo, espLabel(r.cuerpo, r.esp), r.prov, r.moda || '', r.pl || '',
+        r.cuerpo, espLabel(r.cuerpo, r.esp), r.prov, r.provLal || '', r.moda || '', r.pl || '',
         r.total == null ? '' : fmt(r.total),
         r.tipo === 'forzoso' ? r.orden : '', r.anexo || '', r.turno || '',
         r.nPlazas, r.conPlaza ? 'SI' : 'NO', r.yaTiene ? 'SI' : 'NO'
