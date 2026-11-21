@@ -134,7 +134,9 @@ Todo funciona sin conexión una vez iniciada la sesión y cargados los datos.
 
 ## Despliegue
 
-- **GitHub Pages** sirve las pantallas desde la raíz del repositorio.
+- **GitHub Pages** sirve la aplicación Angular desde la raíz del repositorio (`index.html` + `main-*.js` + `styles-*.css`).
+- La versión estática anterior queda archivada en `legacy-static/` (no está enlazada).
+- Build y publicación: `cd angular && npm run build -- --base-href=/calculadora-puntos/`; copiar a la raíz el `index.html`, `main-*.js`, `styles-*.css`, `favicon.*`, `media/` y `vendor/`. **No copiar** `datos.js`, `datos-curso.js` ni `datos-rpt.js`.
 - Los datos personales quedan en Supabase y no se publican en GitHub.
 
 

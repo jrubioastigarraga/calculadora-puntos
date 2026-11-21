@@ -276,10 +276,10 @@ export class CalculadoraLegacyComponent implements AfterViewInit {
   /* ------------------------------------------------------------------ */
 
   const SEC_META = [
-    ['1', 'Antigüedad', '#7a1738'],
+    ['1', 'Antigüedad', '#0d6efd'],
     ['2', 'Catedráticos', '#6d28d9'],
-    ['3', 'Académicos', '#1d4ed8'],
-    ['4', 'Cargos', '#b45309'],
+    ['3', 'Académicos', '#0dcaf0'],
+    ['4', 'Cargos', '#ffc107'],
     ['5', 'Formación', '#be185d'],
     ['6', 'Otros', '#475569']
   ];

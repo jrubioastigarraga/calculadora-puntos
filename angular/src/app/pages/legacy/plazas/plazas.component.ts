@@ -42,7 +42,7 @@ export class PlazasLegacyComponent implements AfterViewInit {
   });
   const BODIES = RAW.bodies;
   const PROV_BY_PREFIX = { '01': 'Araba', '20': 'Gipuzkoa', '48': 'Bizkaia' };
-  const PROVS = [['Araba', '#b45309'], ['Bizkaia', '#7a1738'], ['Gipuzkoa', '#1d4ed8'], ['Otras', '#8d7a80']];
+  const PROVS = [['Araba', '#ffc107'], ['Bizkaia', '#0d6efd'], ['Gipuzkoa', '#0dcaf0'], ['Otras', '#6c757d']];
 
   const PLAZAS = RAW.plazas.map((a) => ({
     y: a[0], c: a[1], esp: a[2], n: a[3], t: a[4], m: a[5],
@@ -114,7 +114,7 @@ export class PlazasLegacyComponent implements AfterViewInit {
         ).join('');
         stack = '<span class="ystack" style="height:' + h + 'px">' + segs + '</span>';
       } else {
-        const color = (PROVS.find((p) => p[0] === state.prov) || ['', '#7a1738'])[1];
+        const color = (PROVS.find((p) => p[0] === state.prov) || ['', '#0d6efd'])[1];
         stack = '<span class="ystack" style="height:' + h + 'px"><span class="yseg" style="flex-grow:1;background:' + color + '"></span></span>';
       }
 
