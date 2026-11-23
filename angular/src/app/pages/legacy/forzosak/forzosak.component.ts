@@ -48,7 +48,7 @@ export class ForzosakLegacyComponent implements AfterViewInit {
   const cuerpoLabel = (cuerpo) => BODIES[cuerpo] || ('Cuerpo ' + cuerpo);
 
   /* plazas ofertadas: [codigo, plazas, nombre, centros] */
-  const PLAZAS = new Map(FORZ.plazas.map((p) => [p[0], { n: p[1], name: p[2], centros: p[3] }]));
+  const PLAZAS = new Map(FORZ.plazas.map((p) => [p[0], { n: p[1], name: p[2], centros: p[3], vac: p[4] ?? p[1], res: p[5] ?? 0 }]));
   /* plazas ofertadas por especialidad y provincia: [codigo, provincia, plazas] */
   const PLAZAS_PROV = new Map((FORZ.plazasProv || []).map((p) => [p[0] + '|' + p[1], p[2]]));
 
@@ -400,7 +400,7 @@ export class ForzosakLegacyComponent implements AfterViewInit {
     const list = (code && (FORZ.plazasCentros || {})[code]) || [];
     return list
       .filter((r) => !state.prov || r[3] === state.prov)
-      .map((r) => ({ code: r[0], name: r[1], town: r[2], prov: r[3], vac: r[4] }));
+      .map((r) => ({ code: r[0], name: r[1], town: r[2], prov: r[3], vac: r[4], res: r[5] || 0 }));
   }
 
   function renderCentros() {
@@ -418,14 +418,18 @@ export class ForzosakLegacyComponent implements AfterViewInit {
       panel.hidden = true;
       return;
     }
-    const total = list.reduce((n, r) => n + r.vac, 0);
+    const vac = list.reduce((n, r) => n + r.vac, 0);
+    const res = list.reduce((n, r) => n + r.res, 0);
+    const total = vac + res;
     el('centros-resumen').textContent = fmtInt(list.length) + (list.length === 1 ? ' centro' : ' centros') + ' · ' +
-      fmtInt(total) + (total === 1 ? ' plaza' : ' plazas') + (state.prov ? ' · ' + state.prov : '');
-    el('centros-lista').innerHTML = list.map((r) =>
-      '<li><div><span class="centro-name">' + r.name + '</span><span class="centro-code">' + r.code + '</span>' +
-      '<span class="centro-meta">' + r.town + ' · ' + r.prov + '</span></div>' +
-      '<span class="centro-vac">' + fmtInt(r.vac) + (r.vac === 1 ? ' plaza' : ' plazas') + '</span></li>'
-    ).join('');
+      fmtInt(total) + (total === 1 ? ' plaza' : ' plazas') +
+      ' (' + fmtInt(vac) + ' vac. + ' + fmtInt(res) + ' res.)' + (state.prov ? ' · ' + state.prov : '');
+    el('centros-lista').innerHTML = list.map((r) => {
+      const t = r.vac + r.res;
+      return '<li><div><span class="centro-name">' + r.name + '</span><span class="centro-code">' + r.code + '</span>' +
+        '<span class="centro-meta">' + r.town + ' · ' + r.prov + ' · ' + fmtInt(r.vac) + ' vac. + ' + fmtInt(r.res) + ' res.</span></div>' +
+        '<span class="centro-vac">' + fmtInt(t) + (t === 1 ? ' plaza' : ' plazas') + '</span></li>';
+    }).join('');
     btn.hidden = false;
     btn.textContent = centrosOpen ? 'Ocultar centros' : 'Ver centros';
     btn.setAttribute('aria-expanded', centrosOpen ? 'true' : 'false');
@@ -446,8 +450,12 @@ export class ForzosakLegacyComponent implements AfterViewInit {
       const p = plazasPara(e, espLabel(c, e));
       el('banner-esp').textContent = e + ' · ' + espLabel(c, e) + (state.prov ? ' · ' + state.prov : '');
       el('banner-plazas').textContent = fmtInt(totalPlazas) + (totalPlazas === 1 ? ' plaza' : ' plazas');
-      const nCentros = centrosEspecialidad().length;
-      el('banner-detalle').textContent = p ? '(' + fmtInt(nCentros) + (nCentros === 1 ? ' centro' : ' centros') + ' con vacantes en el documento provisional)' : '(sin vacantes en el documento provisional)';
+      const lista = centrosEspecialidad();
+      const vac = lista.reduce((n, r) => n + r.vac, 0);
+      const res = lista.reduce((n, r) => n + r.res, 0);
+      el('banner-detalle').textContent = p
+        ? '(' + fmtInt(lista.length) + (lista.length === 1 ? ' centro' : ' centros') + ' · ' + fmtInt(vac) + ' vacantes + ' + fmtInt(res) + ' resultas)'
+        : '(sin vacantes en el documento provisional)';
     } else {
       el('banner-esp').textContent = 'Todas las especialidades';
       el('banner-plazas').textContent = fmtInt(totalPlazas) + ' plazas ofertadas';
